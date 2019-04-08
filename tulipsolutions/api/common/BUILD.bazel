@@ -1,0 +1,118 @@
+load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
+load("@nl_tulipsolutions_tecl//bazel/rules_proto_py:def.bzl", "py_proto_library")
+load("@nl_tulipsolutions_tecl//bazel/rules_protodoc:def.bzl", "rst_proto")
+load("@build_stack_rules_proto//node:node_proto_compile.bzl", "node_proto_compile")
+
+proto_library(
+    name = "errors_proto",
+    srcs = ["errors.proto"],
+    visibility = ["//visibility:public"],
+    deps = [":orders_proto"],
+)
+
+proto_library(
+    name = "orders_proto",
+    srcs = ["orders.proto"],
+    visibility = ["//visibility:public"],
+)
+
+go_proto_library(
+    name = "errors_go_proto",
+    importpath = "github.com/tulipsolutions/tecl/tulipsolutions/api/common/errors",
+    proto = ":errors_proto",
+    visibility = ["//visibility:public"],
+    deps = [":orders_go_proto"],
+)
+
+go_proto_library(
+    name = "orders_go_proto",
+    importpath = "github.com/tulipsolutions/tecl/tulipsolutions/api/common/orders",
+    proto = ":orders_proto",
+    visibility = ["//visibility:public"],
+)
+
+java_proto_library(
+    name = "errors_jvm_proto",
+    visibility = ["//visibility:public"],
+    deps = [":errors_proto"],
+)
+
+java_proto_library(
+    name = "orders_jvm_proto",
+    visibility = ["//visibility:public"],
+    deps = [":orders_proto"],
+)
+
+py_proto_library(
+    name = "errors_py_proto_library",
+    visibility = ["//visibility:public"],
+    deps = [":errors_proto"],
+)
+
+py_proto_library(
+    name = "orders_py_proto_library",
+    visibility = ["//visibility:public"],
+    deps = [":orders_proto"],
+)
+
+rst_proto(
+    name = "errors_rst_proto",
+    visibility = ["//visibility:public"],
+    deps = [":errors_proto"],
+)
+
+rst_proto(
+    name = "orders_rst_proto",
+    visibility = ["//visibility:public"],
+    deps = [":orders_proto"],
+)
+
+node_proto_compile(
+    name = "errors_js_proto_compile",
+    visibility = ["//visibility:public"],
+    deps = [":errors_proto"],
+)
+
+node_proto_compile(
+    name = "orders_js_proto_compile",
+    visibility = ["//visibility:public"],
+    deps = [":orders_proto"],
+)
+
+proto_library(
+    name = "options_proto",
+    srcs = ["options.proto"],
+    visibility = ["//visibility:public"],
+    deps = ["@com_google_protobuf//:descriptor_proto"],
+)
+
+go_proto_library(
+    name = "options_go_proto",
+    importpath = "github.com/tulipsolutions/tecl/tulipsolutions/api/common/options",
+    proto = ":options_proto",
+    visibility = ["//visibility:public"],
+)
+
+java_proto_library(
+    name = "options_jvm_proto",
+    visibility = ["//visibility:public"],
+    deps = [":options_proto"],
+)
+
+py_proto_library(
+    name = "options_py_proto_library",
+    visibility = ["//visibility:public"],
+    deps = [":options_proto"],
+)
+
+rst_proto(
+    name = "options_rst_proto",
+    visibility = ["//visibility:public"],
+    deps = [":options_proto"],
+)
+
+node_proto_compile(
+    name = "options_js_proto_compile",
+    visibility = ["//visibility:public"],
+    deps = [":options_proto"],
+)

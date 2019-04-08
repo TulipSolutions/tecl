@@ -1,0 +1,388 @@
+load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
+load("@io_grpc_grpc_java//:java_grpc_library.bzl", "java_grpc_library")
+load("@nl_tulipsolutions_tecl//bazel/rules_proto_py:def.bzl", "py_grpc_library", "py_proto_library")
+load("@nl_tulipsolutions_tecl//bazel/rules_protodoc:def.bzl", "rst_proto")
+load("@build_stack_rules_proto//node:node_proto_compile.bzl", "node_proto_compile")
+load("@build_stack_rules_proto//node:node_grpc_compile.bzl", "node_grpc_compile")
+load("@build_stack_rules_proto//github.com/grpc/grpc-web:commonjs_grpc_compile.bzl", "commonjs_grpc_compile")
+
+proto_library(
+    name = "market_detail_proto",
+    srcs = ["market_detail.proto"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//tulipsolutions/api/common:orders_proto",
+        "@com_envoyproxy_protoc_gen_validate//validate:validate_proto",
+    ],
+)
+
+proto_library(
+    name = "orderbook_proto",
+    srcs = ["orderbook.proto"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//tulipsolutions/api/common:options_proto",
+        "//tulipsolutions/api/common:orders_proto",
+        "@com_envoyproxy_protoc_gen_validate//validate:validate_proto",
+    ],
+)
+
+proto_library(
+    name = "ticker_proto",
+    srcs = ["ticker.proto"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//tulipsolutions/api/common:orders_proto",
+        "@com_envoyproxy_protoc_gen_validate//validate:validate_proto",
+    ],
+)
+
+proto_library(
+    name = "trade_proto",
+    srcs = ["trade.proto"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//tulipsolutions/api/common:options_proto",
+        "//tulipsolutions/api/common:orders_proto",
+        "@com_envoyproxy_protoc_gen_validate//validate:validate_proto",
+    ],
+)
+
+go_proto_library(
+    name = "market_detail_go_proto",
+    compilers = ["@io_bazel_rules_go//proto:go_grpc"],
+    importpath = "github.com/tulipsolutions/tecl/tulipsolutions/api/pub/market_detail",
+    proto = ":market_detail_proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//tulipsolutions/api/common:orders_go_proto",
+        "@com_envoyproxy_protoc_gen_validate//validate:go_default_library",
+    ],
+)
+
+go_proto_library(
+    name = "orderbook_go_proto",
+    compilers = ["@io_bazel_rules_go//proto:go_grpc"],
+    importpath = "github.com/tulipsolutions/tecl/tulipsolutions/api/pub/orderbook",
+    proto = ":orderbook_proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//tulipsolutions/api/common:options_go_proto",
+        "//tulipsolutions/api/common:orders_go_proto",
+        "@com_envoyproxy_protoc_gen_validate//validate:go_default_library",
+    ],
+)
+
+go_proto_library(
+    name = "ticker_go_proto",
+    compilers = ["@io_bazel_rules_go//proto:go_grpc"],
+    importpath = "github.com/tulipsolutions/tecl/tulipsolutions/api/pub/ticker",
+    proto = ":ticker_proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//tulipsolutions/api/common:orders_go_proto",
+        "@com_envoyproxy_protoc_gen_validate//validate:go_default_library",
+    ],
+)
+
+go_proto_library(
+    name = "trade_go_proto",
+    compilers = ["@io_bazel_rules_go//proto:go_grpc"],
+    importpath = "github.com/tulipsolutions/tecl/tulipsolutions/api/pub/trade",
+    proto = ":trade_proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//tulipsolutions/api/common:options_go_proto",
+        "//tulipsolutions/api/common:orders_go_proto",
+        "@com_envoyproxy_protoc_gen_validate//validate:go_default_library",
+    ],
+)
+
+java_proto_library(
+    name = "market_detail_jvm_proto",
+    visibility = ["//visibility:public"],
+    deps = [":market_detail_proto"],
+)
+
+java_grpc_library(
+    name = "market_detail_jvm_grpc",
+    srcs = [":market_detail_proto"],
+    visibility = ["//visibility:public"],
+    deps = [":market_detail_jvm_proto"],
+)
+
+java_proto_library(
+    name = "orderbook_jvm_proto",
+    visibility = ["//visibility:public"],
+    deps = [":orderbook_proto"],
+)
+
+java_grpc_library(
+    name = "orderbook_jvm_grpc",
+    srcs = [":orderbook_proto"],
+    visibility = ["//visibility:public"],
+    deps = [":orderbook_jvm_proto"],
+)
+
+java_proto_library(
+    name = "ticker_jvm_proto",
+    visibility = ["//visibility:public"],
+    deps = [":ticker_proto"],
+)
+
+java_grpc_library(
+    name = "ticker_jvm_grpc",
+    srcs = [":ticker_proto"],
+    visibility = ["//visibility:public"],
+    deps = [":ticker_jvm_proto"],
+)
+
+java_proto_library(
+    name = "trade_jvm_proto",
+    visibility = ["//visibility:public"],
+    deps = [":trade_proto"],
+)
+
+java_grpc_library(
+    name = "trade_jvm_grpc",
+    srcs = [":trade_proto"],
+    visibility = ["//visibility:public"],
+    deps = [":trade_jvm_proto"],
+)
+
+py_proto_library(
+    name = "market_detail_py_proto_library",
+    visibility = ["//visibility:public"],
+    deps = [":market_detail_proto"],
+)
+
+py_grpc_library(
+    name = "market_detail_py_grpc_library",
+    srcs = [":market_detail_proto"],
+    visibility = ["//visibility:public"],
+)
+
+py_proto_library(
+    name = "orderbook_py_proto_library",
+    visibility = ["//visibility:public"],
+    deps = [":orderbook_proto"],
+)
+
+py_grpc_library(
+    name = "orderbook_py_grpc_library",
+    srcs = [":orderbook_proto"],
+    visibility = ["//visibility:public"],
+)
+
+py_proto_library(
+    name = "ticker_py_proto_library",
+    visibility = ["//visibility:public"],
+    deps = [":ticker_proto"],
+)
+
+py_grpc_library(
+    name = "ticker_py_grpc_library",
+    srcs = [":ticker_proto"],
+    visibility = ["//visibility:public"],
+)
+
+py_proto_library(
+    name = "trade_py_proto_library",
+    visibility = ["//visibility:public"],
+    deps = [":trade_proto"],
+)
+
+py_grpc_library(
+    name = "trade_py_grpc_library",
+    srcs = [":trade_proto"],
+    visibility = ["//visibility:public"],
+)
+
+rst_proto(
+    name = "market_detail_rst_proto",
+    visibility = ["//visibility:public"],
+    deps = [":market_detail_proto"],
+)
+
+rst_proto(
+    name = "orderbook_rst_proto",
+    visibility = ["//visibility:public"],
+    deps = [":orderbook_proto"],
+)
+
+rst_proto(
+    name = "ticker_rst_proto",
+    visibility = ["//visibility:public"],
+    deps = [":ticker_proto"],
+)
+
+rst_proto(
+    name = "trade_rst_proto",
+    visibility = ["//visibility:public"],
+    deps = [":trade_proto"],
+)
+
+node_proto_compile(
+    name = "market_detail_js_proto_compile",
+    visibility = ["//visibility:public"],
+    deps = [":market_detail_proto"],
+)
+
+node_grpc_compile(
+    name = "market_detail_js_grpc_node_compile",
+    visibility = ["//visibility:public"],
+    deps = [":market_detail_proto"],
+)
+
+commonjs_grpc_compile(
+    name = "market_detail_js_grpc_web_compile",
+    plugin_options = [
+        "import_style=commonjs",
+        "mode=grpcwebtext",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [":market_detail_proto"],
+)
+
+node_proto_compile(
+    name = "orderbook_js_proto_compile",
+    visibility = ["//visibility:public"],
+    deps = [":orderbook_proto"],
+)
+
+node_grpc_compile(
+    name = "orderbook_js_grpc_node_compile",
+    visibility = ["//visibility:public"],
+    deps = [":orderbook_proto"],
+)
+
+commonjs_grpc_compile(
+    name = "orderbook_js_grpc_web_compile",
+    plugin_options = [
+        "import_style=commonjs",
+        "mode=grpcwebtext",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [":orderbook_proto"],
+)
+
+node_proto_compile(
+    name = "ticker_js_proto_compile",
+    visibility = ["//visibility:public"],
+    deps = [":ticker_proto"],
+)
+
+node_grpc_compile(
+    name = "ticker_js_grpc_node_compile",
+    visibility = ["//visibility:public"],
+    deps = [":ticker_proto"],
+)
+
+commonjs_grpc_compile(
+    name = "ticker_js_grpc_web_compile",
+    plugin_options = [
+        "import_style=commonjs",
+        "mode=grpcwebtext",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [":ticker_proto"],
+)
+
+node_proto_compile(
+    name = "trade_js_proto_compile",
+    visibility = ["//visibility:public"],
+    deps = [":trade_proto"],
+)
+
+node_grpc_compile(
+    name = "trade_js_grpc_node_compile",
+    visibility = ["//visibility:public"],
+    deps = [":trade_proto"],
+)
+
+commonjs_grpc_compile(
+    name = "trade_js_grpc_web_compile",
+    plugin_options = [
+        "import_style=commonjs",
+        "mode=grpcwebtext",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [":trade_proto"],
+)
+
+proto_library(
+    name = "ohlc_proto",
+    srcs = ["ohlc.proto"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//tulipsolutions/api/common:options_proto",
+        "//tulipsolutions/api/common:orders_proto",
+        "@com_envoyproxy_protoc_gen_validate//validate:validate_proto",
+    ],
+)
+
+go_proto_library(
+    name = "ohlc_go_proto",
+    compilers = ["@io_bazel_rules_go//proto:go_grpc"],
+    importpath = "github.com/tulipsolutions/tecl/tulipsolutions/api/pub/ohlc",
+    proto = ":ohlc_proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//tulipsolutions/api/common:options_go_proto",
+        "//tulipsolutions/api/common:orders_go_proto",
+        "@com_envoyproxy_protoc_gen_validate//validate:go_default_library",
+    ],
+)
+
+java_proto_library(
+    name = "ohlc_jvm_proto",
+    visibility = ["//visibility:public"],
+    deps = [":ohlc_proto"],
+)
+
+java_grpc_library(
+    name = "ohlc_jvm_grpc",
+    srcs = [":ohlc_proto"],
+    visibility = ["//visibility:public"],
+    deps = [":ohlc_jvm_proto"],
+)
+
+py_proto_library(
+    name = "ohlc_py_proto_library",
+    visibility = ["//visibility:public"],
+    deps = [":ohlc_proto"],
+)
+
+py_grpc_library(
+    name = "ohlc_py_grpc_library",
+    srcs = [":ohlc_proto"],
+    visibility = ["//visibility:public"],
+)
+
+rst_proto(
+    name = "ohlc_rst_proto",
+    visibility = ["//visibility:public"],
+    deps = [":ohlc_proto"],
+)
+
+node_proto_compile(
+    name = "ohlc_js_proto_compile",
+    visibility = ["//visibility:public"],
+    deps = [":ohlc_proto"],
+)
+
+node_grpc_compile(
+    name = "ohlc_js_grpc_node_compile",
+    visibility = ["//visibility:public"],
+    deps = [":ohlc_proto"],
+)
+
+commonjs_grpc_compile(
+    name = "ohlc_js_grpc_web_compile",
+    plugin_options = [
+        "import_style=commonjs",
+        "mode=grpcwebtext",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [":ohlc_proto"],
+)

@@ -1,0 +1,68 @@
+load("@com_github_bazelbuild_buildtools//buildifier:def.bzl", "buildifier")
+load("//bazel/rules_clang_format:def.bzl", "clang_formatter")
+load("@bazel_gazelle//:def.bzl", "gazelle")
+load("//bazel/rules_addlicense:def.bzl", "addlicense")
+
+exclude_patterns = [
+    "./third_party/protoc-gen-validate/*",
+    "*node_modules*",
+    # Below are the defaults for most formatting rules (please keep in sync).
+    ".*.git/*",
+    ".*.project/*",
+    ".*idea/*",
+]
+
+# Formatting for BUILD, BUILD.bazel and WORKSPACE files
+buildifier(
+    name = "buildifier_check",
+    diff_command = "diff -u",
+    exclude_patterns = exclude_patterns,
+    mode = "diff",
+    verbose = True,
+)
+
+buildifier(
+    name = "buildifier_format",
+    exclude_patterns = exclude_patterns,
+    mode = "fix",
+)
+
+clang_formatter(
+    name = "clang_format",
+    exclude_patterns = exclude_patterns,
+)
+
+clang_formatter(
+    name = "clang_format_check",
+    exclude_patterns = exclude_patterns,
+    mode = "check",
+)
+
+# Force Gazelle to create one rule per proto package using go_package option
+# Until https://github.com/bazelbuild/bazel-gazelle/issues/138 is resolved
+# gazelle:proto package
+# gazelle:proto_group go_package
+
+# gazelle:prefix github.com/tulipsolutions/tecl
+# gazelle:resolve proto proto validate/validate.proto @com_envoyproxy_protoc_gen_validate//validate:validate_proto
+# gazelle:resolve proto go validate/validate.proto @com_envoyproxy_protoc_gen_validate//validate:go_default_library
+# gazelle:exclude docs
+# gazelle:exclude third_party/protoc-gen-validate
+# gazelle:ignore
+
+gazelle(
+    name = "gazelle",
+    gazelle = "//bazel/gazelle",
+)
+
+addlicense(
+    name = "addlicense_format",
+    exclude_patterns = exclude_patterns,
+    mode = "format",
+)
+
+addlicense(
+    name = "addlicense_check",
+    exclude_patterns = exclude_patterns,
+    mode = "check",
+)

@@ -1,0 +1,275 @@
+load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
+load("@io_grpc_grpc_java//:java_grpc_library.bzl", "java_grpc_library")
+load("@nl_tulipsolutions_tecl//bazel/rules_proto_py:def.bzl", "py_grpc_library", "py_proto_library")
+load("@nl_tulipsolutions_tecl//bazel/rules_protodoc:def.bzl", "rst_proto")
+load("@build_stack_rules_proto//node:node_proto_compile.bzl", "node_proto_compile")
+load("@build_stack_rules_proto//node:node_grpc_compile.bzl", "node_grpc_compile")
+load("@build_stack_rules_proto//github.com/grpc/grpc-web:commonjs_grpc_compile.bzl", "commonjs_grpc_compile")
+
+proto_library(
+    name = "message_authentication_proto",
+    srcs = ["message_authentication.proto"],
+    visibility = ["//visibility:public"],
+    deps = ["@com_envoyproxy_protoc_gen_validate//validate:validate_proto"],
+)
+
+proto_library(
+    name = "order_proto",
+    srcs = ["order.proto"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":message_authentication_proto",
+        "//tulipsolutions/api/common:orders_proto",
+        "@com_envoyproxy_protoc_gen_validate//validate:validate_proto",
+    ],
+)
+
+proto_library(
+    name = "trade_proto",
+    srcs = ["trade.proto"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//tulipsolutions/api/common:options_proto",
+        "//tulipsolutions/api/common:orders_proto",
+        "@com_envoyproxy_protoc_gen_validate//validate:validate_proto",
+    ],
+)
+
+proto_library(
+    name = "wallet_proto",
+    srcs = ["wallet.proto"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//tulipsolutions/api/common:orders_proto",
+        "@com_envoyproxy_protoc_gen_validate//validate:validate_proto",
+    ],
+)
+
+go_proto_library(
+    name = "message_authentication_go_proto",
+    importpath = "github.com/tulipsolutions/tecl/tulipsolutions/api/priv/message_authentication",
+    proto = ":message_authentication_proto",
+    visibility = ["//visibility:public"],
+    deps = ["@com_envoyproxy_protoc_gen_validate//validate:go_default_library"],
+)
+
+go_proto_library(
+    name = "order_go_proto",
+    compilers = ["@io_bazel_rules_go//proto:go_grpc"],
+    importpath = "github.com/tulipsolutions/tecl/tulipsolutions/api/priv/order",
+    proto = ":order_proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":message_authentication_go_proto",
+        "//tulipsolutions/api/common:orders_go_proto",
+        "@com_envoyproxy_protoc_gen_validate//validate:go_default_library",
+    ],
+)
+
+go_proto_library(
+    name = "trade_go_proto",
+    compilers = ["@io_bazel_rules_go//proto:go_grpc"],
+    importpath = "github.com/tulipsolutions/tecl/tulipsolutions/api/priv/trade",
+    proto = ":trade_proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//tulipsolutions/api/common:options_go_proto",
+        "//tulipsolutions/api/common:orders_go_proto",
+        "@com_envoyproxy_protoc_gen_validate//validate:go_default_library",
+    ],
+)
+
+go_proto_library(
+    name = "wallet_go_proto",
+    compilers = ["@io_bazel_rules_go//proto:go_grpc"],
+    importpath = "github.com/tulipsolutions/tecl/tulipsolutions/api/priv/wallet",
+    proto = ":wallet_proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//tulipsolutions/api/common:orders_go_proto",
+        "@com_envoyproxy_protoc_gen_validate//validate:go_default_library",
+    ],
+)
+
+java_proto_library(
+    name = "message_authentication_jvm_proto",
+    visibility = ["//visibility:public"],
+    deps = [":message_authentication_proto"],
+)
+
+java_proto_library(
+    name = "order_jvm_proto",
+    visibility = ["//visibility:public"],
+    deps = [":order_proto"],
+)
+
+java_grpc_library(
+    name = "order_jvm_grpc",
+    srcs = [":order_proto"],
+    visibility = ["//visibility:public"],
+    deps = [":order_jvm_proto"],
+)
+
+java_proto_library(
+    name = "trade_jvm_proto",
+    visibility = ["//visibility:public"],
+    deps = [":trade_proto"],
+)
+
+java_grpc_library(
+    name = "trade_jvm_grpc",
+    srcs = [":trade_proto"],
+    visibility = ["//visibility:public"],
+    deps = [":trade_jvm_proto"],
+)
+
+java_proto_library(
+    name = "wallet_jvm_proto",
+    visibility = ["//visibility:public"],
+    deps = [":wallet_proto"],
+)
+
+java_grpc_library(
+    name = "wallet_jvm_grpc",
+    srcs = [":wallet_proto"],
+    visibility = ["//visibility:public"],
+    deps = [":wallet_jvm_proto"],
+)
+
+py_proto_library(
+    name = "message_authentication_py_proto_library",
+    visibility = ["//visibility:public"],
+    deps = [":message_authentication_proto"],
+)
+
+py_proto_library(
+    name = "order_py_proto_library",
+    visibility = ["//visibility:public"],
+    deps = [":order_proto"],
+)
+
+py_grpc_library(
+    name = "order_py_grpc_library",
+    srcs = [":order_proto"],
+    visibility = ["//visibility:public"],
+)
+
+py_proto_library(
+    name = "trade_py_proto_library",
+    visibility = ["//visibility:public"],
+    deps = [":trade_proto"],
+)
+
+py_grpc_library(
+    name = "trade_py_grpc_library",
+    srcs = [":trade_proto"],
+    visibility = ["//visibility:public"],
+)
+
+py_proto_library(
+    name = "wallet_py_proto_library",
+    visibility = ["//visibility:public"],
+    deps = [":wallet_proto"],
+)
+
+py_grpc_library(
+    name = "wallet_py_grpc_library",
+    srcs = [":wallet_proto"],
+    visibility = ["//visibility:public"],
+)
+
+rst_proto(
+    name = "message_authentication_rst_proto",
+    visibility = ["//visibility:public"],
+    deps = [":message_authentication_proto"],
+)
+
+rst_proto(
+    name = "order_rst_proto",
+    visibility = ["//visibility:public"],
+    deps = [":order_proto"],
+)
+
+rst_proto(
+    name = "trade_rst_proto",
+    visibility = ["//visibility:public"],
+    deps = [":trade_proto"],
+)
+
+rst_proto(
+    name = "wallet_rst_proto",
+    visibility = ["//visibility:public"],
+    deps = [":wallet_proto"],
+)
+
+node_proto_compile(
+    name = "message_authentication_js_proto_compile",
+    visibility = ["//visibility:public"],
+    deps = [":message_authentication_proto"],
+)
+
+node_proto_compile(
+    name = "order_js_proto_compile",
+    visibility = ["//visibility:public"],
+    deps = [":order_proto"],
+)
+
+node_grpc_compile(
+    name = "order_js_grpc_node_compile",
+    visibility = ["//visibility:public"],
+    deps = [":order_proto"],
+)
+
+commonjs_grpc_compile(
+    name = "order_js_grpc_web_compile",
+    plugin_options = [
+        "import_style=commonjs",
+        "mode=grpcwebtext",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [":order_proto"],
+)
+
+node_proto_compile(
+    name = "trade_js_proto_compile",
+    visibility = ["//visibility:public"],
+    deps = [":trade_proto"],
+)
+
+node_grpc_compile(
+    name = "trade_js_grpc_node_compile",
+    visibility = ["//visibility:public"],
+    deps = [":trade_proto"],
+)
+
+commonjs_grpc_compile(
+    name = "trade_js_grpc_web_compile",
+    plugin_options = [
+        "import_style=commonjs",
+        "mode=grpcwebtext",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [":trade_proto"],
+)
+
+node_proto_compile(
+    name = "wallet_js_proto_compile",
+    visibility = ["//visibility:public"],
+    deps = [":wallet_proto"],
+)
+
+node_grpc_compile(
+    name = "wallet_js_grpc_node_compile",
+    visibility = ["//visibility:public"],
+    deps = [":wallet_proto"],
+)
+
+commonjs_grpc_compile(
+    name = "wallet_js_grpc_web_compile",
+    plugin_options = [
+        "import_style=commonjs",
+        "mode=grpcwebtext",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [":wallet_proto"],
+)
