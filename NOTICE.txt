@@ -1,4 +1,4 @@
-Copyright 2019 Tulipsolutions B.V.
+Copyright 2019 Tulip Solutions B.V.
 
 Licensed under Apache License 2.0. See LICENSE.txt for terms.
 

@@ -6,7 +6,7 @@ set -o pipefail
 ADDLICENSE_SHORT_PATH=@@ADDLICENSE_SHORT_PATH@@
 MODE=@@MODE@@
 ADDLICENSE_WORKTREE_DIR=addlicense-worktree
-COPYRIGHT_OWNER="Tulipsolutions B.V."
+COPYRIGHT_OWNER="Tulip Solutions B.V."
 LICENSE_TYPE="apache"
 COPYRIGHT_YEAR="2019"
 

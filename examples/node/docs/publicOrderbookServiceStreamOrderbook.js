@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Tulipsolutions B.V.
+ * Copyright 2019 Tulip Solutions B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
