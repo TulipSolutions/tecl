@@ -1,0 +1,32 @@
+workspace(name = "nl_tulipsolutions_tecl_examples_python")
+
+local_repository(
+    name = "nl_tulipsolutions_tecl",
+    path = "../..",
+)
+
+load("@nl_tulipsolutions_tecl//bazel:repositories.bzl", nl_tulipsolutions_tecl_repositories = "repositories")
+
+nl_tulipsolutions_tecl_repositories()
+
+load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
+
+grpc_deps()
+
+load("@io_bazel_rules_python//python:pip.bzl", "pip_import", "pip_repositories")
+
+pip_repositories()
+
+pip_import(
+    name = "grpc_python_dependencies",
+    requirements = "@nl_tulipsolutions_tecl//python:requirements.txt",
+)
+
+load("@grpc_python_dependencies//:requirements.bzl", grpc_python_pip_install = "pip_install")
+
+grpc_python_pip_install()
+
+# Required because of the go_proto_library targets in the referenced proto build files
+load("@io_bazel_rules_go//go:deps.bzl", "go_rules_dependencies")
+
+go_rules_dependencies()

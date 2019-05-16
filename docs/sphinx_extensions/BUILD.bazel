@@ -1,0 +1,9 @@
+py_library(
+    name = "sphinx_extensions",
+    srcs = glob(["**/*.py"]),
+    data = glob([
+        "**/*.css",
+        "**/*.js",
+    ]),
+    visibility = ["//docs:__pkg__"],
+)

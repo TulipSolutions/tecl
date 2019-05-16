@@ -1,0 +1,96 @@
+// Copyright 2019 Tulipsolutions B.V.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// [#protodoc-title: OHLC]
+
+syntax = "proto3";
+package tulipsolutions.api.pub;
+
+option java_multiple_files = true;
+option java_package = "nl.tulipsolutions.api.pub";
+option go_package = "github.com/tulipsolutions/tecl/tulipsolutions/api/pub/ohlc";
+
+import "validate/validate.proto";
+import "tulipsolutions/api/common/orders.proto";
+import "tulipsolutions/api/common/options.proto";
+
+// Request OHLC data points on a single market. It will return all available data points for the selected interval.
+// Only 500 historic OHLC data points are stored per interval, if more historic data points are required select a larger
+// interval.
+// If no ``Interval`` is provided, it will return data points for all intervals.
+message GetOhlcRequest {
+    common.Market market = 1 [(validate.rules).enum = { not_in: [ 0 ], defined_only: true }];
+    // Selection of intervals for which to receive :protobuf:message:`tulipsolutions.api.pub.OhlcBin`.
+    repeated Interval intervals = 2 [
+        (validate.rules).repeated .unique = true,
+        (validate.rules).repeated .items.enum = { not_in: [ 0 ], defined_only: true }
+    ];
+    // Maximum number of OHLC data points returned. Defaults to 500.
+    uint32 limit = 3 [(validate.rules).uint32 = { gte: 0, lte: 500 }, (common.default_limit) = 500];
+}
+
+// Stream OHLC data points on a single market.
+// ``initial_depth`` historic datapoints will be streamed first, after which it will continue streaming updates.
+// Only 500 historic OHLC data points are stored per interval, if more historic data points are required select a larger
+// interval.
+// If no ``Interval`` is provided, it will return data points for all intervals.
+message StreamOhlcRequest {
+    common.Market market = 1 [(validate.rules).enum = { not_in: [ 0 ], defined_only: true }];
+    // Selection of intervals for which to receive :protobuf:message:`tulipsolutions.api.pub.OhlcBin`.
+    repeated Interval intervals = 2 [
+        (validate.rules).repeated .unique = true,
+        (validate.rules).repeated .items.enum = { not_in: [ 0 ], defined_only: true }
+    ];
+    // Number of historic OHLC data points streamed. Defaults to 0.
+    uint32 initial_depth = 3 [(validate.rules).uint32 = { gte: 0, lte: 500 }];
+}
+
+message GetOhlcResponse {
+    repeated OhlcBin bins = 1;
+}
+
+message OhlcBin {
+    Interval interval = 1;
+    fixed64 timestamp_ns = 2;
+    double open = 3;
+    double high = 4;
+    double low = 5;
+    double close = 6;
+    double volume_base = 7;
+    double volume_quote = 8;
+    uint32 number_of_trades = 9;
+}
+
+enum Interval {
+    INVALID_INTERVAL = 0;
+    // [#example-value-ok:]
+    ONE_SECOND = 1;
+    // [#example-value-ok:]
+    ONE_MINUTE = 2;
+    // [#example-value-ok:]
+    FIVE_MINUTES = 3;
+    FIFTEEN_MINUTES = 4;
+    ONE_HOUR = 5;
+    FOUR_HOURS = 6;
+    TWELVE_HOURS = 7;
+    ONE_DAY = 8;
+    THREE_DAYS = 9;
+    ONE_WEEK = 10;
+    ONE_MONTH = 11;
+}
+
+service PublicOhlcService {
+    rpc GetOhlcData(GetOhlcRequest) returns (GetOhlcResponse);
+    rpc StreamOhlcData(StreamOhlcRequest) returns (stream OhlcBin);
+}

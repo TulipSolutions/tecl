@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+set -e
+set -o pipefail
+
+CLANG_FORMAT_PATH=@@CLANG_FORMAT_PATH@@
+MODE=@@MODE@@
+
+function check_file_clang_format() {
+  # diff will exit with status code 1 if a change was made by clang-format
+  # along with the unified diff on stdout by default - how nice. :-)
+  # However, because we are in a Bash function, we don't exit immediately with
+  # the "set -e" option, but return to the loop where this is called.
+  ${CLANG_FORMAT_PATH} "${1}" | diff -u --color "${1}" -
+}
+
+function format_file_clang_format() {
+  ${CLANG_FORMAT_PATH} -style=file -i "${1}"
+}
+
+cd "$BUILD_WORKSPACE_DIRECTORY"
+
+PROTO_FILES=( $(find . -type f @@EXCLUDE_PATTERNS@@ \( -name '*.proto' \)) )
+
+files_with_style_errors=()
+
+for protofile in ${PROTO_FILES[@]}; do
+    if [[ "$MODE" == "format" ]]; then
+        format_file_clang_format "${protofile}"
+    else
+        if ! check_file_clang_format "${protofile}"; then
+            files_with_style_errors+=("${protofile}")
+        fi
+    fi
+done
+
+
+if [[ "${#files_with_style_errors[@]}" -ne 0 ]]; then
+  exit 2
+fi

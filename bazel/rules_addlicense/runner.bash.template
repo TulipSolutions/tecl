@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+
+set -e
+set -o pipefail
+
+ADDLICENSE_SHORT_PATH=@@ADDLICENSE_SHORT_PATH@@
+MODE=@@MODE@@
+ADDLICENSE_WORKTREE_DIR=addlicense-worktree
+COPYRIGHT_OWNER="Tulipsolutions B.V."
+LICENSE_TYPE="apache"
+COPYRIGHT_YEAR="2019"
+
+trap clean SIGINT SIGTERM EXIT
+function clean() {
+    # "git worktree remove" doesn't have an option to remove and return status
+    # 0 if already absent.
+    if git worktree list --porcelain | grep -q "/${ADDLICENSE_WORKTREE_DIR}\$" ; then
+        git worktree remove -f "${ADDLICENSE_WORKTREE_DIR}"
+    fi
+}
+
+clean
+
+addlicense_short_path=$(readlink "$ADDLICENSE_SHORT_PATH")
+
+cd "$BUILD_WORKSPACE_DIRECTORY"
+
+if [ "$MODE" == "format" ]
+then
+
+    files_to_format=( $(find -type f @@EXCLUDE_PATTERNS@@ ) )
+
+    "$addlicense_short_path" -c "$COPYRIGHT_OWNER" -l "$LICENSE_TYPE" -y "$COPYRIGHT_YEAR" "${files_to_format[@]}"
+
+    echo
+    echo "Finished adding license headers..."
+fi
+
+if [ "$MODE" == "check" ]
+then
+
+    if [ ! -z "$(git --no-pager diff HEAD)" ]
+    then
+        echo -e "\033[33mWarning: you have uncommitted changes, formatting for these files will not be checked\033[0m"
+    fi
+
+    git worktree add -f "$ADDLICENSE_WORKTREE_DIR" HEAD 1>/dev/null
+    cd "$ADDLICENSE_WORKTREE_DIR"
+    rm -f WORKSPACE # Remove workspace to prevent bazel from re-fetching dependencies
+
+    files_to_format=( $(find -type f @@EXCLUDE_PATTERNS@@ ) )
+
+    "$addlicense_short_path" -c "$COPYRIGHT_OWNER" -l "$LICENSE_TYPE" -y "$COPYRIGHT_YEAR" "${files_to_format[@]}"
+    diff=$(git --no-pager diff "${files_to_format[@]}")
+
+    if [ ! -z "$diff" ]
+    then
+        echo
+        git --no-pager diff "${files_to_format[@]}"
+        echo
+        echo "Found formatting violations, see diff above"
+        exit 1
+    else
+        echo
+        echo "Found no formatting violations"
+    fi
+fi

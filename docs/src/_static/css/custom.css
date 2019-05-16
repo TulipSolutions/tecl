@@ -1,0 +1,95 @@
+/**
+ * Copyright 2019 Tulipsolutions B.V.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+.wy-nav-content {
+    max-width: 800px;
+}
+
+div.wy-side-nav-search {
+    background-color: #fc5400;
+}
+
+div.wy-side-nav-search a.icon img {
+    /* to make logo white */
+    filter: invert(1);
+}
+
+div.wy-side-nav-search > div.version {
+    color: white;
+}
+
+.wy-menu-vertical p.caption {
+    border-bottom: 1px solid #666;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Notes, Hints and Tips should indicate a friendly 'i' circle icon, not an exclamation mark. */
+div.admonition.note p.admonition-title::before,
+div.admonition.hint p.admonition-title::before,
+div.admonition.seealso p.admonition-title::before,
+div.admonition.tip p.admonition-title::before {
+    content: "";
+}
+
+/* Display external links with a globe icon, without breaking the line height as sphinx-rtd-theme does. This would
+   otherwise cause variation in lines for protobuf message fields where the field type can be a WKT, linked to the
+   external Google Protobuf documentation. */
+.rst-content.style-external-links a.reference.external::after {
+    content: "";
+}
+.rst-content.style-external-links a.reference.external:not(.viewcode-link)::before {
+    font-family: FontAwesome;
+    content: "";
+    color: rgb(179, 179, 179);
+    margin: 0px 0.2em;
+}
+
+/* Display source link on the right of the object description header, as a single icon. */
+.rst-content.style-external-links a.reference.viewcode-link::after {
+    font-family: FontAwesome;
+    content: "";
+    font-size: 100%;
+    margin: 0px 0.2em;
+}
+dl.protobuf dt a.viewcode-link span {
+    display: none;
+}
+
+dl.protobuf dt a.viewcode-link {
+    float: right;
+    visibility: visible !important;
+}
+
+.rst-content div.code-example.sidebar {
+   float: none;
+   width: auto;
+   margin: 0 0 1em 24px;
+}
+
+@media(min-width: 1820px) {
+   div.section {
+      position: relative;
+   }
+
+   div.content-tabs.code-example-responsive {
+       left: 750px;
+       position: absolute;
+       width: 700px;
+       top: 0;
+       margin: 0;
+   }
+}

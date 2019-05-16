@@ -1,0 +1,36 @@
+filegroup(
+    name = "srcs",
+    srcs = glob(["*"]),
+    visibility = ["//docs:__pkg__"],
+)
+
+java_binary(
+    name = "docs",
+    srcs = glob(["*.java"]),
+    main_class = "docs.Main",
+    deps = [
+        "@io_grpc_grpc_java//core",
+        "@io_grpc_grpc_java//netty",
+        "@io_grpc_grpc_java//stub",
+        "@io_netty_netty_tcnative_boringssl_static//jar",
+        "@nl_tulipsolutions_tecl//java/nl/tulipsolutions/api",
+        "@nl_tulipsolutions_tecl//java/nl/tulipsolutions/api/auth",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/common:orders_jvm_proto",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/priv:order_jvm_grpc",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/priv:order_jvm_proto",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/priv:trade_jvm_grpc",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/priv:trade_jvm_proto",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/priv:wallet_jvm_grpc",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/priv:wallet_jvm_proto",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/pub:market_detail_jvm_grpc",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/pub:market_detail_jvm_proto",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/pub:ohlc_jvm_grpc",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/pub:ohlc_jvm_proto",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/pub:orderbook_jvm_grpc",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/pub:orderbook_jvm_proto",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/pub:ticker_jvm_grpc",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/pub:ticker_jvm_proto",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/pub:trade_jvm_grpc",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/pub:trade_jvm_proto",
+    ],
+)

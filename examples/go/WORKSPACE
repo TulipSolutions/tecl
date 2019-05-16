@@ -1,0 +1,16 @@
+workspace(name = "nl_tulipsolutions_tecl_examples_go")
+
+local_repository(
+    name = "nl_tulipsolutions_tecl",
+    path = "../..",
+)
+
+load("@nl_tulipsolutions_tecl//bazel:repositories.bzl", nl_tulipsolutions_tecl_repositories = "repositories")
+
+nl_tulipsolutions_tecl_repositories()
+
+load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
+
+go_rules_dependencies()
+
+go_register_toolchains()

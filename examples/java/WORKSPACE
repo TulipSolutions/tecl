@@ -1,0 +1,21 @@
+workspace(name = "nl_tulipsolutions_tecl_examples_java")
+
+local_repository(
+    name = "nl_tulipsolutions_tecl",
+    path = "../..",
+)
+
+load("@nl_tulipsolutions_tecl//bazel:repositories.bzl", nl_tulipsolutions_tecl_repositories = "repositories")
+
+nl_tulipsolutions_tecl_repositories()
+
+load("@io_grpc_grpc_java//:repositories.bzl", "grpc_java_repositories")
+
+grpc_java_repositories(
+    omit_com_google_protobuf = True,
+)
+
+# Required because of the go_proto_library targets in the referenced proto build files
+load("@io_bazel_rules_go//go:deps.bzl", "go_rules_dependencies")
+
+go_rules_dependencies()

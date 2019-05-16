@@ -1,0 +1,13 @@
+Copyright 2019 Tulipsolutions B.V.
+
+Licensed under Apache License 2.0. See LICENSE.txt for terms.
+
+-----------------------------------------------------------------------
+
+This product contains a portion of 'protoc-gen-validate', an open source
+protoc plugin to generate polyglot message validators, which is available under
+Apache License 2.0.
+
+  * HOMEPAGE: https://github.com/envoyproxy/protoc-gen-validate
+  * LICENSE: third_party/protoc-gen-validate/LICENSE
+  * NOTICE: third_party/protoc-gen-validate/NOTICE

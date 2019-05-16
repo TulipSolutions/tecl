@@ -1,0 +1,55 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+filegroup(
+    name = "srcs",
+    srcs = glob(["*"]),
+    visibility = ["//docs:__pkg__"],
+)
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "main.go",
+        "private_active_orders_service_get_active_orders.go",
+        "private_active_orders_service_stream_active_orders.go",
+        "private_order_service_cancel_order.go",
+        "private_order_service_create_order.go",
+        "private_trade_service_get_trades.go",
+        "private_trade_service_stream_trades.go",
+        "private_wallet_service_get_balance.go",
+        "private_wallet_service_stream_balance.go",
+        "public_market_detail_service_get_market_details.go",
+        "public_market_detail_service_stream_market_details.go",
+        "public_ohlc_service_get_ohlc_data.go",
+        "public_ohlc_service_stream_ohlc_data.go",
+        "public_orderbook_service_get_orderbook.go",
+        "public_orderbook_service_stream_orderbook.go",
+        "public_ticker_service_get_tickers.go",
+        "public_ticker_service_stream_tickers.go",
+        "public_trade_service_get_trades.go",
+        "public_trade_service_stream_trades.go",
+    ],
+    importpath = "github.com/tulipsolutions/tecl/examples/go/docs",
+    visibility = ["//visibility:public"],
+    # keep
+    deps = [
+        "@nl_tulipsolutions_tecl//go/auth:go_default_library",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/common:orders_go_proto",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/priv:order_go_proto",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/priv:trade_go_proto",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/priv:wallet_go_proto",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/pub:market_detail_go_proto",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/pub:ohlc_go_proto",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/pub:orderbook_go_proto",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/pub:ticker_go_proto",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/pub:trade_go_proto",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//credentials:go_default_library",
+    ],
+)
+
+go_binary(
+    name = "docs",
+    embed = [":go_default_library"],
+    visibility = ["//visibility:public"],
+)

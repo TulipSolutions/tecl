@@ -1,0 +1,35 @@
+load("//bazel/rules_sphinx:def.bzl", "sphinx_docs")
+
+sphinx_docs(
+    name = "docs",
+    srcs = [
+        "//docs/src",
+        "//tulipsolutions/api/common:errors_rst_proto",
+        "//tulipsolutions/api/common:orders_rst_proto",
+        "//tulipsolutions/api/priv:message_authentication_rst_proto",
+        "//tulipsolutions/api/priv:order_rst_proto",
+        "//tulipsolutions/api/priv:trade_rst_proto",
+        "//tulipsolutions/api/priv:wallet_rst_proto",
+        "//tulipsolutions/api/pub:market_detail_rst_proto",
+        "//tulipsolutions/api/pub:ohlc_rst_proto",
+        "//tulipsolutions/api/pub:orderbook_rst_proto",
+        "//tulipsolutions/api/pub:ticker_rst_proto",
+        "//tulipsolutions/api/pub:trade_rst_proto",
+    ],
+    conf = "sphinxconf/conf.py",
+    extensions = ["//docs/sphinx_extensions"],
+    includes = [
+        "//examples/go:workspace",
+        "//examples/go/docs:srcs",
+        "//examples/go/hello_exchange:srcs",
+        "//examples/java:workspace",
+        "//examples/java/docs:srcs",
+        "//examples/java/hello_exchange:srcs",
+        "//examples/node/docs:srcs",
+        "//examples/node/hello_exchange:srcs",
+        "//examples/python:workspace",
+        "//examples/python/docs:srcs",
+        "//examples/python/hello_exchange:srcs",
+    ],
+    visibility = ["//visibility:public"],
+)

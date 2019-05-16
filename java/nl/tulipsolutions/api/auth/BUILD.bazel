@@ -1,0 +1,11 @@
+java_library(
+    name = "auth",
+    srcs = glob(["*.java"]),
+    visibility = ["//visibility:public"],
+    deps = [
+        "//java/nl/tulipsolutions/api",
+        "//tulipsolutions/api/priv:message_authentication_jvm_proto",
+        "@com_google_protobuf//:protobuf_java",
+        "@io_grpc_grpc_java//core",
+    ],
+)

@@ -1,0 +1,8 @@
+java_library(
+    name = "api",
+    srcs = ["Constant.java"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@io_grpc_grpc_java//core",
+    ],
+)

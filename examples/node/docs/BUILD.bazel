@@ -1,0 +1,17 @@
+load("@build_bazel_rules_nodejs//:defs.bzl", "nodejs_binary")
+
+filegroup(
+    name = "srcs",
+    srcs = glob(["*"]),
+    visibility = ["//docs:__pkg__"],
+)
+
+nodejs_binary(
+    name = "docs",
+    data = [
+        ":srcs",
+        "@npm//@tulipsolutions/tecl",
+    ],
+    # node examples cannot contain a workspace file because of this path
+    entry_point = "nl_tulipsolutions_tecl/examples/node/docs/index.js",
+)

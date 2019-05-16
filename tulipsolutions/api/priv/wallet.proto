@@ -1,0 +1,56 @@
+// Copyright 2019 Tulipsolutions B.V.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// [#protodoc-title: Wallet]
+
+syntax = "proto3";
+package tulipsolutions.api.priv;
+
+option java_multiple_files = true;
+option java_package = "nl.tulipsolutions.api.priv";
+option go_package = "github.com/tulipsolutions/tecl/tulipsolutions/api/priv/wallet";
+
+import "validate/validate.proto";
+import "tulipsolutions/api/common/orders.proto";
+
+message GetBalanceRequest {
+    // Only return balances for currencies given. If empty, returns balance for all currencies.
+    repeated common.Currency currencies = 1 [
+        (validate.rules).repeated .unique = true,
+        (validate.rules).repeated .items.enum = { not_in: [ 0 ], defined_only: true }
+    ];
+}
+
+message StreamBalanceRequest {
+    // Only return balances for currencies given. If empty, returns balance for all currencies.
+    repeated common.Currency currencies = 1 [
+        (validate.rules).repeated .unique = true,
+        (validate.rules).repeated .items.enum = { not_in: [ 0 ], defined_only: true }
+    ];
+}
+
+message BalanceResponse {
+    common.Currency currency = 1;
+    double total_amount = 2;
+    double locked_amount = 3;
+}
+
+message BalanceSnapshot {
+    repeated BalanceResponse balance_response = 1;
+}
+
+service PrivateWalletService {
+    rpc GetBalance(GetBalanceRequest) returns (BalanceSnapshot);
+    rpc StreamBalance(StreamBalanceRequest) returns (stream BalanceResponse);
+}

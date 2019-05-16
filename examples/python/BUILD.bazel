@@ -1,0 +1,7 @@
+load("@nl_tulipsolutions_tecl//bazel/rules_sphinx:doc_workspace.bzl", "doc_workspace")
+
+doc_workspace(
+    name = "workspace",
+    visibility = ["//docs:__pkg__"],
+    workspace = "WORKSPACE",
+)

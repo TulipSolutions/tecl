@@ -1,0 +1,9 @@
+filegroup(
+    name = "src",
+    srcs = glob([
+        "**/*.rst",
+        "_static/**",
+        "_templates/**",
+    ]),
+    visibility = ["//docs:__subpackages__"],
+)

@@ -1,0 +1,145 @@
+load("@docs_deps//:requirements.bzl", "requirement")
+
+# Borrowed from Rules Go, licensed under Apache 2.
+# https://github.com/bazelbuild/rules_go/blob/67f44035d84a352cffb9465159e199066ecb814c/proto/compiler.bzl#L72
+def _rel_path_from_workspace_root(file):
+    path = file.path
+    root = file.root.path
+    ws = file.owner.workspace_root
+    if path.startswith(root):
+        path = path[len(root):]
+    if path.startswith("/"):
+        path = path[1:]
+    if path.startswith(ws):
+        path = path[len(ws):]
+    if path.startswith("/"):
+        path = path[1:]
+    return path
+
+def _sphinx_docs_impl(ctx):
+    sphinx_input = []
+
+    for include in ctx.files.includes:
+        copied_file = ctx.actions.declare_file("sphinx_input/" + _rel_path_from_workspace_root(include))
+        ctx.actions.run(
+            outputs = [copied_file],
+            inputs = [include],
+            executable = "cp",
+            arguments = [include.path, copied_file.path],
+            progress_message = "Copying include %s to %s in sphinx input directory" % (include.path, copied_file.path),
+            mnemonic = "CopyInclude",
+        )
+        sphinx_input.append(copied_file)
+
+    for src in ctx.files.srcs:
+        if src.is_source:
+            # rst_path becomes the rel path from the build file
+            rst_path = src.path.split(src.owner.package)[-1].strip("/")
+            copied_file = ctx.actions.declare_file("sphinx_input/" + rst_path)
+            ctx.actions.run(
+                outputs = [copied_file],
+                inputs = [src],
+                executable = "cp",
+                arguments = [src.path, copied_file.path],
+                progress_message = "Copying src %s to %s in sphinx input directory" % (src.path, copied_file.path),
+                mnemonic = "CopySrc",
+            )
+            sphinx_input.append(copied_file)
+
+        else:
+            # rst_path becomes protodoc/FQDN
+            rst_path = src.path.split(src.owner.name)[-1].strip("/")
+            copied_file = ctx.actions.declare_file("sphinx_input/protodoc/" + rst_path)
+            ctx.actions.run(
+                outputs = [copied_file],
+                inputs = [src],
+                executable = "cp",
+                arguments = ["-r", src.path, copied_file.path],
+                progress_message = "Copying generated %s to %s in sphinx input directory" % (src.path, copied_file.path),
+                mnemonic = "CopyGenSrc",
+            )
+            sphinx_input.append(copied_file)
+
+    sphinx_src_dir_path = sphinx_input[0].path.split("sphinx_input/")[0] + "sphinx_input/"
+
+    sphinx_output_dir = ctx.actions.declare_directory("html")
+    ctx.actions.run(
+        inputs = sphinx_input + [ctx.file.conf, ctx.info_file],
+        outputs = [sphinx_output_dir],
+        executable = ctx.executable.sphinx_main,
+        arguments = [
+            ctx.info_file.path,
+            "-c",  # Alternative configuration directory, to not have a conf.py file along with content sources.
+            ctx.file.conf.dirname,
+            "-q",  # Only warnings and errors are written to standard error.
+            "-E",  # Rebuild completely always, don't bother saving states for incremental builds.
+            "-n",  # Fail (abort) on missing references.
+            "-W",  # Turn warning into errors ...
+            "--keep-going",  # ..., but don't stop at the first error to list all errors.
+            "-b",  # builder mode ('html')
+            "html",
+            # "-vv",  # Uncomment this to enable debug information output
+            sphinx_src_dir_path,
+            sphinx_output_dir.path,
+        ],
+        progress_message = "Building documentation",
+        mnemonic = "SphinxDoc",
+    )
+
+    return [DefaultInfo(files = depset([sphinx_output_dir]))]
+
+_sphinx_docs = rule(
+    attrs = {
+        "srcs": attr.label_list(
+            mandatory = True,
+        ),
+        "includes": attr.label_list(
+            allow_files = True,
+        ),
+        "conf": attr.label(
+            mandatory = True,
+            allow_single_file = True,
+        ),
+        "sphinx_main": attr.label(
+            executable = True,
+            cfg = "host",
+        ),
+    },
+    implementation = _sphinx_docs_impl,
+)
+
+def sphinx_docs(name, extensions, **kwargs):
+    sphinx_main_name = name + "_sphinx_main"
+    native.py_binary(
+        name = sphinx_main_name,
+        srcs = ["//bazel/rules_sphinx:sphinx_main.py"],
+        visibility = ["//visibility:public"],
+        main = "sphinx_main.py",
+        python_version = "PY2",
+        # This is a list of all packages in the ./requirements.txt file, without the version pinned.
+        deps = [
+            requirement("Sphinx"),
+            requirement("sphinx-rtd-theme"),
+            requirement("alabaster"),
+            requirement("Babel"),
+            requirement("certifi"),
+            requirement("chardet"),
+            requirement("docutils"),
+            requirement("idna"),
+            requirement("imagesize"),
+            requirement("Jinja2"),
+            requirement("MarkupSafe"),
+            requirement("packaging"),
+            requirement("Pygments"),
+            requirement("pyparsing"),
+            requirement("pytz"),
+            requirement("requests"),
+            requirement("setuptools"),
+            requirement("six"),
+            requirement("snowballstemmer"),
+            requirement("sphinxcontrib-websupport"),
+            requirement("typing"),
+            requirement("urllib3"),
+        ] + extensions,
+    )
+    _sphinx_docs(name = name, sphinx_main = sphinx_main_name, **kwargs)

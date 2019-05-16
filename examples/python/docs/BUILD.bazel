@@ -1,0 +1,21 @@
+load("@grpc_python_dependencies//:requirements.bzl", "requirement")
+
+filegroup(
+    name = "srcs",
+    srcs = glob(["*"]),
+    visibility = ["//docs:__pkg__"],
+)
+
+py_binary(
+    name = "docs",
+    srcs = glob(["*.py"]),
+    python_version = "PY2",
+    deps = [
+        requirement("enum34"),
+        requirement("protobuf"),
+        requirement("six"),
+        requirement("grpcio"),
+        requirement("futures"),
+        "@nl_tulipsolutions_tecl//python",
+    ],
+)

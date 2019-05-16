@@ -1,0 +1,99 @@
+// Copyright 2019 Tulipsolutions B.V.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// [#protodoc-title: Public orderbook]
+
+syntax = "proto3";
+package tulipsolutions.api.pub;
+
+option java_multiple_files = true;
+option java_package = "nl.tulipsolutions.api.pub";
+option go_package = "github.com/tulipsolutions/tecl/tulipsolutions/api/pub/orderbook";
+
+import "validate/validate.proto";
+import "tulipsolutions/api/common/orders.proto";
+import "tulipsolutions/api/common/options.proto";
+
+// The precision on an orderbook determines the width of the price level (quote currency, per market) to aggregate order
+// amounts. The higher the precision, the more granular price levels are in the response. Note that ``P0`` means the
+// lowest precision and ``P3`` the highest. The actual number of bins returned is controlled by the
+// :protobuf:enum:`tulipsolutions.api.pub.Length`.
+enum Precision {
+    INVALID_PRECISION = 0;
+    // Per-10 units on BTC_EUR, BTC_USD
+    P0 = 1 [(common.num_decimals_btc_eur) = -1, (common.num_decimals_btc_usd) = -1];
+    // [#example-value-ok:]
+    // Whole units on BTC_EUR, BTC_USD
+    P1 = 2 [(common.num_decimals_btc_eur) = 0, (common.num_decimals_btc_usd) = 0];
+    // [#example-value-ok:]
+    // One decimal on BTC_EUR, BTC_USD
+    P2 = 3 [(common.num_decimals_btc_eur) = 1, (common.num_decimals_btc_usd) = 1];
+    // [#example-value-ok:]
+    // Two decimals on BTC_EUR, BTC_USD
+    P3 = 4 [(common.num_decimals_btc_eur) = 2, (common.num_decimals_btc_usd) = 2];
+}
+
+enum Frequency {
+    INVALID_FREQUENCY = 0;
+    // [#example-value-ok:]
+    // Suppress output for one second; receive updates every second.
+    SECONDS_1 = 1 [(common.millis) = 1000];
+    // [#example-value-ok:]
+    // Do not suppress output; receive updates immediately.
+    BEST_EFFORT = 2 [(common.millis) = 0];
+}
+
+// This determines the number of :protobuf:message:`tulipsolutions.api.pub.OrderbookEntry` returned around each side of
+// the *midprice*. Together with the :protobuf:enum:`tulipsolutions.api.pub.Length`, this allows to control the distance
+// from this *midprice*.
+enum Length {
+    INVALID_LENGTH = 0;
+    // [#example-value-ok:]
+    // 25 entries
+    NUM_ENTRIES_25 = 1 [(common.num_entries) = 25];
+    // [#example-value-ok:]
+    // 100 entries
+    NUM_ENTRIES_100 = 2 [(common.num_entries) = 100];
+}
+
+message StreamOrderbookRequest {
+    common.Market market = 1 [(validate.rules).enum = { not_in: [ 0 ], defined_only: true }];
+    Precision precision = 2 [(validate.rules).enum = { not_in: [ 0 ], defined_only: true }];
+    Length length = 3 [(validate.rules).enum = { not_in: [ 0 ], defined_only: true }];
+    Frequency frequency = 4 [(validate.rules).enum = { not_in: [ 0 ], defined_only: true }];
+}
+
+message GetOrderbookRequest {
+    common.Market market = 1 [(validate.rules).enum = { not_in: [ 0 ], defined_only: true }];
+    Precision precision = 2 [(validate.rules).enum = { not_in: [ 0 ], defined_only: true }];
+    Length length = 3 [(validate.rules).enum = { not_in: [ 0 ], defined_only: true }];
+}
+
+message OrderbookEntry {
+    double price_level = 1;
+    common.Side side = 2;
+    // Number of orders aggregated at given price level.
+    int32 orders_at_price_level = 3;
+    // Total amount of orders aggregated at given price level.
+    double amount = 4;
+}
+
+message OrderbookEntries {
+    repeated OrderbookEntry entry = 1;
+}
+
+service PublicOrderbookService {
+    rpc GetOrderbook(GetOrderbookRequest) returns (OrderbookEntries);
+    rpc StreamOrderbook(StreamOrderbookRequest) returns (stream OrderbookEntry);
+}

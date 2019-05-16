@@ -1,0 +1,22 @@
+# These build rules extend Gazelle, they are extremely basic and only work for this repository.
+
+load("@bazel_gazelle//:def.bzl", "gazelle_binary")
+
+DEFAULT_LANGUAGES = [
+    "@bazel_gazelle//language/proto:go_default_library",
+    "@bazel_gazelle//language/go:go_default_library",
+    "//bazel/gazelle/language/java:go_default_library",
+    "//bazel/gazelle/language/py:go_default_library",
+    "//bazel/gazelle/language/rst:go_default_library",
+    "//bazel/gazelle/language/stackb_rules_proto:go_default_library",
+]
+
+gazelle_binary(
+    name = "gazelle",
+    languages = DEFAULT_LANGUAGES,
+    msan = "off",
+    pure = "off",
+    race = "off",
+    static = "off",
+    visibility = ["//visibility:public"],
+)

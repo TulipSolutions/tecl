@@ -1,0 +1,29 @@
+filegroup(
+    name = "srcs",
+    srcs = glob(["*"]),
+    visibility = ["//docs:__pkg__"],
+)
+
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = ["main.go"],
+    importpath = "github.com/tulipsolutions/tecl/examples/go/hello_exchange",
+    visibility = ["//visibility:private"],
+    # keep
+    deps = [
+        "@nl_tulipsolutions_tecl//go/auth:go_default_library",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/common:orders_go_proto",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/priv:order_go_proto",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/pub:orderbook_go_proto",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//credentials:go_default_library",
+    ],
+)
+
+go_binary(
+    name = "hello_exchange",
+    embed = [":go_default_library"],
+    visibility = ["//visibility:public"],
+)

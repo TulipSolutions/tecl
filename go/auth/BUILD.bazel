@@ -1,0 +1,17 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "jwt.go",
+        "message_authentication.go",
+    ],
+    importpath = "github.com/tulipsolutions/tecl/go/auth",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//tulipsolutions/api/priv:message_authentication_go_proto",
+        "//tulipsolutions/api/priv:order_go_proto",
+        "@com_github_golang_protobuf//proto:go_default_library",
+        "@org_golang_google_grpc//:go_default_library",
+    ],
+)

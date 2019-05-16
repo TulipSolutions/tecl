@@ -1,0 +1,70 @@
+// Copyright 2019 Tulipsolutions B.V.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// [#protodoc-title: Market Detail]
+
+syntax = "proto3";
+package tulipsolutions.api.pub;
+
+option java_multiple_files = true;
+option java_package = "nl.tulipsolutions.api.pub";
+option go_package = "github.com/tulipsolutions/tecl/tulipsolutions/api/pub/market_detail";
+
+import "validate/validate.proto";
+import "tulipsolutions/api/common/orders.proto";
+
+message GetMarketDetailsRequest {
+    repeated common.Market markets = 1 [
+        (validate.rules).repeated .unique = true,
+        (validate.rules).repeated .items.enum = { not_in: [ 0 ], defined_only: true }
+    ];
+}
+
+message StreamMarketDetailsRequest {
+    repeated common.Market markets = 1 [
+        (validate.rules).repeated .unique = true,
+        (validate.rules).repeated .items.enum = { not_in: [ 0 ], defined_only: true }
+    ];
+}
+
+enum MarketStatus {
+    // [#example-value-ok:]
+    OPEN = 0;
+    // [#example-value-ok:]
+    CLOSED = 1;
+    // [#example-value-ok:]
+    REMOVED = 2;
+}
+
+message MarketDetail {
+    common.Market market = 1;
+    MarketStatus market_status = 2;
+    // Smallest possible value that a price can be incremented with
+    double price_resolution = 3;
+    // Smallest possible value that an amount can be incremented with
+    double amount_resolution = 4;
+    double minimum_order_amount = 5;
+    double maximum_order_amount = 6;
+    common.Currency base = 7;
+    common.Currency quote = 8;
+}
+
+message MarketDetails {
+    repeated MarketDetail market_details = 1;
+}
+
+service PublicMarketDetailService {
+    rpc GetMarketDetails(GetMarketDetailsRequest) returns (MarketDetails);
+    rpc StreamMarketDetails(StreamMarketDetailsRequest) returns (stream MarketDetail);
+}
