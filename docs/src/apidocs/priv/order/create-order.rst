@@ -16,7 +16,7 @@ Create order
       :sidebar:
 
       .. literalinclude:: /examples/go/docs/private_order_service_create_order.go
-         :lines: 38-52
+         :lines: 28-52
          :language: go
          :dedent: 1
 
