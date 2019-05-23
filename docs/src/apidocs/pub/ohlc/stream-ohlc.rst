@@ -13,31 +13,23 @@ Stream Ohlc
    .. tab-container:: Go
       :sidebar:
 
-      .. literalinclude:: /examples/go/docs/public_ohlc_service_stream_ohlc_data.go
-         :lines: 28-57
-         :language: go
-         :dedent: 1
+      .. codeinclude:: /examples/go/docs/public_ohlc_service_stream_ohlc_data.go
+         :marker-id: ref-code-example
 
    .. tab-container:: Java
       :sidebar:
 
-      .. literalinclude:: /examples/java/docs/PublicOhlcServiceStreamOhlcData.java
-         :lines: 30-57
-         :dedent: 8
-         :language: java
+      .. codeinclude:: /examples/java/docs/PublicOhlcServiceStreamOhlcData.java
+         :marker-id: ref-code-example
 
    .. tab-container:: Node
       :sidebar:
 
-      .. literalinclude:: /examples/node/docs/publicOhlcServiceStreamOhlcData.js
-         :lines: 22-39
-         :language: js
-         :dedent: 2
+      .. codeinclude:: /examples/node/docs/publicOhlcServiceStreamOhlcData.js
+         :marker-id: ref-code-example
 
    .. tab-container:: Python
       :sidebar:
 
-      .. literalinclude:: /examples/python/docs/public_ohlc_service_stream_ohlc_data.py
-         :lines: 25-38
-         :language: python
-         :dedent: 4
+      .. codeinclude:: /examples/python/docs/public_ohlc_service_stream_ohlc_data.py
+         :marker-id: ref-code-example

@@ -24,6 +24,7 @@ import (
 )
 
 func privateActiveOrdersServiceStreamActiveOrders(conn *grpc.ClientConn, parentContext context.Context) {
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example
 	client := order.NewPrivateActiveOrdersServiceClient(conn)
 
 	// Create a request for streaming all your active orders
@@ -51,4 +52,5 @@ func privateActiveOrdersServiceStreamActiveOrders(conn *grpc.ClientConn, parentC
 		}
 		fmt.Println(entry)
 	}
+	// CODEINCLUDE-END-MARKER: ref-code-example
 }

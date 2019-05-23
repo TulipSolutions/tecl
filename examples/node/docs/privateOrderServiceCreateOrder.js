@@ -19,8 +19,10 @@ var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
 var order_grpc = require("@tulipsolutions/tecl/priv/order_grpc_pb");
 
 function privateOrderServiceCreateOrder(host, credentials, options) {
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example
   var client = new order_grpc.PrivateOrderServiceClient(host, credentials);
 
+  // CODEINCLUDE-BEGIN-MARKER: authentication-request
   // Create a request for a new order with an orderId that is the nanos since unix epoch
   var orderId = Date.now() * 1000000;
   var limitOrderRequest = new order_pb.LimitOrderRequest();
@@ -31,6 +33,7 @@ function privateOrderServiceCreateOrder(host, credentials, options) {
   request.setMarket(orders_pb.Market.BTC_EUR);
   request.setTonce(orderId);
   request.setLimitOrder(limitOrderRequest);
+  // CODEINCLUDE-END-MARKER: authentication-request
 
   // Add a 1s deadline, and make the request asynchronously
   var deadline = new Date().setSeconds(new Date().getSeconds() + 1);
@@ -43,6 +46,7 @@ function privateOrderServiceCreateOrder(host, credentials, options) {
       console.log(response.toObject());
     }
   });
+  // CODEINCLUDE-END-MARKER: ref-code-example
 }
 
 module.exports = privateOrderServiceCreateOrder;

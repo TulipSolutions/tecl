@@ -13,31 +13,23 @@ Stream tickers
    .. tab-container:: Go
       :sidebar:
 
-      .. literalinclude:: /examples/go/docs/public_ticker_service_stream_tickers.go
-         :lines: 27-52
-         :language: go
-         :dedent: 1
+      .. codeinclude:: /examples/go/docs/public_ticker_service_stream_tickers.go
+         :marker-id: ref-code-example
 
    .. tab-container:: Java
       :sidebar:
 
-      .. literalinclude:: /examples/java/docs/PublicTickerServiceStreamTickers.java
-         :lines: 26-44
-         :dedent: 8
-         :language: java
+      .. codeinclude:: /examples/java/docs/PublicTickerServiceStreamTickers.java
+         :marker-id: ref-code-example
 
    .. tab-container:: Node
       :sidebar:
 
-      .. literalinclude:: /examples/node/docs/publicTickerServiceStreamTickers.js
-         :lines: 21-36
-         :language: js
-         :dedent: 2
+      .. codeinclude:: /examples/node/docs/publicTickerServiceStreamTickers.js
+         :marker-id: ref-code-example
 
    .. tab-container:: Python
       :sidebar:
 
-      .. literalinclude:: /examples/python/docs/public_ticker_service_stream_tickers.py
-         :lines: 25-35
-         :language: python
-         :dedent: 4
+      .. codeinclude:: /examples/python/docs/public_ticker_service_stream_tickers.py
+         :marker-id: ref-code-example

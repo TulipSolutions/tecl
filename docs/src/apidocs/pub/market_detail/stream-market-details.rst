@@ -15,31 +15,23 @@ Stream market details
    .. tab-container:: Go
       :sidebar:
 
-      .. literalinclude:: /examples/go/docs/public_market_detail_service_stream_market_details.go
-         :lines: 27-52
-         :language: go
-         :dedent: 1
+      .. codeinclude:: /examples/go/docs/public_market_detail_service_stream_market_details.go
+         :marker-id: ref-code-example
 
    .. tab-container:: Java
       :sidebar:
 
-      .. literalinclude:: /examples/java/docs/PublicMarketDetailServiceStreamMarketDetails.java
-         :lines: 26-44
-         :dedent: 8
-         :language: java
+      .. codeinclude:: /examples/java/docs/PublicMarketDetailServiceStreamMarketDetails.java
+         :marker-id: ref-code-example
 
    .. tab-container:: Node
       :sidebar:
 
-      .. literalinclude:: /examples/node/docs/publicMarketDetailServiceStreamMarketDetails.js
-         :lines: 21-36
-         :language: js
-         :dedent: 2
+      .. codeinclude:: /examples/node/docs/publicMarketDetailServiceStreamMarketDetails.js
+         :marker-id: ref-code-example
 
    .. tab-container:: Python
       :sidebar:
 
-      .. literalinclude:: /examples/python/docs/public_market_detail_service_stream_market_details.py
-         :lines: 25-35
-         :language: python
-         :dedent: 4
+      .. codeinclude:: /examples/python/docs/public_market_detail_service_stream_market_details.py
+         :marker-id: ref-code-example

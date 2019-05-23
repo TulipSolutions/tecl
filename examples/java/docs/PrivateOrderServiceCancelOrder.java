@@ -27,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 public class PrivateOrderServiceCancelOrder {
     public static void run(ManagedChannel channel) {
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example
         PrivateOrderServiceStub stub = PrivateOrderServiceGrpc.newStub(channel);
 
         // Create a request for an order cancellation with a tonce that is the nanos since unix epoch
@@ -52,5 +53,6 @@ public class PrivateOrderServiceCancelOrder {
                     System.out.println("PrivateOrderService.CancelOrder completed");
                 }
             });
+        // CODEINCLUDE-END-MARKER: ref-code-example
     }
 }

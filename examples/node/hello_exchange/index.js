@@ -24,13 +24,16 @@ var auth = require("@tulipsolutions/tecl/auth");
 
 // Subscribe to a public orderbook stream and set a new order
 
+// CODEINCLUDE-BEGIN-MARKER: getting-started-create-order-authentication
 // Create a secret byte array from the base64 decoded 'secret' string
 var secret = Buffer.from("secret==", "base64");
 var dummyJwt = "eyJraWQiOiI2YzY4OTIzMi03YTcxLTQ3NGItYjBlMi1lMmI1MzMyNDQzOWUiLCJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIxMjM0In0.IL9QJQl55qn3oPsT7sFa7iwd5g1GsEQVr0IO7gCe1UmQdjT7jCIc-pUfjyYUgptPR8HBQl5ncXuBnxwjdXqOMwW1WhPmi_B3BRHQh3Sfu0zNXqKhkuz2-6DffXK1ek3DmK1NpaSikXtg2ruSQ4Uk5xHcnxmXY_SwEij0yot_JRKYEs-0RbyD5Z4jOFKcsbEW46WQmiWdgG3PUKiJT5TfdFd55JM55BwzSOdPIP1S_3dQ4VTDo30mWqAs1KaVbcPqCQmjT1PL0QScTp4w8-YPDcajcafIj98ve9LUoLBLraCIAX34D-hOxu643h9DoG2kIPFfZyXbkDTiUKOl7t-Ykg";
 
+// CODEINCLUDE-BEGIN-MARKER: getting-started-orderbook-service-init
 var host = "mockgrpc.test.tulipsolutions.nl:443";
 var credentials = grpc.credentials.createSsl();
 
+// CODEINCLUDE-END-MARKER: getting-started-orderbook-service-init
 var options = {
   interceptors: [
     // Add an interceptor that signs messages with the provided secret.
@@ -42,9 +45,13 @@ var options = {
 };
 
 // Construct clients for accessing PublicOrderbookService and PrivateOrderService
+// CODEINCLUDE-BEGIN-MARKER: getting-started-orderbook-service-init
 var orderbookServiceClient = new orderbook_grpc.PublicOrderbookServiceClient(host, credentials);
+// CODEINCLUDE-END-MARKER: getting-started-orderbook-service-init
 var orderServiceClient = new order_grpc.PrivateOrderServiceClient(host, credentials);
+// CODEINCLUDE-END-MARKER: getting-started-create-order-authentication
 
+// CODEINCLUDE-BEGIN-MARKER: getting-started-orderbook-service-request
 // Create a request for the BTC_EUR orderbook, with the greatest precision, largest length,
 // and highest update frequency
 var streamOrderbookRequest = new orderbook_pb.StreamOrderbookRequest();
@@ -64,7 +71,9 @@ streamOrderbookCall.on("error", function (err) {
 streamOrderbookCall.on("end", function () {
   console.log("PublicOrderbookService.StreamOrderbook completed");
 });
+// CODEINCLUDE-END-MARKER: getting-started-orderbook-service-request
 
+// CODEINCLUDE-BEGIN-MARKER: getting-started-create-order-request
 // Create a request for a new order with an orderId that is the nanos since unix epoch
 var orderId = Date.now() * 1000000;
 var limitOrderRequest = new order_pb.LimitOrderRequest();

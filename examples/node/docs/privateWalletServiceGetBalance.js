@@ -18,6 +18,7 @@ var wallet_pb = require("@tulipsolutions/tecl/priv/wallet_pb");
 var wallet_grpc = require("@tulipsolutions/tecl/priv/wallet_grpc_pb");
 
 function privateWalletServiceGetBalance(host, credentials, options) {
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example
   var client = new wallet_grpc.PrivateWalletServiceClient(host, credentials);
 
   // Create a request for your balances for all currencies
@@ -34,6 +35,7 @@ function privateWalletServiceGetBalance(host, credentials, options) {
       console.log(response.toObject());
     }
   });
+  // CODEINCLUDE-END-MARKER: ref-code-example
 }
 
 module.exports = privateWalletServiceGetBalance;

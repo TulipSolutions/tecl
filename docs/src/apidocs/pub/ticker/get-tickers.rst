@@ -15,31 +15,23 @@ Get tickers
    .. tab-container:: Go
       :sidebar:
 
-      .. literalinclude:: /examples/go/docs/public_ticker_service_get_tickers.go
-         :lines: 27-40
-         :language: go
-         :dedent: 1
+      .. codeinclude:: /examples/go/docs/public_ticker_service_get_tickers.go
+         :marker-id: ref-code-example
 
    .. tab-container:: Java
       :sidebar:
 
-      .. literalinclude:: /examples/java/docs/PublicTickerServiceGetTickers.java
-         :lines: 28-47
-         :dedent: 8
-         :language: java
+      .. codeinclude:: /examples/java/docs/PublicTickerServiceGetTickers.java
+         :marker-id: ref-code-example
 
    .. tab-container:: Node
       :sidebar:
 
-      .. literalinclude:: /examples/node/docs/publicTickerServiceGetTickers.js
-         :lines: 21-36
-         :language: js
-         :dedent: 2
+      .. codeinclude:: /examples/node/docs/publicTickerServiceGetTickers.js
+         :marker-id: ref-code-example
 
    .. tab-container:: Python
       :sidebar:
 
-      .. literalinclude:: /examples/python/docs/public_ticker_service_get_tickers.py
-         :lines: 25-35
-         :language: python
-         :dedent: 4
+      .. codeinclude:: /examples/python/docs/public_ticker_service_get_tickers.py
+         :marker-id: ref-code-example

@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 public class PrivateWalletServiceGetBalance {
     public static void run(ManagedChannel channel) {
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example
         PrivateWalletServiceStub stub = PrivateWalletServiceGrpc.newStub(channel);
 
         // Create a request for your balances for all currencies
@@ -45,5 +46,6 @@ public class PrivateWalletServiceGetBalance {
                     System.out.println("PrivateWalletService.GetBalance completed");
                 }
             });
+        // CODEINCLUDE-END-MARKER: ref-code-example
     }
 }

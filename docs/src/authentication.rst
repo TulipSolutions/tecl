@@ -40,10 +40,8 @@ Token contents
 
 All of our API examples include the following dummy JWT token.
 
-.. literalinclude:: /examples/go/hello_exchange/main.go
-    :lines: 105
-    :dedent: 1
-    :language: go
+.. codeinclude:: /examples/go/hello_exchange/main.go
+    :marker-id: dummy-jwt-token-line
 
 This consists of two ``.`` delimited base64 encoded JSON structs and the signature bytes.
 By decoding the string at https://jwt.io/ we obtain the following algorithm and token type:
@@ -123,31 +121,23 @@ Note that in this implementation, the user may only send one message every milli
 
     .. tab-container:: Go
 
-        .. literalinclude:: /examples/go/docs/private_order_service_create_order.go
-            :language: go
-            :lines: 30-42
-            :dedent: 1
+        .. codeinclude:: /examples/go/docs/private_order_service_create_order.go
+            :marker-id: authentication-request
 
     .. tab-container:: Java
 
-        .. literalinclude:: /examples/java/docs/PrivateOrderServiceCreateOrder.java
-            :language: java
-            :lines: 34-45
-            :dedent: 8
+        .. codeinclude:: /examples/java/docs/PrivateOrderServiceCreateOrder.java
+            :marker-id: authentication-request
 
     .. tab-container:: Node
 
-        .. literalinclude:: /examples/node/docs/privateOrderServiceCreateOrder.js
-            :language: js
-            :lines: 24-33
-            :dedent: 2
+        .. codeinclude:: /examples/node/docs/privateOrderServiceCreateOrder.js
+            :marker-id: authentication-request
 
     .. tab-container:: Python
 
-        .. literalinclude:: /examples/python/docs/private_order_service_create_order.py
-            :language: python
-            :lines: 30-40
-            :dedent: 4
+        .. codeinclude:: /examples/python/docs/private_order_service_create_order.py
+            :marker-id: authentication-request
 
 After calling the rpc stub with the created request, the proto message passes through the message
 authentication interceptor.

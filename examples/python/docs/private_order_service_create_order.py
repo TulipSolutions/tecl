@@ -25,8 +25,10 @@ from tulipsolutions.api.priv import order_pb2, order_pb2_grpc
 
 
 def private_order_service_create_order(channel):
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example
     stub = order_pb2_grpc.PrivateOrderServiceStub(channel)
 
+    # CODEINCLUDE-BEGIN-MARKER: authentication-request
     # Create a request for a new order with an orderId that is the nanos since unix epoch
     order_id = round(time.time() * 1E9)
     request = order_pb2.CreateOrderRequest(
@@ -38,6 +40,7 @@ def private_order_service_create_order(channel):
         ),
         tonce=order_id,
     )
+    # CODEINCLUDE-END-MARKER: authentication-request
 
     try:
         # Make the request synchronously with a 1s deadline
@@ -45,3 +48,4 @@ def private_order_service_create_order(channel):
         print(response)
     except grpc.RpcError as e:
         print("PrivateOrderService.CreateOrder error: " + str(e), file=sys.stderr)
+    # CODEINCLUDE-END-MARKER: ref-code-example

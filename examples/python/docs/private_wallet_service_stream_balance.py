@@ -22,6 +22,7 @@ from tulipsolutions.api.priv import wallet_pb2, wallet_pb2_grpc
 
 
 def private_wallet_service_stream_balance(channel):
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example
     stub = wallet_pb2_grpc.PrivateWalletServiceStub(channel)
 
     # Create a request for streaming your balances for all currencies
@@ -33,3 +34,4 @@ def private_wallet_service_stream_balance(channel):
             print(response)
     except grpc.RpcError as e:
         print("PrivateWalletService.StreamBalance error: " + str(e), file=sys.stderr)
+    # CODEINCLUDE-END-MARKER: ref-code-example

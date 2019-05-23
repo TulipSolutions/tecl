@@ -17,31 +17,23 @@ Get active orders
    .. tab-container:: Go
       :sidebar:
 
-      .. literalinclude:: /examples/go/docs/private_active_orders_service_get_active_orders.go
-         :lines: 27-41
-         :language: go
-         :dedent: 1
+      .. codeinclude:: /examples/go/docs/private_active_orders_service_get_active_orders.go
+         :marker-id: ref-code-example
 
    .. tab-container:: Java
       :sidebar:
 
-      .. literalinclude:: /examples/java/docs/PrivateActiveOrdersServiceGetActiveOrders.java
-         :lines: 28-48
-         :dedent: 8
-         :language: java
+      .. codeinclude:: /examples/java/docs/PrivateActiveOrdersServiceGetActiveOrders.java
+         :marker-id: ref-code-example
 
    .. tab-container:: Node
       :sidebar:
 
-      .. literalinclude:: /examples/node/docs/privateActiveOrdersServiceGetActiveOrders.js
-         :lines: 21-37
-         :language: js
-         :dedent: 2
+      .. codeinclude:: /examples/node/docs/privateActiveOrdersServiceGetActiveOrders.js
+         :marker-id: ref-code-example
 
    .. tab-container:: Python
       :sidebar:
 
-      .. literalinclude:: /examples/python/docs/private_active_orders_service_get_active_orders.py
-         :lines: 25-36
-         :language: python
-         :dedent: 4
+      .. codeinclude:: /examples/python/docs/private_active_orders_service_get_active_orders.py
+         :marker-id: ref-code-example

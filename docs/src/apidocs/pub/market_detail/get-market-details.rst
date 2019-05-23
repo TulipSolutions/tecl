@@ -17,31 +17,23 @@ Get market details
    .. tab-container:: Go
       :sidebar:
 
-      .. literalinclude:: /examples/go/docs/public_market_detail_service_get_market_details.go
-         :lines: 27-40
-         :language: go
-         :dedent: 1
+      .. codeinclude:: /examples/go/docs/public_market_detail_service_get_market_details.go
+         :marker-id: ref-code-example
 
    .. tab-container:: Java
       :sidebar:
 
-      .. literalinclude:: /examples/java/docs/PublicMarketDetailServiceGetMarketDetails.java
-         :lines: 28-47
-         :dedent: 8
-         :language: java
+      .. codeinclude:: /examples/java/docs/PublicMarketDetailServiceGetMarketDetails.java
+         :marker-id: ref-code-example
 
    .. tab-container:: Node
       :sidebar:
 
-      .. literalinclude:: /examples/node/docs/publicMarketDetailServiceGetMarketDetails.js
-         :lines: 21-36
-         :language: js
-         :dedent: 2
+      .. codeinclude:: /examples/node/docs/publicMarketDetailServiceGetMarketDetails.js
+         :marker-id: ref-code-example
 
    .. tab-container:: Python
       :sidebar:
 
-      .. literalinclude:: /examples/python/docs/public_market_detail_service_get_market_details.py
-         :lines: 25-35
-         :language: python
-         :dedent: 4
+      .. codeinclude:: /examples/python/docs/public_market_detail_service_get_market_details.py
+         :marker-id: ref-code-example

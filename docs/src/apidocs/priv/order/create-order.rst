@@ -15,31 +15,23 @@ Create order
    .. tab-container:: Go
       :sidebar:
 
-      .. literalinclude:: /examples/go/docs/private_order_service_create_order.go
-         :lines: 28-52
-         :language: go
-         :dedent: 1
+      .. codeinclude:: /examples/go/docs/private_order_service_create_order.go
+         :marker-id: ref-code-example
 
    .. tab-container:: Java
       :sidebar:
 
-      .. literalinclude:: /examples/java/docs/PrivateOrderServiceCreateOrder.java
-         :lines: 32-61
-         :dedent: 8
-         :language: java
+      .. codeinclude:: /examples/java/docs/PrivateOrderServiceCreateOrder.java
+         :marker-id: ref-code-example
 
    .. tab-container:: Node
       :sidebar:
 
-      .. literalinclude:: /examples/node/docs/privateOrderServiceCreateOrder.js
-         :lines: 22-45
-         :language: js
-         :dedent: 2
+      .. codeinclude:: /examples/node/docs/privateOrderServiceCreateOrder.js
+         :marker-id: ref-code-example
 
    .. tab-container:: Python
       :sidebar:
 
-      .. literalinclude:: /examples/python/docs/private_order_service_create_order.py
-         :lines: 28-47
-         :language: python
-         :dedent: 4
+      .. codeinclude:: /examples/python/docs/private_order_service_create_order.py
+         :marker-id: ref-code-example

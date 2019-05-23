@@ -29,6 +29,7 @@ from tulipsolutions.api.pub import orderbook_pb2
 from tulipsolutions.api.pub import orderbook_pb2_grpc
 
 
+# CODEINCLUDE-BEGIN-MARKER: getting-started-orderbook-service-request
 def stream_orderbook(public_orderbook_service_stub):
     # Create a request for the BTC_EUR orderbook, with the greatest precision, largest length,
     # and highest update frequency
@@ -45,8 +46,10 @@ def stream_orderbook(public_orderbook_service_stub):
             print("Received message %s" % response)
     except grpc.RpcError as e:
         print("PublicOrderbookServie.StreamOrderbook error: " + str(e))
+# CODEINCLUDE-END-MARKER: getting-started-orderbook-service-request
 
 
+# CODEINCLUDE-BEGIN-MARKER: getting-started-create-order-request
 def create_order(private_order_service_stub):
     # Create a request for a new order with an orderId that is the nanos since unix epoch
     order_id = round(time.time() * 1E9)
@@ -66,13 +69,17 @@ def create_order(private_order_service_stub):
         print(response)
     except grpc.RpcError as e:
         print("PrivateOrderService.CreateOrder error: " + str(e))
+# CODEINCLUDE-END-MARKER: getting-started-create-order-request
 
 
 # Subscribe to a public orderbook stream and set a new order
+# CODEINCLUDE-BEGIN-MARKER: getting-started-create-order-authentication
+# CODEINCLUDE-BEGIN-MARKER: getting-started-orderbook-service-init
 if __name__ == '__main__':
     creds = grpc.ssl_channel_credentials()
 
     with grpc.secure_channel('mockgrpc.test.tulipsolutions.nl:443', creds) as channel:
+        # CODEINCLUDE-END-MARKER: getting-started-orderbook-service-init
         # Create a SHA256 HMAC with the base64 decoded 'secret' string as its key
         dummy_secret = base64.standard_b64decode("secret==")
         dummy_jwt = "eyJraWQiOiI2YzY4OTIzMi03YTcxLTQ3NGItYjBlMi1lMmI1MzMyNDQzOWUiLCJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIxMjM0In0.IL9QJQl55qn3oPsT7sFa7iwd5g1GsEQVr0IO7gCe1UmQdjT7jCIc-pUfjyYUgptPR8HBQl5ncXuBnxwjdXqOMwW1WhPmi_B3BRHQh3Sfu0zNXqKhkuz2-6DffXK1ek3DmK1NpaSikXtg2ruSQ4Uk5xHcnxmXY_SwEij0yot_JRKYEs-0RbyD5Z4jOFKcsbEW46WQmiWdgG3PUKiJT5TfdFd55JM55BwzSOdPIP1S_3dQ4VTDo30mWqAs1KaVbcPqCQmjT1PL0QScTp4w8-YPDcajcafIj98ve9LUoLBLraCIAX34D-hOxu643h9DoG2kIPFfZyXbkDTiUKOl7t-Ykg"
@@ -87,9 +94,13 @@ if __name__ == '__main__':
 
         # Construct clients for accessing PublicOrderbookService and PrivateOrderService using the existing connection.
         # Add a deadline to all requests to the PrivateOrderService
+        # CODEINCLUDE-BEGIN-MARKER: getting-started-orderbook-service-init
         public_orderbook_service_stub = orderbook_pb2_grpc.PublicOrderbookServiceStub(channel)
+        # CODEINCLUDE-END-MARKER: getting-started-orderbook-service-init
         private_order_service_stub = order_pb2_grpc.PrivateOrderServiceStub(channel)
+        # CODEINCLUDE-BEGIN-MARKER: getting-started-orderbook-service-init
 
         with ThreadPoolExecutor(max_workers=2) as executor:
             executor.submit(stream_orderbook, public_orderbook_service_stub),
+            # CODEINCLUDE-END-MARKER: getting-started-orderbook-service-init
             executor.submit(create_order, private_order_service_stub),

@@ -32,10 +32,13 @@ import (
 	"time"
 )
 
+// CODEINCLUDE-BEGIN-MARKER: getting-started-orderbook-service-init
 const (
 	address = "mockgrpc.test.tulipsolutions.nl:443"
 )
+// CODEINCLUDE-END-MARKER: getting-started-orderbook-service-init
 
+// CODEINCLUDE-BEGIN-MARKER: getting-started-orderbook-service-request
 func streamOrderbook(client orderbook.PublicOrderbookServiceClient, parentContext context.Context) {
 	// Create a request for the BTC_EUR orderbook, with the greatest precision, largest length,
 	// and highest update frequency
@@ -67,7 +70,9 @@ func streamOrderbook(client orderbook.PublicOrderbookServiceClient, parentContex
 		log.Println(entry)
 	}
 }
+// CODEINCLUDE-END-MARKER: getting-started-orderbook-service-request
 
+// CODEINCLUDE-BEGIN-MARKER: getting-started-create-order-request
 func createOrder(client order.PrivateOrderServiceClient, parentContext context.Context) {
 	// Create a request for a new order with an orderId that is the nanos since unix epoch
 	orderId := uint64(time.Now().UnixNano())
@@ -92,9 +97,13 @@ func createOrder(client order.PrivateOrderServiceClient, parentContext context.C
 	}
 	log.Println(response)
 }
+// CODEINCLUDE-END-MARKER: getting-started-create-order-request
 
+// CODEINCLUDE-BEGIN-MARKER: getting-started-create-order-authentication
 // Subscribe to a public orderbook stream and set a new order
+// CODEINCLUDE-BEGIN-MARKER: getting-started-orderbook-service-init
 func main() {
+// CODEINCLUDE-END-MARKER: getting-started-orderbook-service-init
 	// Create a SHA256 HMAC with the base64 decoded 'secret' string as its key
 	secret, err := base64.StdEncoding.DecodeString("secret==")
 	if err != nil {
@@ -102,9 +111,13 @@ func main() {
 		return
 	}
 	hmacSha256 := hmac.New(sha256.New, secret)
+	// CODEINCLUDE-BEGIN-MARKER: dummy-jwt-token-line
 	dummyJwt := "eyJraWQiOiI2YzY4OTIzMi03YTcxLTQ3NGItYjBlMi1lMmI1MzMyNDQzOWUiLCJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIxMjM0In0.IL9QJQl55qn3oPsT7sFa7iwd5g1GsEQVr0IO7gCe1UmQdjT7jCIc-pUfjyYUgptPR8HBQl5ncXuBnxwjdXqOMwW1WhPmi_B3BRHQh3Sfu0zNXqKhkuz2-6DffXK1ek3DmK1NpaSikXtg2ruSQ4Uk5xHcnxmXY_SwEij0yot_JRKYEs-0RbyD5Z4jOFKcsbEW46WQmiWdgG3PUKiJT5TfdFd55JM55BwzSOdPIP1S_3dQ4VTDo30mWqAs1KaVbcPqCQmjT1PL0QScTp4w8-YPDcajcafIj98ve9LUoLBLraCIAX34D-hOxu643h9DoG2kIPFfZyXbkDTiUKOl7t-Ykg"
+	// CODEINCLUDE-END-MARKER: dummy-jwt-token-line
+	// CODEINCLUDE-BEGIN-MARKER: getting-started-orderbook-service-init
 
 	opts := []grpc.DialOption{
+	// CODEINCLUDE-END-MARKER: getting-started-orderbook-service-init
 		// Add an interceptor that signs messages with the provided secret.
 		// Only messages to the private API that have a 'signed' field will be signed.
 		grpc.WithUnaryInterceptor(auth.CreateMessageAuthInterceptor(hmacSha256)),
@@ -112,6 +125,7 @@ func main() {
 		grpc.WithPerRPCCredentials(auth.TulipAuth{
 			Token: dummyJwt,
 		}),
+		// CODEINCLUDE-BEGIN-MARKER: getting-started-orderbook-service-init
 		grpc.WithTransportCredentials(credentials.NewTLS(&tls.Config{})),
 	}
 
@@ -122,17 +136,26 @@ func main() {
 	}
 	defer conn.Close()
 
+	// CODEINCLUDE-END-MARKER: getting-started-orderbook-service-init
 	// Construct clients for accessing PublicOrderbookService and PrivateOrderService using the existing connection.
+	// CODEINCLUDE-BEGIN-MARKER: getting-started-orderbook-service-init
 	orderbookServiceClient := orderbook.NewPublicOrderbookServiceClient(conn)
+	// CODEINCLUDE-END-MARKER: getting-started-orderbook-service-init
 	orderServiceClient := order.NewPrivateOrderServiceClient(conn)
+	// CODEINCLUDE-BEGIN-MARKER: getting-started-orderbook-service-init
 
 	// Create a parent context that can be used in the requests
 	mainContext := context.Background()
 
+	// CODEINCLUDE-END-MARKER: getting-started-orderbook-service-init
 	// Stream the orderbook and create an order in go routines
+	// CODEINCLUDE-BEGIN-MARKER: getting-started-orderbook-service-init
 	go streamOrderbook(orderbookServiceClient, mainContext)
+	// CODEINCLUDE-END-MARKER: getting-started-orderbook-service-init
 	go createOrder(orderServiceClient, mainContext)
+	// CODEINCLUDE-BEGIN-MARKER: getting-started-orderbook-service-init
 
 	// Wait until cancel
 	fmt.Scanln()
 }
+// CODEINCLUDE-END-MARKER: getting-started-create-order-authentication

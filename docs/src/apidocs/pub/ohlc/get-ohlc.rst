@@ -15,31 +15,23 @@ Get OHLC
    .. tab-container:: Go
       :sidebar:
 
-      .. literalinclude:: /examples/go/docs/public_ohlc_service_get_ohlc_data.go
-         :lines: 28-44
-         :language: go
-         :dedent: 1
+      .. codeinclude:: /examples/go/docs/public_ohlc_service_get_ohlc_data.go
+         :marker-id: ref-code-example
 
    .. tab-container:: Java
       :sidebar:
 
-      .. literalinclude:: /examples/java/docs/PublicOhlcServiceGetOhlcData.java
-         :lines: 33-61
-         :dedent: 8
-         :language: java
+      .. codeinclude:: /examples/java/docs/PublicOhlcServiceGetOhlcData.java
+         :marker-id: ref-code-example
 
    .. tab-container:: Node
       :sidebar:
 
-      .. literalinclude:: /examples/node/docs/publicOhlcServiceGetOhlcData.js
-         :lines: 22-39
-         :language: js
-         :dedent: 2
+      .. codeinclude:: /examples/node/docs/publicOhlcServiceGetOhlcData.js
+         :marker-id: ref-code-example
 
    .. tab-container:: Python
       :sidebar:
 
-      .. literalinclude:: /examples/python/docs/public_ohlc_service_get_ohlc_data.py
-         :lines: 24-37
-         :language: python
-         :dedent: 4
+      .. codeinclude:: /examples/python/docs/public_ohlc_service_get_ohlc_data.py
+         :marker-id: ref-code-example

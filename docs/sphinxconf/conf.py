@@ -48,6 +48,7 @@ needs_sphinx = '1.8'
 # Add custom ones in //docs/sphinx_extensions/<pkg>/<module>.py and list it here
 # as 'docs.sphinx_extensions.<pkg>.<module>'.
 extensions = [
+    'docs.sphinx_extensions.codeinclude.codeinclude',
     'docs.sphinx_extensions.contentui.contentui',
     'docs.sphinx_extensions.protobufdomain.protobufdomain',
 ]

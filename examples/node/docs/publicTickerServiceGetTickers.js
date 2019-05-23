@@ -18,6 +18,7 @@ var ticker_pb = require("@tulipsolutions/tecl/pub/ticker_pb");
 var ticker_grpc = require("@tulipsolutions/tecl/pub/ticker_grpc_pb");
 
 function publicTickerServiceGetTickers(host, credentials, options) {
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example
   var client = new ticker_grpc.PublicTickerServiceClient(host, credentials);
 
   // Create a request for the tickers for all markets
@@ -34,6 +35,7 @@ function publicTickerServiceGetTickers(host, credentials, options) {
       console.log(response.toObject());
     }
   });
+  // CODEINCLUDE-END-MARKER: ref-code-example
 }
 
 module.exports = publicTickerServiceGetTickers;

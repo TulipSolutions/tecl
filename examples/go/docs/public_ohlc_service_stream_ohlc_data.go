@@ -25,6 +25,7 @@ import (
 )
 
 func publicOhlcServiceStreamOhlcData(conn *grpc.ClientConn, parentContext context.Context) {
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example
 	client := ohlc.NewPublicOhlcServiceClient(conn)
 
 	 // Create a request for streaming ohlcBins for the specified market and intervals.
@@ -55,4 +56,5 @@ func publicOhlcServiceStreamOhlcData(conn *grpc.ClientConn, parentContext contex
 		}
 		fmt.Println(candle)
 	}
+	// CODEINCLUDE-END-MARKER: ref-code-example
 }

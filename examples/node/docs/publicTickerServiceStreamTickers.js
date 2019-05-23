@@ -18,6 +18,7 @@ var ticker_pb = require("@tulipsolutions/tecl/pub/ticker_pb");
 var ticker_grpc = require("@tulipsolutions/tecl/pub/ticker_grpc_pb");
 
 function publicTickerServiceStreamTickers(host, credentials, options) {
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example
   var client = new ticker_grpc.PublicTickerServiceClient(host, credentials);
 
   // Create a request for streaming the tickers for all markets
@@ -34,6 +35,7 @@ function publicTickerServiceStreamTickers(host, credentials, options) {
   call.on("end", function () {
     console.log("PublicTickerService.StreamTickers completed");
   });
+  // CODEINCLUDE-END-MARKER: ref-code-example
 }
 
 module.exports = publicTickerServiceStreamTickers;

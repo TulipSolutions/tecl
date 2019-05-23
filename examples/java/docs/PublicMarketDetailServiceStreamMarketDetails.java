@@ -23,6 +23,7 @@ import nl.tulipsolutions.api.pub.PublicMarketDetailServiceGrpc.PublicMarketDetai
 
 public class PublicMarketDetailServiceStreamMarketDetails {
     public static void run(ManagedChannel channel) {
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example
         PublicMarketDetailServiceStub stub = PublicMarketDetailServiceGrpc.newStub(channel);
 
         // Create a request for streaming the details for all markets
@@ -42,5 +43,6 @@ public class PublicMarketDetailServiceStreamMarketDetails {
                 System.out.println("PublicMarketDetailService.StreamMarketDetails completed");
             }
         });
+        // CODEINCLUDE-END-MARKER: ref-code-example
     }
 }

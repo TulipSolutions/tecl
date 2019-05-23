@@ -33,9 +33,8 @@ implemented.
         The snippet also creates a new client side stub and runs a to-be-created function :code:`createOrder` in a
         goroutine.
 
-        .. literalinclude:: /examples/go/hello_exchange/main.go
-            :lines: 95-
-            :language: go
+        .. codeinclude:: /examples/go/hello_exchange/main.go
+            :marker-id: getting-started-create-order-authentication
 
     .. tab-container:: Java
 
@@ -44,10 +43,8 @@ implemented.
         Note that the mac provided to the interceptor must be an HMAC-SHA256.
         The snippet also creates a new client side stub and runs a to-be-created function :code:`createOrder`.
 
-        .. literalinclude:: /examples/java/hello_exchange/HelloExchange.java
-            :lines: 112-149
-            :dedent: 4
-            :language: java
+        .. codeinclude:: /examples/java/hello_exchange/HelloExchange.java
+            :marker-id: getting-started-create-order-authentication
 
     .. tab-container:: Node
 
@@ -55,9 +52,8 @@ implemented.
         authentication.
         The snippet also creates a new client side stub.
 
-        .. literalinclude:: /examples/node/hello_exchange/index.js
-            :lines: 27-47
-            :language: js
+        .. codeinclude:: /examples/node/hello_exchange/index.js
+            :marker-id: getting-started-create-order-authentication
 
     .. tab-container:: Python
 
@@ -66,9 +62,8 @@ implemented.
         The snippet also creates a new client side stub and runs a to-be-created function :code:`create_order` in
         a separate thread.
 
-        .. literalinclude:: /examples/python/hello_exchange/hello_exchange.py
-            :lines: 72-
-            :language: python
+        .. codeinclude:: /examples/python/hello_exchange/hello_exchange.py
+            :marker-id: getting-started-create-order-authentication
 
 
 Make a request for a new order
@@ -87,9 +82,8 @@ order ID with which the order can be cancelled.
 
     .. tab-container:: Go
 
-        .. literalinclude:: /examples/go/hello_exchange/main.go
-            :lines: 71-94
-            :language: go
+        .. codeinclude:: /examples/go/hello_exchange/main.go
+            :marker-id: getting-started-create-order-request
 
         Run the example with :code:`$ bazel run //examples/go/hello_exchange`
 
@@ -98,10 +92,8 @@ order ID with which the order can be cancelled.
 
     .. tab-container:: Java
 
-        .. literalinclude:: /examples/java/hello_exchange/HelloExchange.java
-            :lines: 78-110
-            :dedent: 4
-            :language: java
+        .. codeinclude:: /examples/java/hello_exchange/HelloExchange.java
+            :marker-id: getting-started-create-order-request
 
         Run the example with :code:`$ bazel run //examples/java/hello_exchange`
 
@@ -110,9 +102,8 @@ order ID with which the order can be cancelled.
 
     .. tab-container:: Node
 
-        .. literalinclude:: /examples/node/hello_exchange/index.js
-            :lines: 68-
-            :language: js
+        .. codeinclude:: /examples/node/hello_exchange/index.js
+            :marker-id: getting-started-create-order-request
 
         Run the example with :code:`$ bazel run //examples/node/hello_exchange`
 
@@ -121,9 +112,8 @@ order ID with which the order can be cancelled.
 
     .. tab-container:: Python
 
-        .. literalinclude:: /examples/python/hello_exchange/hello_exchange.py
-            :lines: 50-68
-            :language: python
+        .. codeinclude:: /examples/python/hello_exchange/hello_exchange.py
+            :marker-id: getting-started-create-order-request
 
         Run the example with :code:`$ bazel run //examples/python/hello_exchange`
 

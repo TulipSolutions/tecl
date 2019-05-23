@@ -25,8 +25,10 @@ import (
 )
 
 func privateOrderServiceCreateOrder(conn *grpc.ClientConn, parentContext context.Context) {
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example
 	client := order.NewPrivateOrderServiceClient(conn)
 
+	// CODEINCLUDE-BEGIN-MARKER: authentication-request
 	// Create a request for a new order with an orderId that is the nanos since unix epoch
 	orderId := uint64(time.Now().UnixNano())
 	request := order.CreateOrderRequest{
@@ -40,6 +42,7 @@ func privateOrderServiceCreateOrder(conn *grpc.ClientConn, parentContext context
 		},
 		Tonce: orderId,
 	}
+	// CODEINCLUDE-END-MARKER: authentication-request
 
 	// Create a new context with a 1s deadline and make the request synchronously
 	ctx, cancel := context.WithTimeout(parentContext, time.Second)
@@ -50,4 +53,5 @@ func privateOrderServiceCreateOrder(conn *grpc.ClientConn, parentContext context
 		return
 	}
 	fmt.Println(response)
+	// CODEINCLUDE-END-MARKER: ref-code-example
 }

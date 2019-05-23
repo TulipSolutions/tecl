@@ -13,31 +13,23 @@ Cancel order
    .. tab-container:: Go
       :sidebar:
 
-      .. literalinclude:: /examples/go/docs/private_order_service_cancel_order.go
-         :lines: 28-46
-         :language: go
-         :dedent: 1
+      .. codeinclude:: /examples/go/docs/private_order_service_cancel_order.go
+         :marker-id: ref-code-example
 
    .. tab-container:: Java
       :sidebar:
 
-      .. literalinclude:: /examples/java/docs/PrivateOrderServiceCancelOrder.java
-         :lines: 30-54
-         :dedent: 8
-         :language: java
+      .. codeinclude:: /examples/java/docs/PrivateOrderServiceCancelOrder.java
+         :marker-id: ref-code-example
 
    .. tab-container:: Node
       :sidebar:
 
-      .. literalinclude:: /examples/node/docs/privateOrderServiceCancelOrder.js
-         :lines: 22-41
-         :language: js
-         :dedent: 2
+      .. codeinclude:: /examples/node/docs/privateOrderServiceCancelOrder.js
+         :marker-id: ref-code-example
 
    .. tab-container:: Python
       :sidebar:
 
-      .. literalinclude:: /examples/python/docs/private_order_service_cancel_order.py
-         :lines: 28-43
-         :language: python
-         :dedent: 4
+      .. codeinclude:: /examples/python/docs/private_order_service_cancel_order.py
+         :marker-id: ref-code-example

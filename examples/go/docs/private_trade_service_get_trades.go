@@ -25,6 +25,7 @@ import (
 )
 
 func privateTradeServiceGetTrades(conn *grpc.ClientConn, parentContext context.Context) {
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example
 	client := trade.NewPrivateTradeServiceClient(conn)
 
 	// Create a request for your most recent trades in the BTC_EUR market
@@ -41,4 +42,5 @@ func privateTradeServiceGetTrades(conn *grpc.ClientConn, parentContext context.C
 		return
 	}
 	fmt.Println(response)
+	// CODEINCLUDE-END-MARKER: ref-code-example
 }

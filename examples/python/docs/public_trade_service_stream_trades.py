@@ -23,6 +23,7 @@ from tulipsolutions.api.pub import trade_pb2, trade_pb2_grpc
 
 
 def public_trade_service_stream_trades(channel):
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example
     stub = trade_pb2_grpc.PublicTradeServiceStub(channel)
 
     # Create a request for streaming all trades in the BTC_EUR market that occur after initiation of the request
@@ -36,3 +37,4 @@ def public_trade_service_stream_trades(channel):
             print(response)
     except grpc.RpcError as e:
         print("PublicTradeService.StreamTrades error: " + str(e), file=sys.stderr)
+    # CODEINCLUDE-END-MARKER: ref-code-example

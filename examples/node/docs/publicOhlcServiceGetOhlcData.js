@@ -19,6 +19,7 @@ var ohlc_grpc = require("@tulipsolutions/tecl/pub/ohlc_grpc_pb");
 var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
 
 function publicOhlcServiceGetOhlcData(host, credentials, options) {
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example
   var client = new ohlc_grpc.PublicOhlcServiceClient(host, credentials);
 
   // Create a request for the OhlcBins for specified market and intervals.
@@ -37,6 +38,7 @@ function publicOhlcServiceGetOhlcData(host, credentials, options) {
       console.log(response.toObject());
     }
   });
+  // CODEINCLUDE-END-MARKER: ref-code-example
 }
 
 module.exports = publicOhlcServiceGetOhlcData;

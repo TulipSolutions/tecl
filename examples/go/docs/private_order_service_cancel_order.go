@@ -25,6 +25,7 @@ import (
 )
 
 func privateOrderServiceCancelOrder(conn *grpc.ClientConn, parentContext context.Context) {
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example
 	client := order.NewPrivateOrderServiceClient(conn)
 
 	// Create a request for an order cancellation with a tonce that is the nanos since unix epoch
@@ -44,4 +45,5 @@ func privateOrderServiceCancelOrder(conn *grpc.ClientConn, parentContext context
 		return
 	}
 	fmt.Println(response)
+	// CODEINCLUDE-END-MARKER: ref-code-example
 }

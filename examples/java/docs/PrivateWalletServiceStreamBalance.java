@@ -23,6 +23,7 @@ import nl.tulipsolutions.api.priv.StreamBalanceRequest;
 
 public class PrivateWalletServiceStreamBalance {
     public static void run(ManagedChannel channel) {
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example
         PrivateWalletServiceStub stub = PrivateWalletServiceGrpc.newStub(channel);
 
         // Create a request for streaming your balances for all currencies
@@ -42,5 +43,6 @@ public class PrivateWalletServiceStreamBalance {
                 System.out.println("PrivateWalletService.StreamBalance completed");
             }
         });
+        // CODEINCLUDE-END-MARKER: ref-code-example
     }
 }

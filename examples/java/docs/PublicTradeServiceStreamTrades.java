@@ -24,6 +24,7 @@ import nl.tulipsolutions.api.pub.StreamPublicTradesRequest;
 
 public class PublicTradeServiceStreamTrades {
     public static void run(ManagedChannel channel) {
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example
         PublicTradeServiceStub stub = PublicTradeServiceGrpc.newStub(channel);
 
         // Create a request for streaming all trades in the BTC_EUR market that occur after initiation of the request
@@ -45,5 +46,6 @@ public class PublicTradeServiceStreamTrades {
                 System.out.println("PublicTradeService.StreamTrades completed");
             }
         });
+        // CODEINCLUDE-END-MARKER: ref-code-example
     }
 }

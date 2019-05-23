@@ -4,6 +4,7 @@ filegroup(
     visibility = ["//docs:__pkg__"],
 )
 
+# CODEINCLUDE-BEGIN-MARKER: getting-started-bazel-package
 java_binary(
     name = "hello_exchange",
     srcs = ["HelloExchange.java"],

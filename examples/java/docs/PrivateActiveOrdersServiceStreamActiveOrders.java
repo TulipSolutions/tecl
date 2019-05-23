@@ -24,6 +24,7 @@ import nl.tulipsolutions.api.priv.PrivateActiveOrdersServiceGrpc.PrivateActiveOr
 
 public class PrivateActiveOrdersServiceStreamActiveOrders {
     public static void run(ManagedChannel channel) {
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example
         PrivateActiveOrdersServiceStub stub = PrivateActiveOrdersServiceGrpc.newStub(channel);
 
         // Create a request for streaming all your active orders
@@ -44,5 +45,6 @@ public class PrivateActiveOrdersServiceStreamActiveOrders {
                 System.out.println("PrivateActiveOrdersService.StreamActiveOrders completed");
             }
         });
+        // CODEINCLUDE-END-MARKER: ref-code-example
     }
 }

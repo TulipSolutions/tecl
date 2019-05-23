@@ -18,6 +18,7 @@ var order_pb = require("@tulipsolutions/tecl/priv/order_pb");
 var order_grpc = require("@tulipsolutions/tecl/priv/order_grpc_pb");
 
 function privateActiveOrdersServiceGetActiveOrders(host, credentials, options) {
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example
   var client = new order_grpc.PrivateActiveOrdersServiceClient(host, credentials);
 
   // Create a request for all your active orders
@@ -35,6 +36,7 @@ function privateActiveOrdersServiceGetActiveOrders(host, credentials, options) {
       console.log(response.toObject());
     }
   });
+  // CODEINCLUDE-END-MARKER: ref-code-example
 }
 
 module.exports = privateActiveOrdersServiceGetActiveOrders;

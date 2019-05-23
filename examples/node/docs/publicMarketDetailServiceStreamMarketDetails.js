@@ -18,6 +18,7 @@ var market_detail_pb = require("@tulipsolutions/tecl/pub/market_detail_pb");
 var market_detail_grpc = require("@tulipsolutions/tecl/pub/market_detail_grpc_pb");
 
 function privateWalletServiceStreamBalance(host, credentials, options) {
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example
   var client = new market_detail_grpc.PublicMarketDetailServiceClient(host, credentials);
 
   // Create a request for streaming the details for all markets
@@ -34,6 +35,7 @@ function privateWalletServiceStreamBalance(host, credentials, options) {
   call.on("end", function () {
     console.log("PublicMarketDetailService.StreamMarketDetails completed");
   });
+  // CODEINCLUDE-END-MARKER: ref-code-example
 }
 
 module.exports = privateWalletServiceStreamBalance;

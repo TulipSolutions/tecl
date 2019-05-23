@@ -45,6 +45,7 @@ import java.util.concurrent.TimeUnit;
 // Subscribe to a public orderbook stream and set a new order
 class HelloExchange {
 
+    // CODEINCLUDE-BEGIN-MARKER: getting-started-orderbook-service-request
     private static void streamOrderbook(PublicOrderbookServiceStub orderbookServiceStub) {
         // Create a request for the BTC_EUR orderbook, with the greatest precision, largest length,
         // and highest update frequency.
@@ -74,7 +75,9 @@ class HelloExchange {
         };
         orderbookServiceStub.streamOrderbook(streamOrderbookRequest, streamOrderbookResponseObserver);
     }
+    // CODEINCLUDE-END-MARKER: getting-started-orderbook-service-request
 
+    // CODEINCLUDE-BEGIN-MARKER: getting-started-create-order-request
     private static void createOrder(PrivateOrderServiceStub orderServiceStub) {
         // Create a request for a new order with an orderId that is the nanos since unix epoch
         Long orderId = Instant.now().toEpochMilli() * 1000000;
@@ -108,9 +111,13 @@ class HelloExchange {
             .withDeadlineAfter(1, TimeUnit.SECONDS)
             .createOrder(createOrderRequest.build(), createOrderResponseObserver);
     }
+    // CODEINCLUDE-END-MARKER: getting-started-create-order-request
 
+    // CODEINCLUDE-BEGIN-MARKER: getting-started-orderbook-service-init
+    // CODEINCLUDE-BEGIN-MARKER: getting-started-create-order-authentication
     public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeyException {
 
+        // CODEINCLUDE-END-MARKER: getting-started-orderbook-service-init
         // Create a SHA256 HMAC with the base64 decoded 'secret' string as its key
         byte[] secret = Base64.getDecoder().decode("secret==");
         String HMAC_SHA256 = "HmacSHA256";
@@ -128,18 +135,25 @@ class HelloExchange {
         // Create an interceptor that adds a JWT token when a request to a private service is made.
         JwtClientInterceptor jwtClientInterceptor = new JwtClientInterceptor(dummyJwt);
 
+        // CODEINCLUDE-BEGIN-MARKER: getting-started-orderbook-service-init
         // Set up a connection to the server.
         ManagedChannel channel = ManagedChannelBuilder.forAddress("mockgrpc.test.tulipsolutions.nl", 443)
             .intercept(messageAuthClientInterceptor, jwtClientInterceptor)
             .build();
 
+        // CODEINCLUDE-END-MARKER: getting-started-orderbook-service-init
         // Construct clients for accessing PublicOrderbookService and PrivateOrderService using the existing connection.
+        // CODEINCLUDE-BEGIN-MARKER: getting-started-orderbook-service-init
         PublicOrderbookServiceStub orderbookServiceStub = PublicOrderbookServiceGrpc.newStub(channel);
+        // CODEINCLUDE-END-MARKER: getting-started-orderbook-service-init
         PrivateOrderServiceStub orderServiceStub = PrivateOrderServiceGrpc.newStub(channel);
 
         // Stream the orderbook and create an order asynchronously
+        // CODEINCLUDE-BEGIN-MARKER: getting-started-orderbook-service-init
         streamOrderbook(orderbookServiceStub);
+        // CODEINCLUDE-END-MARKER: getting-started-orderbook-service-init
         createOrder(orderServiceStub);
+        // CODEINCLUDE-BEGIN-MARKER: getting-started-orderbook-service-init
 
         // Wait until cancel
         try {
@@ -147,4 +161,6 @@ class HelloExchange {
         } catch (IOException ignored) {
         }
     }
+    // CODEINCLUDE-END-MARKER: getting-started-orderbook-service-init
+    // CODEINCLUDE-END-MARKER: getting-started-create-order-authentication
 }

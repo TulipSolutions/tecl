@@ -19,6 +19,7 @@ var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
 var private_trade_grpc = require("@tulipsolutions/tecl/priv/trade_grpc_pb");
 
 function privateTradeServiceGetTrades(host, credentials, options) {
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example
   var client = new private_trade_grpc.PrivateTradeServiceClient(host, credentials);
 
   // Create a request for your most recent trades in the BTC_EUR market
@@ -36,6 +37,7 @@ function privateTradeServiceGetTrades(host, credentials, options) {
       console.log(response.toObject());
     }
   });
+  // CODEINCLUDE-END-MARKER: ref-code-example
 }
 
 module.exports = privateTradeServiceGetTrades;

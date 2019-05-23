@@ -22,6 +22,7 @@ from tulipsolutions.api.priv import order_pb2, order_pb2_grpc
 
 
 def private_active_orders_service_stream_active_orders(channel):
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example
     stub = order_pb2_grpc.PrivateActiveOrdersServiceStub(channel)
 
     # Create a request for streaming all your active orders
@@ -34,3 +35,4 @@ def private_active_orders_service_stream_active_orders(channel):
             print(response)
     except grpc.RpcError as e:
         print("PrivateActiveOrdersService.StreamActiveOrders error: " + str(e), file=sys.stderr)
+    # CODEINCLUDE-END-MARKER: ref-code-example

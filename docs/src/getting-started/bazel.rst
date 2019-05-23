@@ -87,9 +87,8 @@ In this directory create a BUILD.bazel file with the following content.
 
     .. tab-container:: Go
 
-        .. literalinclude:: /examples/go/hello_exchange/BUILD.bazel
-            :lines: 7-
-            :language: python
+        .. codeinclude:: /examples/go/hello_exchange/BUILD.bazel
+            :marker-id: getting-started-bazel-package
 
         The code above shows a rule that builds a go library from a :code:`main.go` file and a set of dependencies.
         The dependencies are also rules, but refer to other workspaces, they include:
@@ -102,9 +101,8 @@ In this directory create a BUILD.bazel file with the following content.
 
     .. tab-container:: Java
 
-        .. literalinclude:: /examples/java/hello_exchange/BUILD.bazel
-            :lines: 7-
-            :language: python
+        .. codeinclude:: /examples/java/hello_exchange/BUILD.bazel
+            :marker-id: getting-started-bazel-package
 
         The code above shows a rule that builds a Java binary from a :code:`HelloExchange.java` file and a set of
         dependencies.
@@ -139,9 +137,8 @@ In this directory create a BUILD.bazel file with the following content.
 
     .. tab-container:: Python
 
-        .. literalinclude:: /examples/python/hello_exchange/BUILD.bazel
-            :lines: 9-
-            :language: python
+        .. codeinclude:: /examples/python/hello_exchange/BUILD.bazel
+            :marker-id: getting-started-bazel-package
 
         The code above shows a rule that builds a Python binary from a :code:`hello_exchange.py` file and a set of
         dependencies.

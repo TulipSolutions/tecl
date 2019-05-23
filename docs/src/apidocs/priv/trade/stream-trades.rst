@@ -13,31 +13,23 @@ Stream private trades
    .. tab-container:: Go
       :sidebar:
 
-      .. literalinclude:: /examples/go/docs/private_trade_service_stream_trades.go
-         :lines: 28-55
-         :language: go
-         :dedent: 1
+      .. codeinclude:: /examples/go/docs/private_trade_service_stream_trades.go
+         :marker-id: ref-code-example
 
    .. tab-container:: Java
       :sidebar:
 
-      .. literalinclude:: /examples/java/docs/PrivateTradeServiceStreamTrades.java
-         :lines: 27-47
-         :dedent: 8
-         :language: java
+      .. codeinclude:: /examples/java/docs/PrivateTradeServiceStreamTrades.java
+         :marker-id: ref-code-example
 
    .. tab-container:: Node
       :sidebar:
 
-      .. literalinclude:: /examples/node/docs/privateTradeServiceStreamTrades.js
-         :lines: 22-38
-         :language: js
-         :dedent: 2
+      .. codeinclude:: /examples/node/docs/privateTradeServiceStreamTrades.js
+         :marker-id: ref-code-example
 
    .. tab-container:: Python
       :sidebar:
 
-      .. literalinclude:: /examples/python/docs/private_trade_service_stream_trades.py
-         :lines: 26-38
-         :language: python
-         :dedent: 4
+      .. codeinclude:: /examples/python/docs/private_trade_service_stream_trades.py
+         :marker-id: ref-code-example

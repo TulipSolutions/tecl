@@ -23,6 +23,7 @@ from tulipsolutions.api.pub import orderbook_pb2, orderbook_pb2_grpc
 
 
 def public_orderbook_service_get_orderbook(channel):
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example
     stub = orderbook_pb2_grpc.PublicOrderbookServiceStub(channel)
 
     # Create a request for the BTC_EUR orderbook, with the greatest precision, largest length,
@@ -40,3 +41,4 @@ def public_orderbook_service_get_orderbook(channel):
         print(response)
     except grpc.RpcError as e:
         print("PublicOrderbookService.GetOrderbook error: " + str(e), file=sys.stderr)
+    # CODEINCLUDE-END-MARKER: ref-code-example

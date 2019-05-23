@@ -29,8 +29,10 @@ import java.util.concurrent.TimeUnit;
 
 public class PrivateOrderServiceCreateOrder {
     public static void run(ManagedChannel channel) {
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example
         PrivateOrderServiceStub stub = PrivateOrderServiceGrpc.newStub(channel);
 
+        // CODEINCLUDE-BEGIN-MARKER: authentication-request
         // Create a request for a new order with an orderId that is the nanos since unix epoch
         Long orderId = Instant.now().toEpochMilli() * 1000000;
         CreateOrderRequest request = CreateOrderRequest.newBuilder()
@@ -43,6 +45,7 @@ public class PrivateOrderServiceCreateOrder {
                     .setPrice(3000.0)
             )
             .build();
+        // CODEINCLUDE-END-MARKER: authentication-request
 
         // Make the request asynchronously with a 1s deadline
         stub.withDeadlineAfter(1, TimeUnit.SECONDS)
@@ -59,5 +62,6 @@ public class PrivateOrderServiceCreateOrder {
                     System.out.println("PrivateOrderService.CreateOrder completed");
                 }
             });
+        // CODEINCLUDE-END-MARKER: ref-code-example
     }
 }

@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 public class PrivateActiveOrdersServiceGetActiveOrders {
     public static void run(ManagedChannel channel) {
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example
         PrivateActiveOrdersServiceStub stub = PrivateActiveOrdersServiceGrpc.newStub(channel);
 
         // Create a request for all your active orders
@@ -46,5 +47,6 @@ public class PrivateActiveOrdersServiceGetActiveOrders {
                     System.out.println("PrivateActiveOrdersService.GetActiveOrders completed");
                 }
             });
+        // CODEINCLUDE-END-MARKER: ref-code-example
     }
 }
