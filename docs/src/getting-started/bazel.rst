@@ -92,7 +92,7 @@ In this directory create a BUILD.bazel file with the following content.
         *   The set of generated go gRPC bindings for the Tulip Exchange API (based on the `protobuf definitions <https://github.com/tulipsolutions/tecl>`__).
         *   `The Go implementation of gRPC <https://github.com/grpc/grpc-go>`_.
 
-        A second rule uses the libary as input to build an executable.
+        A second rule uses the library as input to build an executable.
 
     .. tab-container:: Java
 
@@ -100,7 +100,7 @@ In this directory create a BUILD.bazel file with the following content.
             :lines: 7-
             :language: python
 
-        The code above shows a rule that builds a java binary from a :code:`HelloExchange.java` file and a set of
+        The code above shows a rule that builds a Java binary from a :code:`HelloExchange.java` file and a set of
         dependencies.
         The dependencies are also rules, but refer to other workspaces, they consist of:
 

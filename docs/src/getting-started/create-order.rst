@@ -42,7 +42,7 @@ implemented.
         The code snippet below shows the main method from the previous tutorial along with code required for
         user and message authentication.
         Note that the mac provided to the interceptor must be an HMAC-SHA256.
-        The snippet also creates a new client side stub stub and runs a to-be-created function :code:`createOrder`.
+        The snippet also creates a new client side stub and runs a to-be-created function :code:`createOrder`.
 
         .. literalinclude:: /examples/java/hello_exchange/HelloExchange.java
             :lines: 112-149
@@ -53,7 +53,7 @@ implemented.
 
         The code snippet below shows the file from the previous tutorial along with code required for user and message
         authentication.
-        The snippet also creates a new client side stub stub.
+        The snippet also creates a new client side stub.
 
         .. literalinclude:: /examples/node/hello_exchange/index.js
             :lines: 27-47
@@ -63,7 +63,7 @@ implemented.
 
         The code snippet below shows the main block from the previous tutorial along with code required for
         user and message authentication.
-        The snippet also creates a new client side stub stub and runs a to-be-created function :code:`create_order` in
+        The snippet also creates a new client side stub and runs a to-be-created function :code:`create_order` in
         a separate thread.
 
         .. literalinclude:: /examples/python/hello_exchange/hello_exchange.py
@@ -93,7 +93,7 @@ order ID with which the order can be cancelled.
 
         Run the example with :code:`$ bazel run //examples/go/hello_exchange`
 
-        This concludes the getting started tutorial, the example code can be found `on Github <https://github.com/tulipsolutions/tecl/tree/master/examples/go/hello_exchange>`__.
+        This concludes the getting started tutorial, the example code can be found `on GitHub <https://github.com/tulipsolutions/tecl/tree/master/examples/go/hello_exchange>`__.
 
     .. tab-container:: Java
 
@@ -104,7 +104,7 @@ order ID with which the order can be cancelled.
 
         Run the example with :code:`$ bazel run //examples/java/hello_exchange`
 
-        This concludes the getting started tutorial, the example code can be found `on Github <https://github.com/tulipsolutions/tecl/tree/master/examples/java/hello_exchange>`__.
+        This concludes the getting started tutorial, the example code can be found `on GitHub <https://github.com/tulipsolutions/tecl/tree/master/examples/java/hello_exchange>`__.
 
     .. tab-container:: Node
 
@@ -114,7 +114,7 @@ order ID with which the order can be cancelled.
 
         Run the example with :code:`$ bazel run //examples/node/hello_exchange`
 
-        This concludes the getting started tutorial, the example code can be found `on Github <https://github.com/tulipsolutions/tecl/tree/master/examples/node/hello_exchange>`__.
+        This concludes the getting started tutorial, the example code can be found `on GitHub <https://github.com/tulipsolutions/tecl/tree/master/examples/node/hello_exchange>`__.
 
     .. tab-container:: Python
 
@@ -124,4 +124,4 @@ order ID with which the order can be cancelled.
 
         Run the example with :code:`$ bazel run //examples/python/hello_exchange`
 
-        This concludes the getting started tutorial, the example code can be found `on Github <https://github.com/tulipsolutions/tecl/tree/master/examples/python/hello_exchange>`__.
+        This concludes the getting started tutorial, the example code can be found `on GitHub <https://github.com/tulipsolutions/tecl/tree/master/examples/python/hello_exchange>`__.

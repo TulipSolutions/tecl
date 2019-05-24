@@ -103,7 +103,7 @@ class HelloExchange {
                 System.out.println("PrivateOrderService.CreateOrder completed");
             }
         };
-        //Make the request asynchronously with a 1s deadline
+        // Make the request asynchronously with a 1s deadline
         orderServiceStub
             .withDeadlineAfter(1, TimeUnit.SECONDS)
             .createOrder(createOrderRequest.build(), createOrderResponseObserver);
