@@ -23,7 +23,7 @@ The option to use :term:`Bazel` is recommended if you're familiar with it.
    :class: hint
 
    On the top of the page, a programming language selector allows you to view content relevant for it.
-   By default it is set to *Go*, but we also offer examples in  *Java*, *Node.JS* and *Python* (3.6+).
+   By default it is set to *Go*, but we also offer examples in  *Java*, *Node.JS* and *Python*.
 
    Content in the context of your programming language selection is denoted by a dashed gray line on the left.
 
