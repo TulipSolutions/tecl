@@ -26,6 +26,11 @@ Get private trades
 
       .. codeinclude:: /examples/java/docs/PrivateTradeServiceGetTrades.java
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/java/docs/PrivateTradeServiceGetTrades.java
+         :marker-id: ref-code-example-response
+         :caption: Example response handling
 
    .. tab-container:: Node
 

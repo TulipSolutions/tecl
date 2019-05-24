@@ -31,8 +31,11 @@ public class PublicTickerServiceStreamTickers {
 
         // Make the request asynchronously and add callbacks
         stub.streamTickers(request, new StreamObserver<Tick>() {
-            public void onNext(Tick value) {
-                System.out.println(value);
+            public void onNext(Tick response) {
+                System.out.println(response);
+                // CODEINCLUDE-END-MARKER: ref-code-example-request
+                parseAndPrint(response);
+                // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
             }
 
             public void onError(Throwable t) {
@@ -44,5 +47,30 @@ public class PublicTickerServiceStreamTickers {
             }
         });
         // CODEINCLUDE-END-MARKER: ref-code-example-request
+    }
+
+    public static void parseAndPrint(Tick response) {
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+        System.out.println(
+            String.format(
+                "%s %s mid_price: %f best_buy_price: %f best_buy_size: %f " +
+                    "best_sell_price: %f best_sell_size: %f open: %f, high: %f low: %f close: %f " +
+                    "volume_base: %f volume_quote: %f",
+                response.getClass().getSimpleName(),
+                response.getMarket().getValueDescriptor().getName(),
+                response.getMidPrice(),
+                response.getBestBuyPrice(),
+                response.getBestBuySize(),
+                response.getBestSellPrice(),
+                response.getBestSellSize(),
+                response.getDailyOpen(),
+                response.getDailyHigh(),
+                response.getDailyLow(),
+                response.getDailyClose(),
+                response.getDailyVolumeBase(),
+                response.getDailyVolumeQuote()
+            )
+        );
+        // CODEINCLUDE-END-MARKER: ref-code-example-response
     }
 }

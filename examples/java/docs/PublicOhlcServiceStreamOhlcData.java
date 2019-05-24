@@ -14,16 +14,16 @@
 
 package docs;
 
-import java.util.Arrays;
-
 import io.grpc.ManagedChannel;
 import io.grpc.stub.StreamObserver;
 import nl.tulipsolutions.api.common.Market;
-import nl.tulipsolutions.api.pub.OhlcBin;
 import nl.tulipsolutions.api.pub.Interval;
+import nl.tulipsolutions.api.pub.OhlcBin;
 import nl.tulipsolutions.api.pub.PublicOhlcServiceGrpc;
 import nl.tulipsolutions.api.pub.PublicOhlcServiceGrpc.PublicOhlcServiceStub;
 import nl.tulipsolutions.api.pub.StreamOhlcRequest;
+
+import java.util.Arrays;
 
 public class PublicOhlcServiceStreamOhlcData {
     public static void run(ManagedChannel channel) {
@@ -44,8 +44,11 @@ public class PublicOhlcServiceStreamOhlcData {
 
         // Make the request asynchronously and add callbacks
         stub.streamOhlcData(request, new StreamObserver<OhlcBin>() {
-            public void onNext(OhlcBin value) {
-                System.out.println(value);
+            public void onNext(OhlcBin response) {
+                System.out.println(response);
+                // CODEINCLUDE-END-MARKER: ref-code-example-request
+                parseAndPrint(response);
+                // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
             }
 
             public void onError(Throwable t) {
@@ -57,5 +60,25 @@ public class PublicOhlcServiceStreamOhlcData {
             }
         });
         // CODEINCLUDE-END-MARKER: ref-code-example-request
+    }
+
+    public static void parseAndPrint(OhlcBin response) {
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+        System.out.println(
+            String.format(
+                "%s %d %s open: %f, high: %f low: %f close: %f volume_base: %f volume_quote: %f nr_trades: %d",
+                response.getClass().getSimpleName(),
+                response.getTimestampNs(),
+                response.getInterval().getValueDescriptor().getName(),
+                response.getOpen(),
+                response.getHigh(),
+                response.getLow(),
+                response.getClose(),
+                response.getVolumeBase(),
+                response.getVolumeQuote(),
+                response.getNumberOfTrades()
+            )
+        );
+        // CODEINCLUDE-END-MARKER: ref-code-example-response
     }
 }

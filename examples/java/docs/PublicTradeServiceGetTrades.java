@@ -18,6 +18,7 @@ import io.grpc.ManagedChannel;
 import io.grpc.stub.StreamObserver;
 import nl.tulipsolutions.api.common.Market;
 import nl.tulipsolutions.api.pub.GetPublicTradesRequest;
+import nl.tulipsolutions.api.pub.PublicTrade;
 import nl.tulipsolutions.api.pub.PublicTradeServiceGrpc;
 import nl.tulipsolutions.api.pub.PublicTradeServiceGrpc.PublicTradeServiceStub;
 import nl.tulipsolutions.api.pub.PublicTrades;
@@ -37,8 +38,11 @@ public class PublicTradeServiceGetTrades {
         // Make the request asynchronously with a one second deadline
         stub.withDeadlineAfter(1, TimeUnit.SECONDS)
             .getTrades(request, new StreamObserver<PublicTrades>() {
-                public void onNext(PublicTrades value) {
-                    System.out.println(value);
+                public void onNext(PublicTrades response) {
+                    System.out.println(response);
+                    // CODEINCLUDE-END-MARKER: ref-code-example-request
+                    parseAndPrint(response);
+                    // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
                 }
 
                 public void onError(Throwable t) {
@@ -50,5 +54,26 @@ public class PublicTradeServiceGetTrades {
                 }
             });
         // CODEINCLUDE-END-MARKER: ref-code-example-request
+    }
+
+    public static void parseAndPrint(PublicTrades response) {
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+        String result_string = String.format("%s\n", response.getClass().getSimpleName());
+        for (PublicTrade trade : response.getTradesList()) {
+            result_string +=
+                String.format(
+                    "\t%s: %s %s %f@%f quote_amount: %f time: %d id %d\n",
+                    trade.getClass().getSimpleName(),
+                    trade.getMarket().getValueDescriptor().getName(),
+                    trade.getSide().getValueDescriptor().getName(),
+                    trade.getBaseAmount(),
+                    trade.getPrice(),
+                    trade.getQuoteAmount(),
+                    trade.getTimestampNs(),
+                    trade.getTradeId()
+                );
+        }
+        System.out.println(result_string);
+        // CODEINCLUDE-END-MARKER: ref-code-example-response
     }
 }

@@ -28,6 +28,11 @@ Get market details
 
       .. codeinclude:: /examples/java/docs/PublicMarketDetailServiceGetMarketDetails.java
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/java/docs/PublicMarketDetailServiceGetMarketDetails.java
+         :marker-id: ref-code-example-response
+         :caption: Example response handling
 
    .. tab-container:: Node
 

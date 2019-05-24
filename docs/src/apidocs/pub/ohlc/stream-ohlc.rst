@@ -24,6 +24,11 @@ Stream Ohlc
 
       .. codeinclude:: /examples/java/docs/PublicOhlcServiceStreamOhlcData.java
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/java/docs/PublicOhlcServiceStreamOhlcData.java
+         :marker-id: ref-code-example-response
+         :caption: Example response handling
 
    .. tab-container:: Node
 

@@ -34,8 +34,11 @@ public class PrivateTradeServiceStreamTrades {
 
         // Make the request asynchronously
         stub.streamTrades(request, new StreamObserver<PrivateTrade>() {
-            public void onNext(PrivateTrade value) {
-                System.out.println(value);
+            public void onNext(PrivateTrade response) {
+                System.out.println(response);
+                // CODEINCLUDE-END-MARKER: ref-code-example-request
+                parseAndPrint(response);
+                // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
             }
 
             public void onError(Throwable t) {
@@ -47,5 +50,26 @@ public class PrivateTradeServiceStreamTrades {
             }
         });
         // CODEINCLUDE-END-MARKER: ref-code-example-request
+    }
+
+    public static void parseAndPrint(PrivateTrade response) {
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+        System.out.println(
+            String.format(
+                "%s: %s %s %f@%f quote_amount: %f fee: %s %f time: %d id %d matched_orderid: %d",
+                response.getClass().getSimpleName(),
+                response.getMarket().getValueDescriptor().getName(),
+                response.getSide().getValueDescriptor().getName(),
+                response.getBaseAmount(),
+                response.getPrice(),
+                response.getQuoteAmount(),
+                response.getFeeCurrency().getValueDescriptor().getName(),
+                response.getFee(),
+                response.getTimestampNs(),
+                response.getTradeId(),
+                response.getOrderId()
+            )
+        );
+        // CODEINCLUDE-END-MARKER: ref-code-example-response
     }
 }

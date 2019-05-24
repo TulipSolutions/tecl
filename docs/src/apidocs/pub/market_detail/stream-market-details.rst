@@ -26,6 +26,11 @@ Stream market details
 
       .. codeinclude:: /examples/java/docs/PublicMarketDetailServiceStreamMarketDetails.java
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/java/docs/PublicMarketDetailServiceStreamMarketDetails.java
+         :marker-id: ref-code-example-response
+         :caption: Example response handling
 
    .. tab-container:: Node
 

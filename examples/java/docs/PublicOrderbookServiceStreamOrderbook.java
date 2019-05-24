@@ -42,8 +42,11 @@ public class PublicOrderbookServiceStreamOrderbook {
 
         // Make the request asynchronously and add callbacks
         stub.streamOrderbook(request, new StreamObserver<OrderbookEntry>() {
-            public void onNext(OrderbookEntry value) {
-                System.out.println(value);
+            public void onNext(OrderbookEntry response) {
+                System.out.println(response);
+                // CODEINCLUDE-END-MARKER: ref-code-example-request
+                parseAndPrint(response);
+                // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
             }
 
             public void onError(Throwable t) {
@@ -55,5 +58,20 @@ public class PublicOrderbookServiceStreamOrderbook {
             }
         });
         // CODEINCLUDE-END-MARKER: ref-code-example-request
+    }
+
+    public static void parseAndPrint(OrderbookEntry response) {
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+        System.out.println(
+            String.format(
+                "%s %s %d orders @ %f total %f",
+                response.getClass().getSimpleName(),
+                response.getSide().getValueDescriptor().getName(),
+                response.getOrdersAtPriceLevel(),
+                response.getPriceLevel(),
+                response.getAmount()
+            )
+        );
+        // CODEINCLUDE-END-MARKER: ref-code-example-response
     }
 }

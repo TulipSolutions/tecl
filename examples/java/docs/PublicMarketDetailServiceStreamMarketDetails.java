@@ -17,9 +17,9 @@ package docs;
 import io.grpc.ManagedChannel;
 import io.grpc.stub.StreamObserver;
 import nl.tulipsolutions.api.pub.MarketDetail;
-import nl.tulipsolutions.api.pub.StreamMarketDetailsRequest;
 import nl.tulipsolutions.api.pub.PublicMarketDetailServiceGrpc;
 import nl.tulipsolutions.api.pub.PublicMarketDetailServiceGrpc.PublicMarketDetailServiceStub;
+import nl.tulipsolutions.api.pub.StreamMarketDetailsRequest;
 
 public class PublicMarketDetailServiceStreamMarketDetails {
     public static void run(ManagedChannel channel) {
@@ -31,8 +31,11 @@ public class PublicMarketDetailServiceStreamMarketDetails {
 
         // Make the request asynchronously
         stub.streamMarketDetails(request, new StreamObserver<MarketDetail>() {
-            public void onNext(MarketDetail value) {
-                System.out.println(value);
+            public void onNext(MarketDetail response) {
+                System.out.println(response);
+                // CODEINCLUDE-END-MARKER: ref-code-example-request
+                parseAndPrint(response);
+                // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
             }
 
             public void onError(Throwable t) {
@@ -44,5 +47,28 @@ public class PublicMarketDetailServiceStreamMarketDetails {
             }
         });
         // CODEINCLUDE-END-MARKER: ref-code-example-request
+    }
+
+    public static void parseAndPrint(MarketDetail response) {
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+        System.out.println(
+            String.format(
+                "%s %s %s base currency: %s, quote currency: %s price resolution: %.8f amount resolution: %.8f " +
+                    "minimum base order amount: %.8f maximum base order amount: %.8f, minimum quote order amount: %.8f " +
+                    "maximum quote order amount: %.8f",
+                response.getClass().getSimpleName(),
+                response.getMarket().getValueDescriptor().getName(),
+                response.getMarketStatus().getValueDescriptor().getName(),
+                response.getBase().getValueDescriptor().getName(),
+                response.getQuote().getValueDescriptor().getName(),
+                response.getPriceResolution(),
+                response.getAmountResolution(),
+                response.getMinimumBaseOrderAmount(),
+                response.getMaximumBaseOrderAmount(),
+                response.getMinimumQuoteOrderAmount(),
+                response.getMaximumQuoteOrderAmount()
+            )
+        );
+        // CODEINCLUDE-END-MARKER: ref-code-example-response
     }
 }

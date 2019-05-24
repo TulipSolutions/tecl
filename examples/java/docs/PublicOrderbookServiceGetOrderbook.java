@@ -20,6 +20,7 @@ import nl.tulipsolutions.api.common.Market;
 import nl.tulipsolutions.api.pub.GetOrderbookRequest;
 import nl.tulipsolutions.api.pub.Length;
 import nl.tulipsolutions.api.pub.OrderbookEntries;
+import nl.tulipsolutions.api.pub.OrderbookEntry;
 import nl.tulipsolutions.api.pub.Precision;
 import nl.tulipsolutions.api.pub.PublicOrderbookServiceGrpc;
 import nl.tulipsolutions.api.pub.PublicOrderbookServiceGrpc.PublicOrderbookServiceStub;
@@ -42,8 +43,11 @@ public class PublicOrderbookServiceGetOrderbook {
         // Make the request asynchronously with a one second deadline
         stub.withDeadlineAfter(1, TimeUnit.SECONDS)
             .getOrderbook(request, new StreamObserver<OrderbookEntries>() {
-                public void onNext(OrderbookEntries value) {
-                    System.out.println(value);
+                public void onNext(OrderbookEntries response) {
+                    System.out.println(response);
+                    // CODEINCLUDE-END-MARKER: ref-code-example-request
+                    parseAndPrint(response);
+                    // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
                 }
 
                 public void onError(Throwable t) {
@@ -55,5 +59,23 @@ public class PublicOrderbookServiceGetOrderbook {
                 }
             });
         // CODEINCLUDE-END-MARKER: ref-code-example-request
+    }
+
+    public static void parseAndPrint(OrderbookEntries response) {
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+        String result_string = String.format("%s\n", response.getClass().getSimpleName());
+        for (OrderbookEntry detail : response.getEntriesList()) {
+            result_string +=
+                String.format(
+                    "\t%s %s %d orders @ %f total %f\n",
+                    detail.getClass().getSimpleName(),
+                    detail.getSide().getValueDescriptor().getName(),
+                    detail.getOrdersAtPriceLevel(),
+                    detail.getPriceLevel(),
+                    detail.getAmount()
+                );
+        }
+        System.out.println(result_string);
+        // CODEINCLUDE-END-MARKER: ref-code-example-response
     }
 }

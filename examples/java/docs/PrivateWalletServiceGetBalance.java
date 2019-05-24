@@ -16,6 +16,7 @@ package docs;
 
 import io.grpc.ManagedChannel;
 import io.grpc.stub.StreamObserver;
+import nl.tulipsolutions.api.priv.BalanceResponse;
 import nl.tulipsolutions.api.priv.BalanceSnapshot;
 import nl.tulipsolutions.api.priv.GetBalanceRequest;
 import nl.tulipsolutions.api.priv.PrivateWalletServiceGrpc;
@@ -34,8 +35,11 @@ public class PrivateWalletServiceGetBalance {
         // Make the request asynchronously with a one second deadline
         stub.withDeadlineAfter(1, TimeUnit.SECONDS)
             .getBalance(request, new StreamObserver<BalanceSnapshot>() {
-                public void onNext(BalanceSnapshot value) {
-                    System.out.println(value);
+                public void onNext(BalanceSnapshot response) {
+                    System.out.println(response);
+                    // CODEINCLUDE-END-MARKER: ref-code-example-request
+                    parseAndPrint(response);
+                    // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
                 }
 
                 public void onError(Throwable t) {
@@ -47,5 +51,22 @@ public class PrivateWalletServiceGetBalance {
                 }
             });
         // CODEINCLUDE-END-MARKER: ref-code-example-request
+    }
+
+    public static void parseAndPrint(BalanceSnapshot response) {
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+        String result_string = String.format("%s\n", response.getClass().getSimpleName());
+        for (BalanceResponse balance : response.getBalanceResponseList()) {
+            result_string +=
+                String.format(
+                    "\t%s %s total: %f locked: %f\n",
+                    balance.getClass().getSimpleName(),
+                    balance.getCurrency().getValueDescriptor().getName(),
+                    balance.getTotalAmount(),
+                    balance.getLockedAmount()
+                );
+        }
+        System.out.println(result_string);
+        // CODEINCLUDE-END-MARKER: ref-code-example-response
     }
 }

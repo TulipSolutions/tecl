@@ -26,6 +26,11 @@ Get tickers
 
       .. codeinclude:: /examples/java/docs/PublicTickerServiceGetTickers.java
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/java/docs/PublicTickerServiceGetTickers.java
+         :marker-id: ref-code-example-response
+         :caption: Example response handling
 
    .. tab-container:: Node
 

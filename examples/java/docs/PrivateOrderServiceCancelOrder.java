@@ -41,18 +41,32 @@ public class PrivateOrderServiceCancelOrder {
         // Make the request asynchronously with a 1s deadline
         stub.withDeadlineAfter(1, TimeUnit.SECONDS)
             .cancelOrder(request, new StreamObserver<CancelOrderResponse>() {
-                public void onNext(CancelOrderResponse value) {
-                    System.out.println(value);
+                public void onNext(CancelOrderResponse response) {
+                    System.out.println(response);
+                    // CODEINCLUDE-END-MARKER: ref-code-example-request
+                    parseAndPrint(response);
+                    // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
                 }
 
                 public void onError(Throwable t) {
                     System.err.println("PrivateOrderService.CancelOrder error: " + t.getMessage());
                 }
 
-                public void onCompleted() {
-                    System.out.println("PrivateOrderService.CancelOrder completed");
-                }
+                public void onCompleted() { System.out.println("PrivateOrderService.CancelOrder completed"); }
             });
         // CODEINCLUDE-END-MARKER: ref-code-example-request
+    }
+
+    public static void parseAndPrint(CancelOrderResponse response) {
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+        System.out.println(
+            String.format(
+                "%s: %s for %s",
+                response.getClass().getSimpleName(),
+                response.getOrderId(),
+                response.getMarket().getValueDescriptor().getName()
+            )
+        );
+        // CODEINCLUDE-END-MARKER: ref-code-example-response
     }
 }

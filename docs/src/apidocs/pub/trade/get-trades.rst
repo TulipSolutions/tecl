@@ -26,6 +26,11 @@ Get trades
 
       .. codeinclude:: /examples/java/docs/PublicTradeServiceGetTrades.java
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/java/docs/PublicTradeServiceGetTrades.java
+         :marker-id: ref-code-example-response
+         :caption: Example response handling
 
    .. tab-container:: Node
 

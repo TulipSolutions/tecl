@@ -16,7 +16,9 @@ package docs;
 
 import io.grpc.ManagedChannel;
 import io.grpc.stub.StreamObserver;
+import nl.tulipsolutions.api.priv.ActiveOrderStatus;
 import nl.tulipsolutions.api.priv.GetActiveOrdersRequest;
+import nl.tulipsolutions.api.priv.LimitOrderStatus;
 import nl.tulipsolutions.api.priv.OrderbookSnapshot;
 import nl.tulipsolutions.api.priv.PrivateActiveOrdersServiceGrpc;
 import nl.tulipsolutions.api.priv.PrivateActiveOrdersServiceGrpc.PrivateActiveOrdersServiceStub;
@@ -35,8 +37,11 @@ public class PrivateActiveOrdersServiceGetActiveOrders {
         // Make the request asynchronously with a one second deadline
         stub.withDeadlineAfter(1, TimeUnit.SECONDS)
             .getActiveOrders(request, new StreamObserver<OrderbookSnapshot>() {
-                public void onNext(OrderbookSnapshot value) {
-                    System.out.println(value);
+                public void onNext(OrderbookSnapshot response) {
+                    System.out.println(response);
+                    // CODEINCLUDE-END-MARKER: ref-code-example-request
+                    parseAndPrint(response);
+                    // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
                 }
 
                 public void onError(Throwable t) {
@@ -48,5 +53,36 @@ public class PrivateActiveOrdersServiceGetActiveOrders {
                 }
             });
         // CODEINCLUDE-END-MARKER: ref-code-example-request
+    }
+
+    public static void parseAndPrint(OrderbookSnapshot response) {
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+        String result_string = String.format("%s\n", response.getClass().getSimpleName());
+        for (ActiveOrderStatus order : response.getOrdersList()) {
+            String order_type_detail = "";
+            if (order.getOrderCase() == ActiveOrderStatus.OrderCase.LIMIT_ORDER) {
+                LimitOrderStatus limitOrder = order.getLimitOrder();
+                order_type_detail =
+                    String.format(
+                        "%s %f@%f remaining %f",
+                        limitOrder.getSide().getValueDescriptor().getName(),
+                        limitOrder.getBaseAmount(),
+                        limitOrder.getPrice(),
+                        limitOrder.getBaseRemaining()
+                    );
+            } else {
+                order_type_detail = "removed from orderbook";
+            }
+            result_string +=
+                String.format(
+                    "\t%s: %d for market %s %s\n",
+                    order.getClass().getSimpleName(),
+                    order.getOrderId(),
+                    order.getMarket().getValueDescriptor().getName(),
+                    order_type_detail
+                );
+        }
+        System.out.println(result_string);
+        // CODEINCLUDE-END-MARKER: ref-code-example-response
     }
 }

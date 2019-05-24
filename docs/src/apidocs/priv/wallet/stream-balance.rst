@@ -24,6 +24,11 @@ Stream balance
 
       .. codeinclude:: /examples/java/docs/PrivateWalletServiceStreamBalance.java
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/java/docs/PrivateWalletServiceStreamBalance.java
+         :marker-id: ref-code-example-response
+         :caption: Example response handling
 
    .. tab-container:: Node
 

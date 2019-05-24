@@ -21,6 +21,7 @@ import nl.tulipsolutions.api.common.Side;
 import nl.tulipsolutions.api.priv.CreateOrderRequest;
 import nl.tulipsolutions.api.priv.CreateOrderResponse;
 import nl.tulipsolutions.api.priv.LimitOrderRequest;
+import nl.tulipsolutions.api.priv.LimitOrderResponse;
 import nl.tulipsolutions.api.priv.PrivateOrderServiceGrpc;
 import nl.tulipsolutions.api.priv.PrivateOrderServiceGrpc.PrivateOrderServiceStub;
 
@@ -50,8 +51,11 @@ public class PrivateOrderServiceCreateOrder {
         // Make the request asynchronously with a 1s deadline
         stub.withDeadlineAfter(1, TimeUnit.SECONDS)
             .createOrder(request, new StreamObserver<CreateOrderResponse>() {
-                public void onNext(CreateOrderResponse value) {
-                    System.out.println(value);
+                public void onNext(CreateOrderResponse response) {
+                    System.out.println(response);
+                    // CODEINCLUDE-END-MARKER: ref-code-example-request
+                    parseAndPrint(response);
+                    // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
                 }
 
                 public void onError(Throwable t) {
@@ -63,5 +67,30 @@ public class PrivateOrderServiceCreateOrder {
                 }
             });
         // CODEINCLUDE-END-MARKER: ref-code-example-request
+    }
+
+    public static void parseAndPrint(CreateOrderResponse response) {
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+        String order_type_detail = "";
+        if (response.getOrderTypeCase() == CreateOrderResponse.OrderTypeCase.LIMIT_ORDER) {
+            LimitOrderResponse limitOrder = response.getLimitOrder();
+            order_type_detail = String.format(
+                "%s %f@%f",
+                limitOrder.getSide().getValueDescriptor().getName(),
+                limitOrder.getBaseAmount(),
+                limitOrder.getPrice()
+            );
+
+        }
+        System.out.println(
+            String.format(
+                "%s: %d for %s %s",
+                response.getClass().getSimpleName(),
+                response.getOrderId(),
+                response.getMarket().getValueDescriptor().getName(),
+                order_type_detail
+            )
+        );
+        // CODEINCLUDE-END-MARKER: ref-code-example-response
     }
 }

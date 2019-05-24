@@ -34,8 +34,11 @@ public class PublicTradeServiceStreamTrades {
 
         // Make the request asynchronously and add callbacks
         stub.streamTrades(request, new StreamObserver<PublicTrade>() {
-            public void onNext(PublicTrade value) {
-                System.out.println(value);
+            public void onNext(PublicTrade response) {
+                System.out.println(response);
+                // CODEINCLUDE-END-MARKER: ref-code-example-request
+                parseAndPrint(response);
+                // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
             }
 
             public void onError(Throwable t) {
@@ -47,5 +50,23 @@ public class PublicTradeServiceStreamTrades {
             }
         });
         // CODEINCLUDE-END-MARKER: ref-code-example-request
+    }
+
+    public static void parseAndPrint(PublicTrade response) {
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+        System.out.println(
+            String.format(
+                "%s: %s %s %f@%f quote_amount: %f time: %d id %d",
+                response.getClass().getSimpleName(),
+                response.getMarket().getValueDescriptor().getName(),
+                response.getSide().getValueDescriptor().getName(),
+                response.getBaseAmount(),
+                response.getPrice(),
+                response.getQuoteAmount(),
+                response.getTimestampNs(),
+                response.getTradeId()
+            )
+        );
+        // CODEINCLUDE-END-MARKER: ref-code-example-response
     }
 }

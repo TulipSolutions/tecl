@@ -19,6 +19,7 @@ import io.grpc.stub.StreamObserver;
 import nl.tulipsolutions.api.pub.GetTickersRequest;
 import nl.tulipsolutions.api.pub.PublicTickerServiceGrpc;
 import nl.tulipsolutions.api.pub.PublicTickerServiceGrpc.PublicTickerServiceStub;
+import nl.tulipsolutions.api.pub.Tick;
 import nl.tulipsolutions.api.pub.Tickers;
 
 import java.util.concurrent.TimeUnit;
@@ -34,8 +35,11 @@ public class PublicTickerServiceGetTickers {
         // Make the request asynchronously with a one second deadline
         stub.withDeadlineAfter(1, TimeUnit.SECONDS)
             .getTickers(request, new StreamObserver<Tickers>() {
-                public void onNext(Tickers value) {
-                    System.out.println(value);
+                public void onNext(Tickers response) {
+                    System.out.println(response);
+                    // CODEINCLUDE-END-MARKER: ref-code-example-request
+                    parseAndPrint(response);
+                    // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
                 }
 
                 public void onError(Throwable t) {
@@ -47,5 +51,33 @@ public class PublicTickerServiceGetTickers {
                 }
             });
         // CODEINCLUDE-END-MARKER: ref-code-example-request
+    }
+
+    public static void parseAndPrint(Tickers response) {
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+        String result_string = String.format("%s\n", response.getClass().getSimpleName());
+        for (Tick tick : response.getTicksList()) {
+            result_string +=
+                String.format(
+                    "\t%s %s mid_price: %f best_buy_price: %f best_buy_size: %f " +
+                        "best_sell_price: %f best_sell_size: %f open: %f, high: %f low: %f close: %f " +
+                        "volume_base: %f volume_quote: %f\n",
+                    tick.getClass().getSimpleName(),
+                    tick.getMarket().getValueDescriptor().getName(),
+                    tick.getMidPrice(),
+                    tick.getBestBuyPrice(),
+                    tick.getBestBuySize(),
+                    tick.getBestSellPrice(),
+                    tick.getBestSellSize(),
+                    tick.getDailyOpen(),
+                    tick.getDailyHigh(),
+                    tick.getDailyLow(),
+                    tick.getDailyClose(),
+                    tick.getDailyVolumeBase(),
+                    tick.getDailyVolumeQuote()
+                );
+        }
+        System.out.println(result_string);
+        // CODEINCLUDE-END-MARKER: ref-code-example-response
     }
 }

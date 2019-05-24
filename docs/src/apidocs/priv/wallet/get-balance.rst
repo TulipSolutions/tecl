@@ -26,6 +26,11 @@ Get balance
 
       .. codeinclude:: /examples/java/docs/PrivateWalletServiceGetBalance.java
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/java/docs/PrivateWalletServiceGetBalance.java
+         :marker-id: ref-code-example-response
+         :caption: Example response handling
 
    .. tab-container:: Node
 

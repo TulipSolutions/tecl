@@ -31,8 +31,11 @@ public class PrivateWalletServiceStreamBalance {
 
         // Make the request asynchronously
         stub.streamBalance(request, new StreamObserver<BalanceResponse>() {
-            public void onNext(BalanceResponse value) {
-                System.out.println(value);
+            public void onNext(BalanceResponse response) {
+                System.out.println(response);
+                // CODEINCLUDE-END-MARKER: ref-code-example-request
+                parseAndPrint(response);
+                // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
             }
 
             public void onError(Throwable t) {
@@ -44,5 +47,19 @@ public class PrivateWalletServiceStreamBalance {
             }
         });
         // CODEINCLUDE-END-MARKER: ref-code-example-request
+    }
+
+    public static void parseAndPrint(BalanceResponse response) {
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+        System.out.println(
+            String.format(
+                "%s %s total: %f locked: %f",
+                response.getClass().getSimpleName(),
+                response.getCurrency().getValueDescriptor().getName(),
+                response.getTotalAmount(),
+                response.getLockedAmount()
+            )
+        );
+        // CODEINCLUDE-END-MARKER: ref-code-example-response
     }
 }

@@ -18,6 +18,7 @@ import io.grpc.ManagedChannel;
 import io.grpc.stub.StreamObserver;
 import nl.tulipsolutions.api.common.Market;
 import nl.tulipsolutions.api.priv.GetPrivateTradesRequest;
+import nl.tulipsolutions.api.priv.PrivateTrade;
 import nl.tulipsolutions.api.priv.PrivateTradeServiceGrpc;
 import nl.tulipsolutions.api.priv.PrivateTradeServiceGrpc.PrivateTradeServiceStub;
 import nl.tulipsolutions.api.priv.PrivateTrades;
@@ -37,8 +38,11 @@ public class PrivateTradeServiceGetTrades {
         // Make the request asynchronously with a one second deadline
         stub.withDeadlineAfter(1, TimeUnit.SECONDS)
             .getTrades(getPrivateTradesRequest, new StreamObserver<PrivateTrades>() {
-                public void onNext(PrivateTrades value) {
-                    System.out.println(value);
+                public void onNext(PrivateTrades response) {
+                    System.out.println(response);
+                    // CODEINCLUDE-END-MARKER: ref-code-example-request
+                    parseAndPrint(response);
+                    // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
                 }
 
                 public void onError(Throwable t) {
@@ -50,5 +54,29 @@ public class PrivateTradeServiceGetTrades {
                 }
             });
         // CODEINCLUDE-END-MARKER: ref-code-example-request
+    }
+
+    public static void parseAndPrint(PrivateTrades response) {
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+        String result_string = String.format("%s\n", response.getClass().getSimpleName());
+        for (PrivateTrade trade : response.getTradesList()) {
+            result_string +=
+                String.format(
+                    "\t%s: %s %s %f@%f quote_amount: %f fee: %s %f time: %d id %d matched_orderid: %d\n",
+                    trade.getClass().getSimpleName(),
+                    trade.getMarket().getValueDescriptor().getName(),
+                    trade.getSide().getValueDescriptor().getName(),
+                    trade.getBaseAmount(),
+                    trade.getPrice(),
+                    trade.getQuoteAmount(),
+                    trade.getFeeCurrency().getValueDescriptor().getName(),
+                    trade.getFee(),
+                    trade.getTimestampNs(),
+                    trade.getTradeId(),
+                    trade.getOrderId()
+                );
+        }
+        System.out.println(result_string);
+        // CODEINCLUDE-END-MARKER: ref-code-example-response
     }
 }

@@ -14,18 +14,17 @@
 
 package docs;
 
-import java.util.Arrays;
-
 import io.grpc.ManagedChannel;
 import io.grpc.stub.StreamObserver;
 import nl.tulipsolutions.api.common.Market;
+import nl.tulipsolutions.api.pub.GetOhlcRequest;
 import nl.tulipsolutions.api.pub.GetOhlcResponse;
 import nl.tulipsolutions.api.pub.Interval;
-import nl.tulipsolutions.api.pub.GetOhlcRequest;
+import nl.tulipsolutions.api.pub.OhlcBin;
 import nl.tulipsolutions.api.pub.PublicOhlcServiceGrpc;
 import nl.tulipsolutions.api.pub.PublicOhlcServiceGrpc.PublicOhlcServiceStub;
-import nl.tulipsolutions.api.pub.Ohlc;
 
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 public class PublicOhlcServiceGetOhlcData {
@@ -48,8 +47,11 @@ public class PublicOhlcServiceGetOhlcData {
         // Make the request asynchronously with a one second deadline
         stub.withDeadlineAfter(1, TimeUnit.SECONDS)
             .getOhlcData(request, new StreamObserver<GetOhlcResponse>() {
-                public void onNext(GetOhlcResponse value) {
-                    System.out.println(value);
+                public void onNext(GetOhlcResponse response) {
+                    System.out.println(response);
+                    // CODEINCLUDE-END-MARKER: ref-code-example-request
+                    parseAndPrint(response);
+                    // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
                 }
 
                 public void onError(Throwable t) {
@@ -61,5 +63,27 @@ public class PublicOhlcServiceGetOhlcData {
                 }
             });
         // CODEINCLUDE-END-MARKER: ref-code-example-request
+    }
+
+    public static void parseAndPrint(GetOhlcResponse response) {
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+        String result_string = response.getClass().getSimpleName();
+        for (OhlcBin detail : response.getBinsList()) {
+            result_string += String.format(
+                "\t%s %d %s open: %f, high: %f low: %f close: %f volume_base: %f volume_quote: %f nr_trades: %d\n",
+                detail.getClass().getSimpleName(),
+                detail.getTimestampNs(),
+                detail.getInterval().getValueDescriptor().getName(),
+                detail.getOpen(),
+                detail.getHigh(),
+                detail.getLow(),
+                detail.getClose(),
+                detail.getVolumeBase(),
+                detail.getVolumeQuote(),
+                detail.getNumberOfTrades()
+            );
+        }
+        System.out.println(result_string);
+        // CODEINCLUDE-END-MARKER: ref-code-example-response
     }
 }
