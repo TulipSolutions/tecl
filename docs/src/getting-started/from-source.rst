@@ -203,19 +203,21 @@ Include the auth module and gRPC dependencies
 
         .. code-block:: bash
 
-            $ rsync -a --prune-empty-dirs --include "*/" --include="*.go" --exclude="*" vendor/tecl/go/ github.com/tulipsolutions/tecl
+            $ rsync -a --prune-empty-dirs --include "*/" --include="*.go" --exclude="*" \
+                  vendor/tecl/go/ github.com/tulipsolutions/tecl
 
     .. tab-container:: Java
 
         In addition to the generated gRPC bindings, the TECL Java-helpers make authentication easier.
         To be able to follow the rest of the tutorial, make sure to include these files.
 
-        Either copy the contents of the :code:`vendor/tecl/java` directory to :code:`src/main/java` or make sure your build tool
-        registers this directory as a sources directory.
+        Either copy the contents of the :code:`vendor/tecl/java` directory to :code:`src/main/java` or make sure your
+        build tool registers this directory as a sources directory.
 
         .. code-block:: bash
 
-            $ rsync -a --prune-empty-dirs --include "*/" --include="*.java" --exclude="*" vendor/tecl/java/ src/main/java
+            $ rsync -a --prune-empty-dirs --include "*/" --include="*.java" --exclude="*" \
+                  vendor/tecl/java/ src/main/java
 
         Lastly, add the `grpc-stub <https://mvnrepository.com/artifact/io.grpc/grpc-stub>`__,
         `grpc-protobuf <https://mvnrepository.com/artifact/io.grpc/grpc-protobuf>`__ and
@@ -226,12 +228,13 @@ Include the auth module and gRPC dependencies
         In addition to the generated gRPC bindings, the TECL Node.js-helpers make authentication easier.
         To be able to follow the rest of the tutorial, make sure to include these files.
 
-        Either copy the contents of the :code:`vendor/tecl/node` directory to `tulipsolutions/api` or make sure your build tool
-        registers this directory as a sources directory.
+        Either copy the contents of the :code:`vendor/tecl/node` directory to `tulipsolutions/api` or make sure your
+        build tool registers this directory as a sources directory.
 
         .. code-block:: bash
 
-            $ rsync -a --prune-empty-dirs --include "*/" --include="*.js" --exclude="*" vendor/tecl/node/ tulipsolutions/api
+            $ rsync -a --prune-empty-dirs --include "*/" --include="*.js" --exclude="*" \
+                  vendor/tecl/node/ tulipsolutions/api
 
         Lastly, add the `grpc <https://www.npmjs.com/package/grpc/>`__ and
         `protobuf <https://www.npmjs.com/package/google-protobuf>`__ dependencies to your project with:
@@ -247,7 +250,8 @@ Include the auth module and gRPC dependencies
 
         .. code-block:: bash
 
-            $ rsync -a --prune-empty-dirs --include "*/" --include="*.py" --exclude="*" vendor/tecl/python/ .
+            $ rsync -a --prune-empty-dirs --include "*/" --include="*.py" --exclude="*" \
+                  vendor/tecl/python/ .
 
         Either copy the contents of the :code:`vendor/tecl/python` directory to your project or make sure to register
         this directory as a sources directory.

@@ -12,8 +12,10 @@ In this section of the tutorial we compile the tulip client API from the protobu
 Create a new project
 ~~~~~~~~~~~~~~~~~~~~~~
 Set up a new project by creating a new Bazel workspace.
-A workspace is a directory that contains source files, as well as symbolic links to directories that contain the build outputs.
-More information about workspaces can be found `here <https://docs.bazel.build/versions/master/build-ref.html#workspace>`__
+A workspace is a directory that contains source files, as well as symbolic links to directories that contain the build
+outputs.
+More information about workspaces can be found
+`here <https://docs.bazel.build/versions/master/build-ref.html#workspace>`__
 
 Copy the following content into a file named WORKSPACE in the root of your project.
 
@@ -43,7 +45,10 @@ Copy the following content into a file named WORKSPACE in the root of your proje
                  url = "https://github.com/tulipsolutions/tecl/archive/<version>.tar.gz"
              )
 
-             load("@nl_tulipsolutions_tecl//bazel:repositories.bzl", nl_tulipsolutions_protocol_repositories = "repositories")
+             load(
+                 "@nl_tulipsolutions_tecl//bazel:repositories.bzl",
+                  nl_tulipsolutions_protocol_repositories = "repositories",
+              )
 
              nl_tulipsolutions_protocol_repositories()
 
@@ -89,8 +94,9 @@ In this directory create a BUILD.bazel file with the following content.
         The code above shows a rule that builds a go library from a :code:`main.go` file and a set of dependencies.
         The dependencies are also rules, but refer to other workspaces, they include:
 
-        *   The set of generated go gRPC bindings for the Tulip Exchange API (based on the `protobuf definitions <https://github.com/tulipsolutions/tecl>`__).
-        *   `The Go implementation of gRPC <https://github.com/grpc/grpc-go>`_.
+        * The set of generated go gRPC bindings for the Tulip Exchange API (based on the
+          `protobuf definitions <https://github.com/tulipsolutions/tecl>`__).
+        * `The Go implementation of gRPC <https://github.com/grpc/grpc-go>`_.
 
         A second rule uses the library as input to build an executable.
 

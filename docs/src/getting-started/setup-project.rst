@@ -15,7 +15,8 @@ The first part comes in two variants:
    From source <from-source>
    Bazel <bazel>
 
-The *From source* variant walks you through a traditional approach, using straight git sources and your programming language's native way of dependency management.
+The *From source* variant walks you through a traditional approach, using straight git sources and your programming
+language's native way of dependency management.
 The option to use :term:`Bazel` is recommended if you're familiar with it.
 
 .. admonition:: Programming language selector

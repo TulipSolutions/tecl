@@ -164,24 +164,29 @@ What happens under water, is the following:
 
     .. tab-container:: Go
 
-        The code for the Go interceptor can be found `on GitHub <https://github.com/tulipsolutions/tecl/blob/master/go/auth/message_authentication.go>`__.
+        The code for the Go interceptor can be found
+        `on GitHub <https://github.com/tulipsolutions/tecl/blob/master/go/auth/message_authentication.go>`__.
 
     .. tab-container:: Java
 
-        The code for the Java interceptor can be found `on GitHub <https://github.com/tulipsolutions/tecl/blob/master/java/nl/tulipsolutions/api/auth/MessageAuthClientInterceptor.java>`__.
+        The code for the Java interceptor can be found
+        `on GitHub <https://github.com/tulipsolutions/tecl/blob/master/java/nl/tulipsolutions/api/auth/MessageAuthClientInterceptor.java>`__.
 
     .. tab-container:: Node
 
-        The code for the Node.js interceptor can be found `on GitHub <https://github.com/tulipsolutions/tecl/blob/master/node/auth/index.js>`__.
+        The code for the Node.js interceptor can be found
+        `on GitHub <https://github.com/tulipsolutions/tecl/blob/master/node/auth/index.js>`__.
 
     .. tab-container:: Python
 
-        The code for the Python interceptor can be found `on GitHub <https://github.com/tulipsolutions/tecl/blob/master/python/tulipsolutions/api/auth/message_authentication_interceptor.py>`__.
+        The code for the Python interceptor can be found
+        `on GitHub <https://github.com/tulipsolutions/tecl/blob/master/python/tulipsolutions/api/auth/message_authentication_interceptor.py>`__.
 
 Verifying your implementation
 -----------------------------
 
-For the purpose of verifying your client side code, we provide a mock gRPC service hosted at https://mockgrpc.test.tulipsolutions.nl.
+For the purpose of verifying your client side code, we provide a mock gRPC service hosted at
+https://mockgrpc.test.tulipsolutions.nl.
 The service responds on all published RPC methods and verifies both user and request authentication if applicable.
 For user authentication simply use the dummy JWT token published above and in the examples.
 For request authentication, decode the base64 encoded string: ``secret==`` and use it to create an HMAC-SHA256 key.
