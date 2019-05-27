@@ -36,9 +36,12 @@ message InsufficientBalance {
 }
 
 message OrderIdNotExist {
+    fixed64 order_id = 1;
+    Market market = 2;
 }
 
 message MarketDisabled {
+    Market market = 1;
 }
 
 // Amount precision too high. For example, when placing an order for 0.3 satoshi when a market only allows
