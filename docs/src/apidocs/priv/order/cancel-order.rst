@@ -44,3 +44,8 @@ Cancel order
 
       .. codeinclude:: /examples/python/docs/private_order_service_cancel_order.py
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/python/docs/private_order_service_cancel_order.py
+         :marker-id: ref-code-example-response
+         :caption: Example response handling

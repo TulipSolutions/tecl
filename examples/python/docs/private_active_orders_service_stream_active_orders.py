@@ -18,6 +18,7 @@ import sys
 
 import grpc
 
+from tulipsolutions.api.common import orders_pb2
 from tulipsolutions.api.priv import order_pb2, order_pb2_grpc
 
 
@@ -33,6 +34,31 @@ def private_active_orders_service_stream_active_orders(channel):
         # Make the request synchronously and iterate over the received orderbook entries
         for response in stub.StreamActiveOrders(request):
             print(response)
+            # CODEINCLUDE-END-MARKER: ref-code-example-request
+            parse_and_print(response)
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
     except grpc.RpcError as e:
         print("PrivateActiveOrdersService.StreamActiveOrders error: " + str(e), file=sys.stderr)
     # CODEINCLUDE-END-MARKER: ref-code-example-request
+
+
+def parse_and_print(response):
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+    if response.WhichOneof("order") == "limit_order":
+        order_type_detail = "{} {}@{} remaining {}".format(
+            orders_pb2.Side.Name(response.limit_order.side),
+            response.limit_order.base_amount,
+            response.limit_order.price,
+            response.limit_order.base_remaining,
+        )
+    else:
+        order_type_detail = "was removed from orderbook"
+    print(
+        "{}: {} for market {} {}".format(
+            type(response).__name__,
+            response.order_id,
+            orders_pb2.Market.Name(response.market),
+            order_type_detail,
+        )
+    )
+    # CODEINCLUDE-END-MARKER: ref-code-example-response

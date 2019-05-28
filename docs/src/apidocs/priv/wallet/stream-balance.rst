@@ -44,3 +44,8 @@ Stream balance
 
       .. codeinclude:: /examples/python/docs/private_wallet_service_stream_balance.py
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/python/docs/private_wallet_service_stream_balance.py
+         :marker-id: ref-code-example-response
+         :caption: Example response handling

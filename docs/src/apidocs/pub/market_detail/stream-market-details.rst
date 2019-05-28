@@ -46,3 +46,8 @@ Stream market details
 
       .. codeinclude:: /examples/python/docs/public_market_detail_service_stream_market_details.py
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/python/docs/public_market_detail_service_stream_market_details.py
+         :marker-id: ref-code-example-response
+         :caption: Example response handling

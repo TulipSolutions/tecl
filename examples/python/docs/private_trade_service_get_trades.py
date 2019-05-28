@@ -38,3 +38,23 @@ def private_trade_service_get_trades(channel):
     except grpc.RpcError as e:
         print("PrivateTradeService.GetTrades error: " + str(e), file=sys.stderr)
     # CODEINCLUDE-END-MARKER: ref-code-example-request
+
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+    result_string = "{}\n".format(type(response).__name__)
+    for trade in response.trades:
+        result_string += \
+            "\t{}: {} {} {}@{} quote_amount: {} fee: {} {} time: {} id {} matched_orderid: {}\n".format(
+                type(trade).__name__,
+                orders_pb2.Market.Name(trade.market),
+                orders_pb2.Side.Name(trade.side),
+                trade.base_amount,
+                trade.price,
+                trade.quote_amount,
+                orders_pb2.Currency.Name(trade.fee_currency),
+                trade.fee,
+                trade.timestamp_ns,
+                trade.trade_id,
+                trade.order_id,
+            )
+    print(result_string)
+    # CODEINCLUDE-END-MARKER: ref-code-example-response

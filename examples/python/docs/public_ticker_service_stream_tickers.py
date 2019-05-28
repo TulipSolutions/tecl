@@ -18,6 +18,7 @@ import sys
 
 import grpc
 
+from tulipsolutions.api.common import orders_pb2
 from tulipsolutions.api.pub import ticker_pb2, ticker_pb2_grpc
 
 
@@ -32,6 +33,32 @@ def public_ticker_service_stream_tickers(channel):
         # Make the request synchronously and iterate over the received orderbook entries
         for response in stub.StreamTickers(request):
             print(response)
+            # CODEINCLUDE-END-MARKER: ref-code-example-request
+            parse_and_print(response)
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
     except grpc.RpcError as e:
         print("PublicTickerService.StreamTickers error: " + str(e), file=sys.stderr)
     # CODEINCLUDE-END-MARKER: ref-code-example-request
+
+
+def parse_and_print(response):
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+    print(
+        "{} {} mid_price {} best_buy_price: {} best_buy_size: {} best_sell_price: {} best_sell_size: {} open: {}, "
+        "high: {} low: {} close: {} volume_base: {} volume_quote: {}".format(
+            type(response).__name__,
+            orders_pb2.Market.Name(response.market),
+            response.mid_price,
+            response.best_buy_price,
+            response.best_buy_size,
+            response.best_sell_price,
+            response.best_sell_size,
+            response.daily_open,
+            response.daily_high,
+            response.daily_low,
+            response.daily_close,
+            response.daily_volume_base,
+            response.daily_volume_quote,
+        )
+    )
+    # CODEINCLUDE-END-MARKER: ref-code-example-response

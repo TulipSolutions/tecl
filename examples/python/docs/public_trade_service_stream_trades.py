@@ -35,6 +35,26 @@ def public_trade_service_stream_trades(channel):
         # Make the request synchronously and iterate over the received orderbook entries
         for response in stub.StreamTrades(request):
             print(response)
+            # CODEINCLUDE-END-MARKER: ref-code-example-request
+            parse_and_print(response)
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
     except grpc.RpcError as e:
         print("PublicTradeService.StreamTrades error: " + str(e), file=sys.stderr)
     # CODEINCLUDE-END-MARKER: ref-code-example-request
+
+
+def parse_and_print(response):
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+    print(
+        "{}: {} {} {}@{} quote_amount: {} time: {} id: {}".format(
+            type(response).__name__,
+            orders_pb2.Market.Name(response.market),
+            orders_pb2.Side.Name(response.side),
+            response.base_amount,
+            response.price,
+            response.quote_amount,
+            response.timestamp_ns,
+            response.trade_id,
+        )
+    )
+    # CODEINCLUDE-END-MARKER: ref-code-example-response

@@ -33,7 +33,7 @@ def private_order_service_cancel_order(channel):
     request = order_pb2.CancelOrderRequest(
         order_id=1,
         market=orders_pb2.BTC_EUR,
-        tonce=tonce,
+        tonce=int(tonce),
     )
 
     try:
@@ -43,3 +43,13 @@ def private_order_service_cancel_order(channel):
     except grpc.RpcError as e:
         print("PrivateOrderService.CancelOrder error: " + str(e), file=sys.stderr)
     # CODEINCLUDE-END-MARKER: ref-code-example-request
+
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+    print(
+        "{}: {} for {}".format(
+            type(response).__name__,
+            response.order_id,
+            orders_pb2.Market.Name(response.market),
+        )
+    )
+    # CODEINCLUDE-END-MARKER: ref-code-example-response

@@ -46,3 +46,8 @@ Get OHLC
 
       .. codeinclude:: /examples/python/docs/public_ohlc_service_get_ohlc_data.py
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/python/docs/public_ohlc_service_get_ohlc_data.py
+         :marker-id: ref-code-example-response
+         :caption: Example response handling

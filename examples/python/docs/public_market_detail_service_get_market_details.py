@@ -18,6 +18,7 @@ import sys
 
 import grpc
 
+from tulipsolutions.api.common import orders_pb2
 from tulipsolutions.api.pub import market_detail_pb2, market_detail_pb2_grpc
 
 
@@ -35,3 +36,27 @@ def public_market_detail_service_get_market_details(channel):
     except grpc.RpcError as e:
         print("PublicMarketDetailService.GetMarketDetails error: " + str(e), file=sys.stderr)
     # CODEINCLUDE-END-MARKER: ref-code-example-request
+
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+    result_string = "{}\n".format(type(response).__name__)
+    for market_detail in response.market_details:
+        print(market_detail)
+        result_string += (
+            "\t{} {} {} base_currency: {}, quote_currency: {} price_reso: {} amount_reso: {} "
+            "minimum_base_order_amount: {} maximum_base_order_amount: {} "
+            "minimum_quote_order_amount: {} maximum_quote_order_amount: {}\n"
+        ).format(
+            type(market_detail).__name__,
+            orders_pb2.Market.Name(market_detail.market),
+            market_detail_pb2.MarketStatus.Name(market_detail.market_status),
+            orders_pb2.Currency.Name(market_detail.base),
+            orders_pb2.Currency.Name(market_detail.quote),
+            market_detail.price_resolution,
+            market_detail.amount_resolution,
+            market_detail.minimum_base_order_amount,
+            market_detail.maximum_base_order_amount,
+            market_detail.minimum_quote_order_amount,
+            market_detail.maximum_quote_order_amount,
+        )
+    print(result_string)
+    # CODEINCLUDE-END-MARKER: ref-code-example-response

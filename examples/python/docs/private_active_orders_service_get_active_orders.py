@@ -18,6 +18,7 @@ import sys
 
 import grpc
 
+from tulipsolutions.api.common import orders_pb2
 from tulipsolutions.api.priv import order_pb2, order_pb2_grpc
 
 
@@ -36,3 +37,24 @@ def private_active_orders_service_get_active_orders(channel):
     except grpc.RpcError as e:
         print("PrivateActiveOrdersService.GetActiveOrders error: " + str(e), file=sys.stderr)
     # CODEINCLUDE-END-MARKER: ref-code-example-request
+
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+    result_string = "{}\n".format(type(response).__name__)
+    for activeOrder in response.orders:
+        if activeOrder.WhichOneof("order") == "limit_order":
+            order_type_detail = "{} {}@{} remaining {}".format(
+                orders_pb2.Side.Name(activeOrder.limit_order.side),
+                activeOrder.limit_order.base_amount,
+                activeOrder.limit_order.price,
+                activeOrder.limit_order.base_remaining,
+            )
+        else:
+            order_type_detail = " "
+        result_string += "\t{}: {} for market {} {}\n".format(
+            type(activeOrder).__name__,
+            activeOrder.order_id,
+            orders_pb2.Market.Name(activeOrder.market),
+            order_type_detail,
+        )
+    print(result_string)
+    # CODEINCLUDE-END-MARKER: ref-code-example-response

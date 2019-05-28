@@ -44,3 +44,8 @@ Stream Ohlc
 
       .. codeinclude:: /examples/python/docs/public_ohlc_service_stream_ohlc_data.py
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/python/docs/public_ohlc_service_stream_ohlc_data.py
+         :marker-id: ref-code-example-response
+         :caption: Example response handling

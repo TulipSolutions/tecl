@@ -40,6 +40,23 @@ def public_orderbook_service_stream_orderbook(channel):
         # Make the request synchronously and iterate over the received orderbook entries
         for response in stub.StreamOrderbook(request):
             print(response)
+            # CODEINCLUDE-END-MARKER: ref-code-example-request
+            parse_and_print(response)
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
     except grpc.RpcError as e:
         print("PublicOrderbookService.StreamOrderbook error: " + str(e), file=sys.stderr)
     # CODEINCLUDE-END-MARKER: ref-code-example-request
+
+
+def parse_and_print(response):
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+    print(
+        "{} {} {} orders @ {} total {}".format(
+            type(response).__name__,
+            orders_pb2.Side.Name(response.side),
+            response.orders_at_price_level,
+            response.price_level,
+            response.amount,
+        )
+    )
+    # CODEINCLUDE-END-MARKER: ref-code-example-response

@@ -46,3 +46,8 @@ Stream active orders
 
       .. codeinclude:: /examples/python/docs/private_active_orders_service_stream_active_orders.py
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/python/docs/private_active_orders_service_stream_active_orders.py
+         :marker-id: ref-code-example-response
+         :caption: Example response handling

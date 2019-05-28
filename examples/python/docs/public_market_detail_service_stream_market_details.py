@@ -18,6 +18,7 @@ import sys
 
 import grpc
 
+from tulipsolutions.api.common import orders_pb2
 from tulipsolutions.api.pub import market_detail_pb2, market_detail_pb2_grpc
 
 
@@ -32,6 +33,31 @@ def public_market_detail_service_stream_market_details(channel):
         # Make the request synchronously and iterate over the received orderbook entries
         for response in stub.StreamMarketDetails(request):
             print(response)
+            # CODEINCLUDE-END-MARKER: ref-code-example-request
+            parse_and_print(response)
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
     except grpc.RpcError as e:
         print("PublicMarketDetailService.StreamMarketDetails error: " + str(e), file=sys.stderr)
     # CODEINCLUDE-END-MARKER: ref-code-example-request
+
+
+def parse_and_print(response):
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+    print(
+        "{} {} {} base_currency: {}, quote_currency: {} price_reso: {} amount_reso: {} "
+        "minimum_base_order_amount: {} maximum_base_order_amount: {} "
+        "minimum_quote_order_amount: {} maximum_quote_order_amount: {}".format(
+            type(response).__name__,
+            orders_pb2.Market.Name(response.market),
+            market_detail_pb2.MarketStatus.Name(response.market_status),
+            orders_pb2.Currency.Name(response.base),
+            orders_pb2.Currency.Name(response.quote),
+            response.price_resolution,
+            response.amount_resolution,
+            response.minimum_base_order_amount,
+            response.maximum_base_order_amount,
+            response.minimum_quote_order_amount,
+            response.maximum_quote_order_amount,
+        )
+    )
+    # CODEINCLUDE-END-MARKER: ref-code-example-response

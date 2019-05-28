@@ -44,3 +44,8 @@ Stream tickers
 
       .. codeinclude:: /examples/python/docs/public_ticker_service_stream_tickers.py
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/python/docs/public_ticker_service_stream_tickers.py
+         :marker-id: ref-code-example-response
+         :caption: Example response handling

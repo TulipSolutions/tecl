@@ -38,3 +38,20 @@ def public_trade_service_get_trades(channel):
     except grpc.RpcError as e:
         print("PublicTradeService.GetTrades error: " + str(e), file=sys.stderr)
     # CODEINCLUDE-END-MARKER: ref-code-example-request
+
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+    result_string = "{}\n".format(type(response).__name__)
+    for trade in response.trades:
+        result_string += \
+            "\t{}: {} {} {}@{} quote_amount: {} time: {} id: {}\n".format(
+                type(trade).__name__,
+                orders_pb2.Market.Name(trade.market),
+                orders_pb2.Side.Name(trade.side),
+                trade.base_amount,
+                trade.price,
+                trade.quote_amount,
+                trade.timestamp_ns,
+                trade.trade_id,
+            )
+    print(result_string)
+    # CODEINCLUDE-END-MARKER: ref-code-example-response

@@ -18,6 +18,7 @@ import sys
 
 import grpc
 
+from tulipsolutions.api.common import orders_pb2
 from tulipsolutions.api.priv import wallet_pb2, wallet_pb2_grpc
 
 
@@ -32,6 +33,22 @@ def private_wallet_service_stream_balance(channel):
         # Make the request synchronously and iterate over the received orderbook entries
         for response in stub.StreamBalance(request):
             print(response)
+            # CODEINCLUDE-END-MARKER: ref-code-example-request
+            parse_and_print(response)
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
     except grpc.RpcError as e:
         print("PrivateWalletService.StreamBalance error: " + str(e), file=sys.stderr)
     # CODEINCLUDE-END-MARKER: ref-code-example-request
+
+
+def parse_and_print(response):
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+    print(
+        "{} {} total: {} locked: {}".format(
+            type(response).__name__,
+            orders_pb2.Currency.Name(response.currency),
+            response.total_amount,
+            response.locked_amount,
+        )
+    )
+    # CODEINCLUDE-END-MARKER: ref-code-example-response

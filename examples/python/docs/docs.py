@@ -15,7 +15,7 @@
 
 
 import base64
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import as_completed, ThreadPoolExecutor
 
 import grpc
 from private_active_orders_service_get_active_orders import private_active_orders_service_get_active_orders
@@ -37,9 +37,9 @@ from public_trade_service_stream_trades import public_trade_service_stream_trade
 from public_ohlc_service_get_ohlc_data import public_ohlc_service_get_ohlc_data
 from public_ohlc_service_stream_ohlc_data import public_ohlc_service_stream_ohlc_data
 
-
 from tulipsolutions.api.auth import jwt_interceptor
 from tulipsolutions.api.auth import message_authentication_interceptor
+
 
 if __name__ == '__main__':
     creds = grpc.ssl_channel_credentials()
@@ -56,23 +56,24 @@ if __name__ == '__main__':
         jwt_interceptor = jwt_interceptor.create(dummy_jwt)
         # Add interceptors to all requests over the channel
         channel = grpc.intercept_channel(channel, jwt_interceptor, message_auth_interceptor)
-
         with ThreadPoolExecutor(max_workers=20) as executor:
-            executor.submit(private_active_orders_service_get_active_orders, channel),
-            executor.submit(private_active_orders_service_stream_active_orders, channel),
-            executor.submit(private_order_service_cancel_order, channel),
-            executor.submit(private_order_service_create_order, channel),
-            executor.submit(private_trade_service_get_trades, channel),
-            executor.submit(private_trade_service_stream_trades, channel),
-            executor.submit(private_wallet_service_get_balance, channel),
-            executor.submit(private_wallet_service_stream_balance, channel),
-            executor.submit(public_market_detail_service_get_market_details, channel),
-            executor.submit(public_market_detail_service_stream_market_details, channel),
-            executor.submit(public_orderbook_service_get_orderbook, channel),
-            executor.submit(public_orderbook_service_stream_orderbook, channel),
-            executor.submit(public_ticker_service_get_tickers, channel),
-            executor.submit(public_ticker_service_stream_tickers, channel),
-            executor.submit(public_trade_service_get_trades, channel),
-            executor.submit(public_trade_service_stream_trades, channel),
-            executor.submit(public_ohlc_service_get_ohlc_data, channel),
-            executor.submit(public_ohlc_service_stream_ohlc_data, channel),
+            futures = [
+                executor.submit(private_active_orders_service_get_active_orders, channel),
+                executor.submit(private_active_orders_service_stream_active_orders, channel),
+                executor.submit(private_order_service_cancel_order, channel),
+                executor.submit(private_order_service_create_order, channel),
+                executor.submit(private_trade_service_get_trades, channel),
+                executor.submit(private_trade_service_stream_trades, channel),
+                executor.submit(private_wallet_service_get_balance, channel),
+                executor.submit(private_wallet_service_stream_balance, channel),
+                executor.submit(public_market_detail_service_get_market_details, channel),
+                executor.submit(public_market_detail_service_stream_market_details, channel),
+                executor.submit(public_orderbook_service_get_orderbook, channel),
+                executor.submit(public_orderbook_service_stream_orderbook, channel),
+                executor.submit(public_ticker_service_get_tickers, channel),
+                executor.submit(public_ticker_service_stream_tickers, channel),
+                executor.submit(public_trade_service_get_trades, channel),
+                executor.submit(public_trade_service_stream_trades, channel),
+                executor.submit(public_ohlc_service_get_ohlc_data, channel),
+                executor.submit(public_ohlc_service_stream_ohlc_data, channel),
+            ]

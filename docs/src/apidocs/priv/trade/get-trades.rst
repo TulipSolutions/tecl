@@ -46,3 +46,8 @@ Get private trades
 
       .. codeinclude:: /examples/python/docs/private_trade_service_get_trades.py
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/python/docs/private_trade_service_get_trades.py
+         :marker-id: ref-code-example-response
+         :caption: Example response handling

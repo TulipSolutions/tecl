@@ -32,7 +32,7 @@ def public_orderbook_service_get_orderbook(channel):
     request = orderbook_pb2.GetOrderbookRequest(
         market=orders_pb2.BTC_EUR,
         precision=orderbook_pb2.P0,
-        length=orderbook_pb2.L0,
+        length=orderbook_pb2.NUM_ENTRIES_25,
     )
 
     try:
@@ -42,3 +42,16 @@ def public_orderbook_service_get_orderbook(channel):
     except grpc.RpcError as e:
         print("PublicOrderbookService.GetOrderbook error: " + str(e), file=sys.stderr)
     # CODEINCLUDE-END-MARKER: ref-code-example-request
+
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+    result_string = "{}\n".format(type(response).__name__)
+    for orderbook_entry in response.entries:
+        result_string += "\t{} {} {} orders @ {} total {}\n".format(
+            type(orderbook_entry).__name__,
+            orders_pb2.Side.Name(orderbook_entry.side),
+            orderbook_entry.orders_at_price_level,
+            orderbook_entry.price_level,
+            orderbook_entry.amount,
+        )
+    print(result_string)
+    # CODEINCLUDE-END-MARKER: ref-code-example-response

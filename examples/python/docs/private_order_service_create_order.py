@@ -38,7 +38,7 @@ def private_order_service_create_order(channel):
             base_amount=1.0,
             price=3000.0,
         ),
-        tonce=order_id,
+        tonce=int(order_id),
     )
     # CODEINCLUDE-END-MARKER: authentication-request
 
@@ -49,3 +49,21 @@ def private_order_service_create_order(channel):
     except grpc.RpcError as e:
         print("PrivateOrderService.CreateOrder error: " + str(e), file=sys.stderr)
     # CODEINCLUDE-END-MARKER: ref-code-example-request
+
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+    order_type_detail = ""
+    if response.WhichOneof("order_type") == "limit_order":
+        order_type_detail = "{} {}@{} ".format(
+            orders_pb2.Side.Name(response.limit_order.side),
+            response.limit_order.base_amount,
+            response.limit_order.price,
+        )
+    print(
+        "{}: {} for {} {}".format(
+            type(response).__name__,
+            response.order_id,
+            orders_pb2.Market.Name(response.market),
+            order_type_detail,
+        )
+    )
+    # CODEINCLUDE-END-MARKER: ref-code-example-response

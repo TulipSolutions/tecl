@@ -29,7 +29,7 @@ def public_ohlc_service_get_ohlc_data(channel):
     request = ohlc_pb2.GetOhlcRequest(
         market=orders_pb2.BTC_EUR,
     )
-    request.Intervals.extend([ohlc_pb2.ONE_SECOND, ohlc_pb2.ONE_MINUTE, ohlc_pb2.FIVE_MINUTES])
+    request.intervals.extend([ohlc_pb2.ONE_SECOND, ohlc_pb2.ONE_MINUTE, ohlc_pb2.FIVE_MINUTES])
 
     try:
         # Make the request synchronously with a 1s deadline
@@ -38,3 +38,23 @@ def public_ohlc_service_get_ohlc_data(channel):
     except grpc.RpcError as e:
         print("PublicOhlcService.GetOhlcData error: " + str(e), file=sys.stderr)
     # CODEINCLUDE-END-MARKER: ref-code-example-request
+
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+    result_string = "{}\n".format(type(response).__name__)
+    for ohlcbin in response.bins:
+        result_string += \
+            ("\t{} time: {} {} open: {}, high: {} low: {} close: {} "
+             "volume_base: {} volume_quote: {} nr_trades: {}\n").format(
+                type(ohlcbin).__name__,
+                ohlcbin.timestamp_ns,
+                ohlc_pb2.Interval.Name(ohlcbin.interval),
+                ohlcbin.open,
+                ohlcbin.high,
+                ohlcbin.low,
+                ohlcbin.close,
+                ohlcbin.volume_base,
+                ohlcbin.volume_quote,
+                ohlcbin.number_of_trades,
+            )
+    print(result_string)
+    # CODEINCLUDE-END-MARKER: ref-code-example-response

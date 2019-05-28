@@ -18,6 +18,7 @@ import sys
 
 import grpc
 
+from tulipsolutions.api.common import orders_pb2
 from tulipsolutions.api.pub import ticker_pb2, ticker_pb2_grpc
 
 
@@ -35,3 +36,27 @@ def public_ticker_service_get_tickers(channel):
     except grpc.RpcError as e:
         print("PublicTickerService.GetTickers error: " + str(e), file=sys.stderr)
     # CODEINCLUDE-END-MARKER: ref-code-example-request
+
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+    result_string = "{}\n".format(type(response).__name__)
+    for tick in response.ticks:
+        result_string += (
+            "\t{} {} mid_price {} best_buy_price: {} best_buy_size: {} best_sell_price: {} best_sell_size: {} "
+            "open: {}, high: {} low: {} close: {} volume_base: {} volume_quote: {}\n"
+        ).format(
+            type(tick).__name__,
+            orders_pb2.Market.Name(tick.market),
+            tick.mid_price,
+            tick.best_buy_price,
+            tick.best_buy_size,
+            tick.best_sell_price,
+            tick.best_sell_size,
+            tick.daily_open,
+            tick.daily_high,
+            tick.daily_low,
+            tick.daily_close,
+            tick.daily_volume_base,
+            tick.daily_volume_quote,
+        )
+    print(result_string)
+    # CODEINCLUDE-END-MARKER: ref-code-example-response

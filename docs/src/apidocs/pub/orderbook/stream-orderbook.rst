@@ -44,3 +44,8 @@ Stream orderbook
 
       .. codeinclude:: /examples/python/docs/public_orderbook_service_stream_orderbook.py
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/python/docs/public_orderbook_service_stream_orderbook.py
+         :marker-id: ref-code-example-response
+         :caption: Example response handling

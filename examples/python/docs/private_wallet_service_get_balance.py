@@ -18,6 +18,7 @@ import sys
 
 import grpc
 
+from tulipsolutions.api.common import orders_pb2
 from tulipsolutions.api.priv import wallet_pb2, wallet_pb2_grpc
 
 
@@ -35,3 +36,15 @@ def private_wallet_service_get_balance(channel):
     except grpc.RpcError as e:
         print("PrivateWalletService.GetBalance error: " + str(e), file=sys.stderr)
     # CODEINCLUDE-END-MARKER: ref-code-example-request
+
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+    result_string = "{}\n".format(type(response).__name__)
+    for balance in response.balance_response:
+        result_string += "\t{} {} total: {} locked: {} \n".format(
+            type(balance).__name__,
+            orders_pb2.Currency.Name(balance.currency),
+            balance.total_amount,
+            balance.locked_amount,
+        )
+    print(result_string)
+    # CODEINCLUDE-END-MARKER: ref-code-example-response
