@@ -24,9 +24,24 @@ option go_package = "github.com/tulipsolutions/tecl/tulipsolutions/api/common/er
 
 import "tulipsolutions/api/common/orders.proto";
 
-message OrderTooSmall {
-    double order_size = 1;
-    double min_quantity = 2;
+message BaseOrderAmountTooSmall {
+    double base_amount = 1;
+    double min_base_amount = 2;
+}
+
+message BaseOrderAmountTooLarge {
+    double base_amount = 1;
+    double max_base_amount = 2;
+}
+
+message QuoteOrderAmountTooSmall {
+    double quote_amount = 1;
+    double min_quote_amount = 2;
+}
+
+message QuoteOrderAmountTooLarge {
+    double quote_amount = 1;
+    double max_quote_amount = 2;
 }
 
 message InsufficientBalance {

@@ -54,10 +54,14 @@ message MarketDetail {
     double price_resolution = 3;
     // Smallest possible value that an amount can be incremented with
     double amount_resolution = 4;
-    double minimum_order_amount = 5;
-    double maximum_order_amount = 6;
+    double minimum_base_order_amount = 5;
+    double maximum_base_order_amount = 6;
     common.Currency base = 7;
     common.Currency quote = 8;
+    // The minimum size of the order by quote amount. Calculated as ``base_order_amount * price``.
+    double minimum_quote_order_amount = 9;
+    // Same as ``minimum_quote_order_amount``, but the maximum amount.
+    double maximum_quote_order_amount = 10;
 }
 
 message MarketDetails {
