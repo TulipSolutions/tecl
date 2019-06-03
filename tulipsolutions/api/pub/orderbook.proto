@@ -90,7 +90,7 @@ message OrderbookEntry {
 }
 
 message OrderbookEntries {
-    repeated OrderbookEntry entry = 1;
+    repeated OrderbookEntry entries = 1;
 }
 
 service PublicOrderbookService {
