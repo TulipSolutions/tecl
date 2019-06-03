@@ -15,25 +15,21 @@ Create order
    :class: code-example-responsive
 
    .. tab-container:: Go
-      :sidebar:
 
       .. codeinclude:: /examples/go/docs/private_order_service_create_order.go
          :marker-id: ref-code-example-request
 
    .. tab-container:: Java
-      :sidebar:
 
       .. codeinclude:: /examples/java/docs/PrivateOrderServiceCreateOrder.java
          :marker-id: ref-code-example-request
 
    .. tab-container:: Node
-      :sidebar:
 
       .. codeinclude:: /examples/node/docs/privateOrderServiceCreateOrder.js
          :marker-id: ref-code-example-request
 
    .. tab-container:: Python
-      :sidebar:
 
       .. codeinclude:: /examples/python/docs/private_order_service_create_order.py
          :marker-id: ref-code-example-request

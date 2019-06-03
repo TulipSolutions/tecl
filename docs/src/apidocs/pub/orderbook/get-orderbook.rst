@@ -13,25 +13,21 @@ Get orderbook
    :class: code-example-responsive
 
    .. tab-container:: Go
-      :sidebar:
 
       .. codeinclude:: /examples/go/docs/public_orderbook_service_get_orderbook.go
          :marker-id: ref-code-example-request
 
    .. tab-container:: Java
-      :sidebar:
 
       .. codeinclude:: /examples/java/docs/PublicOrderbookServiceGetOrderbook.java
          :marker-id: ref-code-example-request
 
    .. tab-container:: Node
-      :sidebar:
 
       .. codeinclude:: /examples/node/docs/publicOrderbookServiceGetOrderbook.js
          :marker-id: ref-code-example-request
 
    .. tab-container:: Python
-      :sidebar:
 
       .. codeinclude:: /examples/python/docs/public_orderbook_service_get_orderbook.py
          :marker-id: ref-code-example-request

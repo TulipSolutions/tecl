@@ -52,10 +52,6 @@ class ContentTabsContainerDirective(SphinxDirective):
     has_content = True
     required_arguments = 1
 
-    option_spec = {
-        'sidebar': directives.flag,
-    }
-
     def run(self):
         self.assert_has_content()
 
@@ -68,11 +64,8 @@ class ContentTabsContainerDirective(SphinxDirective):
 
         text = '\n'.join(self.content)
         classes = ['code-example', 'tab-content', 'tab-%s' % lang]
-        if 'sidebar' in self.options:
-            node = nodes.sidebar(classes=classes)
-            node += nodes.paragraph('', "%s code example" % lang, classes=["sidebar-title"])
-        else:
-            node = nodes.container(classes=classes)
+        node = nodes.sidebar(classes=classes)
+        node += nodes.paragraph('', "%s code example" % lang, classes=["sidebar-title"])
         node += nodes.paragraph(text)
 
         # Make the first tab active by default, this prevents rendering of all tabs
