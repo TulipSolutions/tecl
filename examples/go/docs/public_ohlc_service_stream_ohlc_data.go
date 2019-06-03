@@ -45,7 +45,7 @@ func publicOhlcServiceStreamOhlcData(conn *grpc.ClientConn, parentContext contex
 	}
 
 	for {
-		candle, err := stream.Recv()
+		response, err := stream.Recv()
 		if err == io.EOF {
 			fmt.Println("PublicOhlcService.StreamOhlcData completed")
 			return
@@ -54,7 +54,28 @@ func publicOhlcServiceStreamOhlcData(conn *grpc.ClientConn, parentContext contex
 			_, _ = fmt.Fprintf(os.Stderr, "PublicOhlcService.StreamOhlcData error: %v \n", err)
 			return
 		}
-		fmt.Println(candle)
+		fmt.Println(response)
+		// CODEINCLUDE-END-MARKER: ref-code-example-request
+		parseAndPrintOhlc(response)
+		// CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
 	}
 	// CODEINCLUDE-END-MARKER: ref-code-example-request
+}
+
+func parseAndPrintOhlc(bin *ohlc.OhlcBin){
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+	fmt.Printf(
+		"%T %d %s open: %f, high: %f low: %f close: %f volume_base: %f volume_quote: %f nr_trades: %d\n",
+		bin,
+		bin.TimestampNs,
+		bin.Interval.String(),
+		bin.Open,
+		bin.High,
+		bin.Low,
+		bin.Close,
+		bin.VolumeBase,
+		bin.VolumeQuote,
+		bin.NumberOfTrades,
+	)
+	// CODEINCLUDE-END-MARKER: ref-code-example-response
 }

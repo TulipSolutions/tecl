@@ -14,6 +14,11 @@ Stream orderbook
 
       .. codeinclude:: /examples/go/docs/public_orderbook_service_stream_orderbook.go
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/go/docs/public_orderbook_service_stream_orderbook.go
+         :marker-id: ref-code-example-response
+         :caption: Example response handling
 
    .. tab-container:: Java
 

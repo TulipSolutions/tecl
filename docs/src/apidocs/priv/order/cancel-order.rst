@@ -14,6 +14,11 @@ Cancel order
 
       .. codeinclude:: /examples/go/docs/private_order_service_cancel_order.go
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/go/docs/private_order_service_cancel_order.go
+         :marker-id: ref-code-example-response
+         :caption: Example response handling
 
    .. tab-container:: Java
 

@@ -40,4 +40,17 @@ func privateWalletServiceGetBalance(conn *grpc.ClientConn, parentContext context
 	}
 	fmt.Println(response)
 	// CODEINCLUDE-END-MARKER: ref-code-example-request
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+	resultString := fmt.Sprintf("%T\n", response)
+	for _, balance := range response.BalanceResponse {
+		resultString += fmt.Sprintf(
+			"\t%T %s total: %f locked: %f\n",
+			balance,
+			balance.Currency.String(),
+			balance.TotalAmount,
+			balance.LockedAmount,
+		)
+	}
+	fmt.Printf(resultString)
+	// CODEINCLUDE-END-MARKER: ref-code-example-response
 }

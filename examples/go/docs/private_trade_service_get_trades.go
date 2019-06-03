@@ -43,4 +43,24 @@ func privateTradeServiceGetTrades(conn *grpc.ClientConn, parentContext context.C
 	}
 	fmt.Println(response)
 	// CODEINCLUDE-END-MARKER: ref-code-example-request
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+	resultString := fmt.Sprintf("%T\n", response)
+	for _, trade := range response.Trades {
+		resultString += fmt.Sprintf(
+			"\t%T: %s %s %f@%f quote_amount: %f fee: %s %f time: %d id: %d matched_orderid: %d\n",
+			trade,
+			trade.Market.String(),
+			trade.Side.String(),
+			trade.BaseAmount,
+			trade.Price,
+			trade.QuoteAmount,
+			trade.FeeCurrency.String(),
+			trade.Fee,
+			trade.TimestampNs,
+			trade.TradeId,
+			trade.OrderId,
+		)
+	}
+	fmt.Printf(resultString)
+	// CODEINCLUDE-END-MARKER: ref-code-example-response
 }

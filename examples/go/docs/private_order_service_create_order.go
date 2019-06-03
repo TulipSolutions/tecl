@@ -54,4 +54,23 @@ func privateOrderServiceCreateOrder(conn *grpc.ClientConn, parentContext context
 	}
 	fmt.Println(response)
 	// CODEINCLUDE-END-MARKER: ref-code-example-request
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+	var orderTypeDetail string
+	switch order := response.OrderType.(type) {
+	case *order.CreateOrderResponse_LimitOrder:
+		orderTypeDetail = fmt.Sprintf("%s %f@%f",
+			order.LimitOrder.Side.String(),
+			order.LimitOrder.Price,
+			order.LimitOrder.BaseAmount,
+		)
+	default:
+		orderTypeDetail = "This should not be empty!"
+	}
+	fmt.Printf("%T: orderId: %d for %s %s\n",
+		response,
+		response.OrderId,
+		response.Market.String(),
+		orderTypeDetail,
+	)
+	// CODEINCLUDE-END-MARKER: ref-code-example-response
 }

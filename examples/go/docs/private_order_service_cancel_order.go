@@ -46,4 +46,11 @@ func privateOrderServiceCancelOrder(conn *grpc.ClientConn, parentContext context
 	}
 	fmt.Println(response)
 	// CODEINCLUDE-END-MARKER: ref-code-example-request
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+	fmt.Printf("%T: orderId: %d for %s\n",
+		response,
+		response.OrderId,
+		response.Market.String(),
+	)
+	// CODEINCLUDE-END-MARKER: ref-code-example-response
 }

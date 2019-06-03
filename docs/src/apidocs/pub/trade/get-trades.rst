@@ -16,6 +16,11 @@ Get trades
 
       .. codeinclude:: /examples/go/docs/public_trade_service_get_trades.go
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/go/docs/public_trade_service_get_trades.go
+         :marker-id: ref-code-example-response
+         :caption: Example response handling
 
    .. tab-container:: Java
 

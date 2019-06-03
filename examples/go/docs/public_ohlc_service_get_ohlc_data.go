@@ -37,11 +37,30 @@ func publicOhlcServiceGetOhlcData(conn *grpc.ClientConn, parentContext context.C
 	// Create a new context with a 1s deadline and make the request synchronously
 	ctx, cancel := context.WithTimeout(parentContext, time.Second)
 	defer cancel()
-	ohlcBin, err := client.GetOhlcData(ctx, &request)
+	response, err := client.GetOhlcData(ctx, &request)
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "PublicOhlcService.GetOhlcData error: %v \n", err)
 		return
 	}
-	fmt.Println(ohlcBin)
+	fmt.Println(response)
 	// CODEINCLUDE-END-MARKER: ref-code-example-request
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+	resultString := fmt.Sprintf("%T\n", response)
+	for _, ohlcBin := range response.Bins {
+		resultString += fmt.Sprintf(
+		"\t%T %d %s open: %f, high: %f low: %f close: %f volume_base: %f volume_quote: %f nr_trades: %d\n",
+			ohlcBin,
+			ohlcBin.TimestampNs,
+			ohlcBin.Interval.String(),
+			ohlcBin.Open,
+			ohlcBin.High,
+			ohlcBin.Low,
+			ohlcBin.Close,
+			ohlcBin.VolumeBase,
+			ohlcBin.VolumeQuote,
+			ohlcBin.NumberOfTrades,
+		)
+	}
+	fmt.Printf(resultString)
+	// CODEINCLUDE-END-MARKER: ref-code-example-response
 }

@@ -14,6 +14,11 @@ Stream tickers
 
       .. codeinclude:: /examples/go/docs/public_ticker_service_stream_tickers.go
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/go/docs/public_ticker_service_stream_tickers.go
+         :marker-id: ref-code-example-response
+         :caption: Example response handling
 
    .. tab-container:: Java
 

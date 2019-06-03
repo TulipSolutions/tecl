@@ -43,7 +43,7 @@ func privateTradeServiceStreamTrades(conn *grpc.ClientConn, parentContext contex
 	}
 
 	for {
-		entry, err := stream.Recv()
+		response, err := stream.Recv()
 		if err == io.EOF {
 			fmt.Println("PrivateTradeService.StreamTrades completed")
 			return
@@ -52,7 +52,29 @@ func privateTradeServiceStreamTrades(conn *grpc.ClientConn, parentContext contex
 			_, _ = fmt.Fprintf(os.Stderr, "PrivateTradeService.StreamTrades error: %v \n", err)
 			return
 		}
-		fmt.Println(entry)
+		fmt.Println(response)
+		// CODEINCLUDE-END-MARKER: ref-code-example-request
+		parseAndPrintPrivateTrade(response)
+		// CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
 	}
 	// CODEINCLUDE-END-MARKER: ref-code-example-request
+}
+
+func parseAndPrintPrivateTrade(response *trade.PrivateTrade) {
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+	fmt.Printf(
+		"%T: %s %s %f@%f quote_amount: %f fee: %s %f time: %d id: %d matched_orderid: %d\n",
+		response,
+		response.Market.String(),
+		response.Side.String(),
+		response.BaseAmount,
+		response.Price,
+		response.QuoteAmount,
+		response.FeeCurrency.String(),
+		response.Fee,
+		response.TimestampNs,
+		response.TradeId,
+		response.OrderId,
+	)
+	// CODEINCLUDE-END-MARKER: ref-code-example-response
 }

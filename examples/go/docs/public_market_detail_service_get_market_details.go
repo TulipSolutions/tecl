@@ -40,4 +40,26 @@ func publicMarketDetailServiceGetMarketDetails(conn *grpc.ClientConn, parentCont
 	}
 	fmt.Println(response)
 	// CODEINCLUDE-END-MARKER: ref-code-example-request
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+	resultString := fmt.Sprintf("%T\n", response)
+	for _, detail := range response.MarketDetails {
+		resultString += fmt.Sprintf(
+			"\t%T %s %s base currency: %s, quote currency: %s price resolution: %.8f amount resolution: %.8f " +
+				"minimum base order amount: %.8f maximum base order amount: %.8f, minimum quote order amount: %.8f " +
+				"maximum quote order amount: %.8f\n",
+			detail,
+			detail.Market.String(),
+			detail.MarketStatus.String(),
+			detail.Base.String(),
+			detail.Quote.String(),
+			detail.PriceResolution,
+			detail.AmountResolution,
+			detail.GetMinimumBaseOrderAmount(),
+			detail.GetMaximumBaseOrderAmount(),
+			detail.GetMinimumQuoteOrderAmount(),
+			detail.GetMaximumQuoteOrderAmount(),
+		)
+	}
+	fmt.Printf(resultString)
+	// CODEINCLUDE-END-MARKER: ref-code-example-response
 }

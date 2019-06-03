@@ -41,7 +41,7 @@ func privateActiveOrdersServiceStreamActiveOrders(conn *grpc.ClientConn, parentC
 	}
 
 	for {
-		entry, err := stream.Recv()
+		response, err := stream.Recv()
 		if err == io.EOF {
 			fmt.Println("PrivateActiveOrdersService.StreamActiveOrders completed")
 			return
@@ -50,7 +50,33 @@ func privateActiveOrdersServiceStreamActiveOrders(conn *grpc.ClientConn, parentC
 			_, _ = fmt.Fprintf(os.Stderr, "PrivateActiveOrdersService.StreamActiveOrders error: %v \n", err)
 			return
 		}
-		fmt.Println(entry)
+		fmt.Println(response)
+		// CODEINCLUDE-END-MARKER: ref-code-example-request
+		parseAndPrintPrivateOrder(response)
+		// CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
 	}
 	// CODEINCLUDE-END-MARKER: ref-code-example-request
+}
+
+func parseAndPrintPrivateOrder(response *order.ActiveOrderStatus) {
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+	var orderTypeDetail string
+	switch activeOrder := response.Order.(type) {
+	case *order.ActiveOrderStatus_LimitOrder:
+		orderTypeDetail = fmt.Sprintf("%s %f@%f remaining %f",
+			activeOrder.LimitOrder.Side.String(),
+			activeOrder.LimitOrder.BaseAmount,
+			activeOrder.LimitOrder.Price,
+			activeOrder.LimitOrder.BaseRemaining,
+		)
+	default:
+		orderTypeDetail = "was removed from orderbook"
+	}
+	fmt.Printf("%T: %d for market %s %s\n",
+		response,
+		response.OrderId,
+		response.Market.String(),
+		orderTypeDetail,
+	)
+	// CODEINCLUDE-END-MARKER: ref-code-example-response
 }

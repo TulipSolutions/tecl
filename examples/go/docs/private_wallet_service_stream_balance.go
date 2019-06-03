@@ -40,7 +40,7 @@ func privateWalletServiceStreamBalance(conn *grpc.ClientConn, parentContext cont
 	}
 
 	for {
-		entry, err := stream.Recv()
+		response, err := stream.Recv()
 		if err == io.EOF {
 			fmt.Println("PrivateWalletService.StreamBalance completed")
 			return
@@ -49,7 +49,22 @@ func privateWalletServiceStreamBalance(conn *grpc.ClientConn, parentContext cont
 			_, _ = fmt.Fprintf(os.Stderr, "PrivateWalletService.StreamBalance error: %v \n", err)
 			return
 		}
-		fmt.Println(entry)
+		fmt.Println(response)
+		// CODEINCLUDE-END-MARKER: ref-code-example-request
+		parseAndPrintBalance(response)
+		// CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
 	}
 	// CODEINCLUDE-END-MARKER: ref-code-example-request
+}
+
+func parseAndPrintBalance(response *wallet.BalanceResponse) {
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+	fmt.Printf(
+		"%T %s total: %f locked: %f\n",
+		response,
+		response.Currency.String(),
+		response.TotalAmount,
+		response.LockedAmount,
+	)
+	// CODEINCLUDE-END-MARKER: ref-code-example-response
 }

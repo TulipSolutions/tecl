@@ -14,6 +14,11 @@ Stream private trades
 
       .. codeinclude:: /examples/go/docs/private_trade_service_stream_trades.go
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/go/docs/private_trade_service_stream_trades.go
+         :marker-id: ref-code-example-response
+         :caption: Example response handling
 
    .. tab-container:: Java
 

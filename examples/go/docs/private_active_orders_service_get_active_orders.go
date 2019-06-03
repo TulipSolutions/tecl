@@ -41,4 +41,28 @@ func privateActiveOrdersServiceGetActiveOrders(conn *grpc.ClientConn, parentCont
 	}
 	fmt.Println(response)
 	// CODEINCLUDE-END-MARKER: ref-code-example-request
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+	resultString := fmt.Sprintf("%T\n", response)
+	for _, activeOrder := range response.Orders {
+		var orderTypeDetail string
+		switch activeOrder := activeOrder.Order.(type) {
+		case *order.ActiveOrderStatus_LimitOrder:
+			orderTypeDetail = fmt.Sprintf("%s %f@%f remaining %f",
+				activeOrder.LimitOrder.Side.String(),
+				activeOrder.LimitOrder.BaseAmount,
+				activeOrder.LimitOrder.Price,
+				activeOrder.LimitOrder.BaseRemaining,
+			)
+		default:
+			orderTypeDetail = "was removed from orderbook"
+		}
+		resultString += fmt.Sprintf("\t%T: %d for market %s %s\n",
+			activeOrder,
+			activeOrder.OrderId,
+			activeOrder.Market.String(),
+			orderTypeDetail,
+		)
+	}
+	fmt.Println(resultString)
+	// CODEINCLUDE-END-MARKER: ref-code-example-response
 }

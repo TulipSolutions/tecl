@@ -16,6 +16,11 @@ Stream market details
 
       .. codeinclude:: /examples/go/docs/public_market_detail_service_stream_market_details.go
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/go/docs/public_market_detail_service_stream_market_details.go
+         :marker-id: ref-code-example-response
+         :caption: Example response handling
 
    .. tab-container:: Java
 

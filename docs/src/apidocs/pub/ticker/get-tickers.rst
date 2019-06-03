@@ -16,6 +16,11 @@ Get tickers
 
       .. codeinclude:: /examples/go/docs/public_ticker_service_get_tickers.go
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/go/docs/public_ticker_service_get_tickers.go
+         :marker-id: ref-code-example-response
+         :caption: Example response handling
 
    .. tab-container:: Java
 

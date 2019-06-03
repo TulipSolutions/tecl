@@ -48,7 +48,7 @@ func publicOrderbookServiceStreamOrderbook(conn *grpc.ClientConn, parentContext 
 	}
 
 	for {
-		entry, err := stream.Recv()
+		response, err := stream.Recv()
 		if err == io.EOF {
 			fmt.Println("PublicOrderbookService.StreamOrderbook completed")
 			return
@@ -57,7 +57,23 @@ func publicOrderbookServiceStreamOrderbook(conn *grpc.ClientConn, parentContext 
 			_, _ = fmt.Fprintf(os.Stderr, "PublicOrderbookService.StreamOrderbook error: %v \n", err)
 			return
 		}
-		fmt.Println(entry)
+		fmt.Println(response)
+		// CODEINCLUDE-END-MARKER: ref-code-example-request
+		parseAndPrintOrderbookEntry(response)
+		// CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
 	}
 	// CODEINCLUDE-END-MARKER: ref-code-example-request
+}
+
+func parseAndPrintOrderbookEntry(entry *orderbook.OrderbookEntry){
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+	fmt.Printf(
+		"%T %s %d orders @ %f total %f\n",
+		entry,
+		entry.Side.String(),
+		entry.OrdersAtPriceLevel,
+		entry.PriceLevel,
+		entry.Amount,
+	)
+	// CODEINCLUDE-END-MARKER: ref-code-example-response
 }

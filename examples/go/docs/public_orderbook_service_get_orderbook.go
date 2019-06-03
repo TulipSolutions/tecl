@@ -46,4 +46,18 @@ func publicOrderbookServiceGetOrderbook(conn *grpc.ClientConn, parentContext con
 	}
 	fmt.Println(response)
 	// CODEINCLUDE-END-MARKER: ref-code-example-request
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+	resultString := fmt.Sprintf("%T\n", response)
+	for _, entry := range response.Entries {
+		resultString += fmt.Sprintf(
+			"\t%T %s %d orders @ %f total %f\n",
+			entry,
+			entry.Side.String(),
+			entry.OrdersAtPriceLevel,
+			entry.PriceLevel,
+			entry.Amount,
+		)
+	}
+	fmt.Printf(resultString)
+	// CODEINCLUDE-END-MARKER: ref-code-example-response
 }

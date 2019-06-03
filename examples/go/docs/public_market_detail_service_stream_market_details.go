@@ -40,7 +40,7 @@ func publicMarketDetailServiceStreamMarketDetails(conn *grpc.ClientConn, parentC
 	}
 
 	for {
-		entry, err := stream.Recv()
+		response, err := stream.Recv()
 		if err == io.EOF {
 			fmt.Println("PublicMarketDetailService.StreamMarketDetails completed")
 			return
@@ -49,7 +49,31 @@ func publicMarketDetailServiceStreamMarketDetails(conn *grpc.ClientConn, parentC
 			_, _ = fmt.Fprintf(os.Stderr, "PublicMarketDetailService.StreamMarketDetails error: %v \n", err)
 			return
 		}
-		fmt.Println(entry)
+		fmt.Println(response)
+		// CODEINCLUDE-END-MARKER: ref-code-example-request
+		parseAndPrintMarketDetail(response)
+		// CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
 	}
 	// CODEINCLUDE-END-MARKER: ref-code-example-request
+}
+
+func parseAndPrintMarketDetail(detail *market_detail.MarketDetail)  {
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+	fmt.Printf(
+		"%T %s %s base currency: %s, quote currency: %s price resolution: %.8f amount resolution: %.8f " +
+			"minimum base order amount: %.8f maximum base order amount: %.8f, minimum quote order amount: %.8f " +
+			"maximum quote order amount: %.8f\n",
+		detail,
+		detail.Market.String(),
+		detail.MarketStatus.String(),
+		detail.Base.String(),
+		detail.Quote.String(),
+		detail.PriceResolution,
+		detail.AmountResolution,
+		detail.GetMinimumBaseOrderAmount(),
+		detail.GetMaximumBaseOrderAmount(),
+		detail.GetMinimumQuoteOrderAmount(),
+		detail.GetMaximumQuoteOrderAmount(),
+	)
+	// CODEINCLUDE-END-MARKER: ref-code-example-response
 }

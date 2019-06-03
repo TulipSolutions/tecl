@@ -43,7 +43,7 @@ func publicTradeServiceStreamTrades(conn *grpc.ClientConn, parentContext context
 	}
 
 	for {
-		entry, err := stream.Recv()
+		response, err := stream.Recv()
 		if err == io.EOF {
 			fmt.Println("PublicTradeService.StreamTrades completed")
 			return
@@ -52,7 +52,25 @@ func publicTradeServiceStreamTrades(conn *grpc.ClientConn, parentContext context
 			_, _ = fmt.Fprintf(os.Stderr, "PublicTradeService.StreamTrades error: %v \n", err)
 			return
 		}
-		fmt.Println(entry)
+		fmt.Println(response)
+		// CODEINCLUDE-END-MARKER: ref-code-example-request
+		parseAndPrintTrade(response)
+		// CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
 	}
 	// CODEINCLUDE-END-MARKER: ref-code-example-request
+}
+func parseAndPrintTrade(trade *trade.PublicTrade){
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+	fmt.Printf(
+		"%T: %s %s %f@%f quote_amount: %f time: %d id: %d\n",
+		trade,
+		trade.Market.String(),
+		trade.Side.String(),
+		trade.BaseAmount,
+		trade.Price,
+		trade.QuoteAmount,
+		trade.TimestampNs,
+		trade.TradeId,
+	)
+	// CODEINCLUDE-END-MARKER: ref-code-example-response
 }

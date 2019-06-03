@@ -14,6 +14,11 @@ Stream Ohlc
 
       .. codeinclude:: /examples/go/docs/public_ohlc_service_stream_ohlc_data.go
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/go/docs/public_ohlc_service_stream_ohlc_data.go
+         :marker-id: ref-code-example-response
+         :caption: Example response handling
 
    .. tab-container:: Java
 

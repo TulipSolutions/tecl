@@ -40,7 +40,7 @@ func publicTickerServiceStreamTickers(conn *grpc.ClientConn, parentContext conte
 	}
 
 	for {
-		entry, err := stream.Recv()
+		response, err := stream.Recv()
 		if err == io.EOF {
 			fmt.Println("PublicTickerService.StreamTickers completed")
 			return
@@ -49,7 +49,33 @@ func publicTickerServiceStreamTickers(conn *grpc.ClientConn, parentContext conte
 			_, _ = fmt.Fprintf(os.Stderr, "PublicTickerService.StreamTickers error: %v \n", err)
 			return
 		}
-		fmt.Println(entry)
+		fmt.Println(response)
+		// CODEINCLUDE-END-MARKER: ref-code-example-request
+		parseAndPrintTick(response)
+		// CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
 	}
 	// CODEINCLUDE-END-MARKER: ref-code-example-request
+}
+
+func parseAndPrintTick(tick *ticker.Tick){
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+	fmt.Printf(
+		"%T %s mid_price %f best_buy_price: %f best_buy_size: %f " +
+			"best_sell_price: %f best_sell_size: %f open: %f, high: %f low: %f close: %f " +
+			"volume_base: %f volume_quote: %f\n",
+		tick,
+		tick.Market.String(),
+		tick.MidPrice,
+		tick.BestBuyPrice,
+		tick.BestBuySize,
+		tick.BestSellPrice,
+		tick.BestSellSize,
+		tick.DailyOpen,
+		tick.DailyHigh,
+		tick.DailyLow,
+		tick.DailyClose,
+		tick.DailyVolumeBase,
+		tick.DailyVolumeQuote,
+	)
+	// CODEINCLUDE-END-MARKER: ref-code-example-response
 }
