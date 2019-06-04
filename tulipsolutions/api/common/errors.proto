@@ -97,3 +97,16 @@ message DeadlineExceeded {
     fixed64 deadline_ns = 1;
     fixed64 received_at_ns = 2;
 }
+
+message ValidateViolation {
+    // A path leading to a field in the request message. The value is a
+    // sequence of dot-separated identifiers that identify a protocol buffer
+    // field. E.g., ``field_violations.field`` would identify this field.
+    string field = 1;
+
+    // String representation of the value in error.
+    string value = 2;
+
+    // Reasoning of how the request element fails violation.
+    string reason = 3;
+}

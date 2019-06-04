@@ -253,4 +253,7 @@ sh_binary(
             sha256 = "149f0e8a1ffce4eaf1f87839f92e82550622967e9ee2fe5e73e534365c59c387",
             strip_prefix = "protoc-gen-validate-%s" % com_envoyproxy_protoc_gen_validate_version,
             url = "https://github.com/envoyproxy/protoc-gen-validate/archive/%s.zip" % com_envoyproxy_protoc_gen_validate_version,
+            patches = [
+                "@nl_tulipsolutions_tecl//third_party/patches/com_envoyproxy_protoc_gen_validate:0001-Add-description-fields-to-ValidationException.patch",
+            ],
         )
