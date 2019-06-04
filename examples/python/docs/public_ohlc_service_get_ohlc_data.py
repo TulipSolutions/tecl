@@ -17,6 +17,7 @@ from __future__ import print_function
 import sys
 import grpc
 
+from tulipsolutions.api.common import orders_pb2
 from tulipsolutions.api.pub import ohlc_pb2, ohlc_pb2_grpc
 
 

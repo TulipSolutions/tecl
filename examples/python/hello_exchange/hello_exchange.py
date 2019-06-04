@@ -101,6 +101,6 @@ if __name__ == '__main__':
         # CODEINCLUDE-BEGIN-MARKER: getting-started-orderbook-service-init
 
         with ThreadPoolExecutor(max_workers=2) as executor:
-            executor.submit(stream_orderbook, public_orderbook_service_stub),
+            executor.submit(stream_orderbook, public_orderbook_service_stub)
             # CODEINCLUDE-END-MARKER: getting-started-orderbook-service-init
-            executor.submit(create_order, private_order_service_stub),
+            executor.submit(create_order, private_order_service_stub)
