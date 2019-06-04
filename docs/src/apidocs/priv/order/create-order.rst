@@ -9,6 +9,8 @@ Create order
 
 :protobuf:include:`tulipsolutions.api.priv.CreateOrderResponse`
 
+:protobuf:include:`tulipsolutions.api.priv.LimitOrderResponse`
+
 .. content-tabs::
    :class: code-example-responsive
 
