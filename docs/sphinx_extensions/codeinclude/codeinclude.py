@@ -20,7 +20,6 @@ from docutils.parsers.rst import directives
 from six import text_type
 
 from sphinx.directives.code import (
-    container_wrapper,
     dedent_lines,
     LiteralInclude,
     LiteralIncludeReader
@@ -36,6 +35,15 @@ if False:
     from sphinx.config import Config  # NOQA
 
 logger = logging.getLogger(__name__)
+
+
+def caption_wrapper(literal_node, caption):
+    # type: (nodes.Node, unicode) -> nodes.container
+    container_node = nodes.container('', literal_block=True,
+                                     classes=['literal-block-wrapper'])
+    container_node += nodes.strong(caption, caption)
+    container_node += literal_node
+    return container_node
 
 
 def get_min_indent_nonempty_line(lines):
@@ -180,8 +188,8 @@ class CodeInclude(LiteralInclude):
             retnode['classes'] += self.options.get('class', [])
 
             if 'caption' in self.options:
-                caption = self.options['caption'] or self.arguments[0]
-                retnode = container_wrapper(self, retnode, caption)
+                caption = self.options['caption']
+                retnode = caption_wrapper(retnode, caption)
 
             # retnode will be note_implicit_target that is linked from caption and numref.
             # when options['name'] is provided, it should be primary ID.
