@@ -34,6 +34,11 @@ Stream orderbook
 
       .. codeinclude:: /examples/node/docs/publicOrderbookServiceStreamOrderbook.js
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/node/docs/publicOrderbookServiceStreamOrderbook.js
+         :marker-id: ref-code-example-response
+         :caption: Example response handling
 
    .. tab-container:: Python
 

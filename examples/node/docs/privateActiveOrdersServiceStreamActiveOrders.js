@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var util = require("util");
 
+var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
 var order_pb = require("@tulipsolutions/tecl/priv/order_pb");
 var order_grpc = require("@tulipsolutions/tecl/priv/order_grpc_pb");
 
@@ -27,8 +29,11 @@ function privateActiveOrdersServiceStreamActiveOrders(host, credentials, options
 
   // Make the request asynchronously
   var call = client.streamActiveOrders(request, options);
-  call.on("data", function (value) {
-    console.log(value.toObject())
+  call.on("data", function (response) {
+    console.log(response.toObject());
+    // CODEINCLUDE-END-MARKER: ref-code-example-request
+    parseAndPrint(response);
+    // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
   });
   call.on("error", function (err) {
     console.error("PrivateActiveOrdersService.StreamActiveOrders error: " + err.message)
@@ -37,6 +42,35 @@ function privateActiveOrdersServiceStreamActiveOrders(host, credentials, options
     console.log("PrivateActiveOrdersService.StreamActiveOrders completed");
   });
   // CODEINCLUDE-END-MARKER: ref-code-example-request
+}
+
+function parseAndPrint(response) {
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+  var orderTypeDetail = "";
+  switch (response.getOrderCase()) {
+    case order_pb.ActiveOrderStatus.OrderCase.LIMIT_ORDER:
+      var order = response.getLimitOrder();
+      orderTypeDetail = util.format(
+        "%s %f@%f remaining %f",
+        Object.keys(orders_pb.Side).find(key => orders_pb.Side[key] === order.getSide()),
+        order.getBaseAmount(),
+        order.getPrice(),
+        order.getBaseRemaining(),
+      );
+      break;
+    default:
+      orderTypeDetail = "was removed from orderbook";
+  }
+  console.log(
+    util.format(
+      "%s: %d for market %s %s",
+      "ActiveOrderStatus",
+      response.getOrderId(),
+      Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === response.getMarket()),
+      orderTypeDetail
+    )
+  );
+  // CODEINCLUDE-END-MARKER: ref-code-example-response
 }
 
 module.exports = privateActiveOrdersServiceStreamActiveOrders;

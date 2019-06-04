@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var util = require("util");
 
 var trade_pb = require("@tulipsolutions/tecl/pub/trade_pb");
 var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
@@ -28,8 +29,11 @@ function publicTradeServiceStreamTrades(host, credentials, options) {
 
   // Make the request asynchronously
   var call = client.streamTrades(request);
-  call.on("data", function (value) {
-    console.log(value.toObject())
+  call.on("data", function (response) {
+    console.log(response.toObject());
+    // CODEINCLUDE-END-MARKER: ref-code-example-request
+    parseAndPrint(response);
+    // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
   });
   call.on("error", function (err) {
     console.error("PublicTradeService.StreamTrades error: " + err.message)
@@ -38,6 +42,24 @@ function publicTradeServiceStreamTrades(host, credentials, options) {
     console.log("PublicTradeService.StreamTrades completed");
   });
   // CODEINCLUDE-END-MARKER: ref-code-example-request
+}
+
+function parseAndPrint(response) {
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+  console.log(
+    util.format(
+      "%s: %s %s %f@%f quote_amount: %f time: %d id: %d",
+      "PublicTrade",
+      Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === response.getMarket()),
+      Object.keys(orders_pb.Side).find(key => orders_pb.Side[key] === response.getSide()),
+      response.getBaseAmount(),
+      response.getPrice(),
+      response.getQuoteAmount(),
+      response.getTimestampNs(),
+      response.getTradeId()
+    )
+  );
+  // CODEINCLUDE-END-MARKER: ref-code-example-response
 }
 
 module.exports = publicTradeServiceStreamTrades;

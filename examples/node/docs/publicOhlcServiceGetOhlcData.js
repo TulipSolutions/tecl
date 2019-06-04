@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var util = require("util");
 
 var ohlc_pb = require("@tulipsolutions/tecl/pub/ohlc_pb");
 var ohlc_grpc = require("@tulipsolutions/tecl/pub/ohlc_grpc_pb");
@@ -36,9 +37,37 @@ function publicOhlcServiceGetOhlcData(host, credentials, options) {
     }
     if (response) {
       console.log(response.toObject());
+      // CODEINCLUDE-END-MARKER: ref-code-example-request
+      parseAndPrint(response);
+      // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
     }
   });
   // CODEINCLUDE-END-MARKER: ref-code-example-request
+}
+
+function parseAndPrint(response) {
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+  var resultString = util.format("%s\n", "OhlcResponse");
+  response.getBinsList().forEach(
+    function (detail) {
+      resultString +=
+        util.format(
+          "\t%s %d %s open: %f, high: %f low: %f close: %f volume_base: %f volume_quote: %f nr_trades: %d\n",
+          "OhlcBin",
+          detail.getTimestampNs(),
+          Object.keys(ohlc_pb.Interval).find(key => ohlc_pb.Interval[key] === detail.getInterval()),
+          detail.getOpen(),
+          detail.getHigh(),
+          detail.getLow(),
+          detail.getClose(),
+          detail.getVolumeBase(),
+          detail.getVolumeQuote(),
+          detail.getNumberOfTrades()
+        );
+    }
+  );
+  console.log(resultString);
+  // CODEINCLUDE-END-MARKER: ref-code-example-response
 }
 
 module.exports = publicOhlcServiceGetOhlcData;

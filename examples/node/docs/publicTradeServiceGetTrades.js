@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var util = require("util");
 
 var trade_pb = require("@tulipsolutions/tecl/pub/trade_pb");
 var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
@@ -35,9 +36,35 @@ function publicTradeServiceGetTrades(host, credentials, options) {
     }
     if (response) {
       console.log(response.toObject());
+      // CODEINCLUDE-END-MARKER: ref-code-example-request
+      parseAndPrint(response);
+      // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
     }
   });
   // CODEINCLUDE-END-MARKER: ref-code-example-request
+}
+
+function parseAndPrint(response) {
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+  var resultString = util.format("%s\n", "PublicTrades");
+  response.getTradesList().forEach(
+    function (trade) {
+      resultString +=
+        util.format(
+          "\t%s: %s %s %f@%f quote_amount: %f time: %d id: %d\n",
+          "PublicTrade",
+          Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === trade.getMarket()),
+          Object.keys(orders_pb.Side).find(key => orders_pb.Side[key] === trade.getSide()),
+          trade.getBaseAmount(),
+          trade.getPrice(),
+          trade.getQuoteAmount(),
+          trade.getTimestampNs(),
+          trade.getTradeId()
+        );
+    }
+  );
+  console.log(resultString);
+  // CODEINCLUDE-END-MARKER: ref-code-example-response
 }
 
 module.exports = publicTradeServiceGetTrades;

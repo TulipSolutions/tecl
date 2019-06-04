@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var util = require("util");
 
+var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
 var wallet_pb = require("@tulipsolutions/tecl/priv/wallet_pb");
 var wallet_grpc = require("@tulipsolutions/tecl/priv/wallet_grpc_pb");
 
@@ -26,8 +28,11 @@ function privateWalletServiceStreamBalance(host, credentials, options) {
 
   // Make the request asynchronously
   var call = client.streamBalance(request, options);
-  call.on("data", function (value) {
-    console.log(value.toObject())
+  call.on("data", function (response) {
+    console.log(response.toObject());
+    // CODEINCLUDE-END-MARKER: ref-code-example-request
+    parseAndPrint(response);
+    // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
   });
   call.on("error", function (err) {
     console.error("PrivateWalletService.StreamBalance error: " + err.message)
@@ -36,6 +41,20 @@ function privateWalletServiceStreamBalance(host, credentials, options) {
     console.log("PrivateWalletService.StreamBalance completed");
   });
   // CODEINCLUDE-END-MARKER: ref-code-example-request
+}
+
+function parseAndPrint(response) {
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+  console.log(
+    util.format(
+      "%s %s total: %f locked: %f",
+      "BalanceResponse",
+      Object.keys(orders_pb.Currency).find(key => orders_pb.Currency[key] === response.getCurrency()),
+      response.getTotalAmount(),
+      response.getLockedAmount(),
+    )
+  );
+  // CODEINCLUDE-END-MARKER: ref-code-example-response
 }
 
 module.exports = privateWalletServiceStreamBalance;

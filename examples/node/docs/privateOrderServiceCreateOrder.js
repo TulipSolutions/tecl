@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var util = require("util");
 
 var order_pb = require("@tulipsolutions/tecl/priv/order_pb");
 var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
@@ -44,9 +45,40 @@ function privateOrderServiceCreateOrder(host, credentials, options) {
     }
     if (response) {
       console.log(response.toObject());
+      // CODEINCLUDE-END-MARKER: ref-code-example-request
+      parseAndPrint(response);
+      // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
     }
   });
   // CODEINCLUDE-END-MARKER: ref-code-example-request
+}
+
+function parseAndPrint(response) {
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+  var orderTypeDetail = "";
+  switch (response.getOrderTypeCase()) {
+    case order_pb.CreateOrderResponse.OrderTypeCase.LIMIT_ORDER:
+      var order = response.getLimitOrder();
+      orderTypeDetail = util.format(
+        "%s %f@%f",
+        Object.keys(orders_pb.Side).find(key => orders_pb.Side[key] === order.getSide()),
+        order.getBaseAmount(),
+        order.getPrice(),
+      );
+      break;
+    default:
+      orderTypeDetail = "Should not be empty!";
+  }
+  console.log(
+    util.format(
+      "%s: %d for market %s %s",
+      "CreateOrderResponse",
+      response.getOrderId(),
+      Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === response.getMarket()),
+      orderTypeDetail
+    )
+  );
+  // CODEINCLUDE-END-MARKER: ref-code-example-response
 }
 
 module.exports = privateOrderServiceCreateOrder;

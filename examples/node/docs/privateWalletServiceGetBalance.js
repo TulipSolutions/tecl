@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var util = require("util");
 
+var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
 var wallet_pb = require("@tulipsolutions/tecl/priv/wallet_pb");
 var wallet_grpc = require("@tulipsolutions/tecl/priv/wallet_grpc_pb");
 
@@ -33,9 +35,31 @@ function privateWalletServiceGetBalance(host, credentials, options) {
     }
     if (response) {
       console.log(response.toObject());
+      // CODEINCLUDE-END-MARKER: ref-code-example-request
+      parseAndPrint(response);
+      // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
     }
   });
   // CODEINCLUDE-END-MARKER: ref-code-example-request
+}
+
+function parseAndPrint(response) {
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+  var resultString = util.format("%s\n", "BalanceSnapshot");
+  response.getBalanceResponseList().forEach(
+    function (balance) {
+      resultString +=
+        util.format(
+          "\t%s %s total: %f locked: %f\n",
+          "BalanceResponse",
+          Object.keys(orders_pb.Currency).find(key => orders_pb.Currency[key] === balance.getCurrency()),
+          balance.getTotalAmount(),
+          balance.getLockedAmount(),
+        );
+    }
+  );
+  console.log(resultString);
+  // CODEINCLUDE-END-MARKER: ref-code-example-response
 }
 
 module.exports = privateWalletServiceGetBalance;

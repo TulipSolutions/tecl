@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var util = require("util");
 
 var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
 var orderbook_pb = require("@tulipsolutions/tecl/pub/orderbook_pb");
@@ -38,9 +39,32 @@ function publicOrderbookServiceGetOrderbook(host, credentials, options) {
     }
     if (response) {
       console.log(response.toObject());
+      // CODEINCLUDE-END-MARKER: ref-code-example-request
+      parseAndPrint(response);
+      // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
     }
   });
   // CODEINCLUDE-END-MARKER: ref-code-example-request
+}
+
+function parseAndPrint(response) {
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+  var resultString = util.format("%s\n", "OrderbookEntries");
+  response.getEntriesList().forEach(
+    function (entry) {
+      resultString +=
+        util.format(
+          "\t%s %s %d orders @ %f total %f\n",
+          "OrderbookEntry",
+          Object.keys(orders_pb.Side).find(key => orders_pb.Side[key] === entry.getSide()),
+          entry.getOrdersAtPriceLevel(),
+          entry.getPriceLevel(),
+          entry.getAmount()
+        );
+    }
+  );
+  console.log(resultString);
+  // CODEINCLUDE-END-MARKER: ref-code-example-response
 }
 
 module.exports = publicOrderbookServiceGetOrderbook;

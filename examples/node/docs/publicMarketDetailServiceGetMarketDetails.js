@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var util = require("util");
 
+var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
 var market_detail_pb = require("@tulipsolutions/tecl/pub/market_detail_pb");
 var market_detail_grpc = require("@tulipsolutions/tecl/pub/market_detail_grpc_pb");
 
@@ -33,9 +35,40 @@ function publicMarketDetailServiceGetMarketDetails(host, credentials, options) {
     }
     if (response) {
       console.log(response.toObject());
+      // CODEINCLUDE-END-MARKER: ref-code-example-request
+      parseAndPrint(response);
+      // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
     }
   });
   // CODEINCLUDE-END-MARKER: ref-code-example-request
+}
+
+function parseAndPrint(response) {
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+  var resultString = util.format("%s\n", "MarketDetails");
+  response.getMarketDetailsList().forEach(
+    function (detail) {
+      resultString +=
+        util.format(
+          "\t%s %s %s base currency: %s, quote currency: %s price resolution: %f amount resolution: %f " +
+          "minimum base order amount: %f maximum base order amount: %f, minimum quote order amount: %f " +
+          "maximum quote order amount: %f\n",
+          "MarketDetail",
+          Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === detail.getMarket()),
+          Object.keys(market_detail_pb.MarketStatus).find(key => market_detail_pb.MarketStatus[key] === detail.getMarketStatus()),
+          Object.keys(orders_pb.Currency).find(key => orders_pb.Currency[key] === detail.getBase()),
+          Object.keys(orders_pb.Currency).find(key => orders_pb.Currency[key] === detail.getQuote()),
+          detail.getPriceResolution(),
+          detail.getAmountResolution(),
+          detail.getMinimumBaseOrderAmount(),
+          detail.getMaximumBaseOrderAmount(),
+          detail.getMinimumQuoteOrderAmount(),
+          detail.getMaximumQuoteOrderAmount(),
+        );
+    }
+  );
+  console.log(resultString);
+  // CODEINCLUDE-END-MARKER: ref-code-example-response
 }
 
 module.exports = publicMarketDetailServiceGetMarketDetails;

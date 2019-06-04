@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var util = require("util");
 
 var ohlc_pb = require("@tulipsolutions/tecl/pub/ohlc_pb");
 var ohlc_grpc = require("@tulipsolutions/tecl/pub/ohlc_grpc_pb");
@@ -29,8 +30,11 @@ function publicOhlcServiceStreamOhlcData(host, credentials, options) {
 
   // Make the request asynchronously
   var call = client.streamOhlcData(request);
-  call.on("data", function (value) {
-    console.log(value.toObject());
+  call.on("data", function (response) {
+    console.log(response.toObject());
+    // CODEINCLUDE-END-MARKER: ref-code-example-request
+    parseAndPrint(response);
+    // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
   });
   call.on("error", function (err) {
     console.error("PublicOhlcService.StreamOhlcData error: " + err.message);
@@ -39,6 +43,26 @@ function publicOhlcServiceStreamOhlcData(host, credentials, options) {
     console.log("PublicOhlcService.StreamOhlcData completed");
   });
   // CODEINCLUDE-END-MARKER: ref-code-example-request
+}
+
+function parseAndPrint(response) {
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+  console.log(
+    util.format(
+      "%s %d %s open: %f, high: %f low: %f close: %f volume_base: %f volume_quote: %f nr_trades: %d",
+      "OhlcBin",
+      response.getTimestampNs(),
+      Object.keys(ohlc_pb.Interval).find(key => ohlc_pb.Interval[key] === response.getInterval()),
+      response.getOpen(),
+      response.getHigh(),
+      response.getLow(),
+      response.getClose(),
+      response.getVolumeBase(),
+      response.getVolumeQuote(),
+      response.getNumberOfTrades()
+    )
+  );
+  // CODEINCLUDE-END-MARKER: ref-code-example-response
 }
 
 module.exports = publicOhlcServiceStreamOhlcData;

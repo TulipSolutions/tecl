@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var util = require("util");
 
 var order_pb = require("@tulipsolutions/tecl/priv/order_pb");
 var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
@@ -38,9 +39,25 @@ function privateOrderServiceCancelOrder(host, credentials, options) {
     }
     if (response) {
       console.log(response.toObject());
+      // CODEINCLUDE-END-MARKER: ref-code-example-request
+      parseAndPrint(response);
+      // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
     }
   });
   // CODEINCLUDE-END-MARKER: ref-code-example-request
+}
+
+function parseAndPrint(response) {
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+  console.log(
+    util.format(
+      "%s: %d for %s",
+      "CancelOrderResponse",
+      response.getOrderId(),
+      Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === response.getMarket()),
+    )
+  );
+  // CODEINCLUDE-END-MARKER: ref-code-example-response
 }
 
 module.exports = privateOrderServiceCancelOrder;

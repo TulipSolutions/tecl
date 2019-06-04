@@ -36,6 +36,11 @@ Get private trades
 
       .. codeinclude:: /examples/node/docs/privateTradeServiceGetTrades.js
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/node/docs/privateTradeServiceGetTrades.js
+         :marker-id: ref-code-example-response
+         :caption: Example response handling
 
    .. tab-container:: Python
 

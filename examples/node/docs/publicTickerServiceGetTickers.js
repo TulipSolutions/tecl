@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var util = require("util");
 
+var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
 var ticker_pb = require("@tulipsolutions/tecl/pub/ticker_pb");
 var ticker_grpc = require("@tulipsolutions/tecl/pub/ticker_grpc_pb");
 
@@ -33,9 +35,42 @@ function publicTickerServiceGetTickers(host, credentials, options) {
     }
     if (response) {
       console.log(response.toObject());
+      // CODEINCLUDE-END-MARKER: ref-code-example-request
+      parseAndPrint(response);
+      // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
     }
   });
   // CODEINCLUDE-END-MARKER: ref-code-example-request
+}
+
+function parseAndPrint(response) {
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+  var resultString = util.format("%s\n", "Tickers");
+  response.getTicksList().forEach(
+    function (tick) {
+      resultString +=
+        util.format(
+          "\t%s %s mid_price %f best_buy_price: %f best_buy_size: %f " +
+          "best_sell_price: %f best_sell_size: %f open: %f, high: %f low: %f close: %f " +
+          "volume_base: %f volume_quote: %f\n",
+          "Tick",
+          Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === tick.getMarket()),
+          tick.getMidPrice(),
+          tick.getBestBuyPrice(),
+          tick.getBestBuySize(),
+          tick.getBestSellPrice(),
+          tick.getBestSellSize(),
+          tick.getDailyOpen(),
+          tick.getDailyHigh(),
+          tick.getDailyLow(),
+          tick.getDailyClose(),
+          tick.getDailyVolumeBase(),
+          tick.getDailyVolumeQuote()
+        );
+    }
+  );
+  console.log(resultString);
+  // CODEINCLUDE-END-MARKER: ref-code-example-response
 }
 
 module.exports = publicTickerServiceGetTickers;

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var util = require("util");
 
 var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
 var orderbook_pb = require("@tulipsolutions/tecl/pub/orderbook_pb");
@@ -33,8 +34,11 @@ function publicOrderbookServiceStreamOrderbook(host, credentials, options) {
 
   // Make the request asynchronously
   var call = client.streamOrderbook(request);
-  call.on("data", function (value) {
-    console.log(value.toObject())
+  call.on("data", function (response) {
+    console.log(response.toObject());
+    // CODEINCLUDE-END-MARKER: ref-code-example-request
+    parseAndPrint(response);
+    // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
   });
   call.on("error", function (err) {
     console.error("PublicOrderbookService.StreamOrderbook error: " + err.message)
@@ -43,6 +47,21 @@ function publicOrderbookServiceStreamOrderbook(host, credentials, options) {
     console.log("PublicOrderbookService.StreamOrderbook completed");
   });
   // CODEINCLUDE-END-MARKER: ref-code-example-request
+}
+
+function parseAndPrint(response) {
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+  console.log(
+    util.format(
+      "%s %s %d orders @ %f total %f",
+      "OrderbookEntry",
+      Object.keys(orders_pb.Side).find(key => orders_pb.Side[key] === response.getSide()),
+      response.getOrdersAtPriceLevel(),
+      response.getPriceLevel(),
+      response.getAmount()
+    )
+  );
+  // CODEINCLUDE-END-MARKER: ref-code-example-response
 }
 
 module.exports = publicOrderbookServiceStreamOrderbook;

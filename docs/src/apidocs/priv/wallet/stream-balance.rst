@@ -34,6 +34,11 @@ Stream balance
 
       .. codeinclude:: /examples/node/docs/privateWalletServiceStreamBalance.js
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/node/docs/privateWalletServiceStreamBalance.js
+         :marker-id: ref-code-example-response
+         :caption: Example response handling
 
    .. tab-container:: Python
 

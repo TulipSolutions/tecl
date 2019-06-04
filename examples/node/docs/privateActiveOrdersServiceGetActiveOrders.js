@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var util = require("util");
 
+var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
 var order_pb = require("@tulipsolutions/tecl/priv/order_pb");
 var order_grpc = require("@tulipsolutions/tecl/priv/order_grpc_pb");
 
@@ -34,9 +36,45 @@ function privateActiveOrdersServiceGetActiveOrders(host, credentials, options) {
     }
     if (response) {
       console.log(response.toObject());
+      // CODEINCLUDE-END-MARKER: ref-code-example-request
+      parseAndPrint(response);
+      // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
     }
   });
   // CODEINCLUDE-END-MARKER: ref-code-example-request
+}
+
+function parseAndPrint(response) {
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
+  var resultString = util.format("%s\n", "OrderbookSnapshot");
+  response.getOrdersList().forEach(
+    function (activeOrder) {
+      var orderTypeDetail = "";
+      switch (activeOrder.getOrderCase()) {
+        case order_pb.ActiveOrderStatus.OrderCase.LIMIT_ORDER:
+          var order = activeOrder.getLimitOrder();
+          orderTypeDetail = util.format(
+            "%s %f@%f remaining %f",
+            Object.keys(orders_pb.Side).find(key => orders_pb.Side[key] === order.getSide()),
+            order.getBaseAmount(),
+            order.getPrice(),
+            order.getBaseRemaining(),
+          );
+          break;
+        default:
+          orderTypeDetail = "was removed from orderbook";
+      }
+      resultString +=
+        util.format(
+          "\t%s: %d for market %s %s\n",
+          "ActiveOrderStatus",
+          activeOrder.getOrderId(),
+          Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === activeOrder.getMarket()),
+          orderTypeDetail
+        );
+    });
+  console.log(resultString);
+  // CODEINCLUDE-END-MARKER: ref-code-example-response
 }
 
 module.exports = privateActiveOrdersServiceGetActiveOrders;

@@ -36,6 +36,11 @@ Get OHLC
 
       .. codeinclude:: /examples/node/docs/publicOhlcServiceGetOhlcData.js
          :marker-id: ref-code-example-request
+         :caption: Request
+
+      .. codeinclude:: /examples/node/docs/publicOhlcServiceGetOhlcData.js
+         :marker-id: ref-code-example-response
+         :caption: Example response handling
 
    .. tab-container:: Python
 
