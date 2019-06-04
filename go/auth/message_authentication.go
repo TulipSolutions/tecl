@@ -46,9 +46,9 @@ func CreateMessageAuthInterceptor(hmacSha256 hash.Hash) grpc.UnaryClientIntercep
 	lock := &sync.Mutex{}
 
 	return func(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
-		// Using "github.com/golang/protobuf/descriptor" it is possible to get to a descriptor.Message from req
-		// However we still cannot use it to derive the descriptors since descriptor.ForMessage requires a concrete struct
-		// Hence the switch case and individual handling of each authenticated message
+		// Using "github.com/golang/protobuf/descriptor" it is possible to get to a descriptor.Message from req.
+		// However, we still cannot use it to derive the descriptors since descriptor.ForMessage requires a concrete
+		// struct. Hence the switch cases and individual handling of each authenticated message.
 		switch r := req.(type) {
 		case *pb_order.CreateOrderRequest:
 			rawBytes, sigBytes, err := sign(r, hmacSha256, lock)
