@@ -19,7 +19,7 @@ var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
 var order_grpc = require("@tulipsolutions/tecl/priv/order_grpc_pb");
 
 function privateOrderServiceCancelOrder(host, credentials, options) {
-  // CODEINCLUDE-BEGIN-MARKER: ref-code-example
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
   var client = new order_grpc.PrivateOrderServiceClient(host, credentials);
 
   // Create a request for an order cancellation with a tonce that is the nanos since unix epoch
@@ -40,7 +40,7 @@ function privateOrderServiceCancelOrder(host, credentials, options) {
       console.log(response.toObject());
     }
   });
-  // CODEINCLUDE-END-MARKER: ref-code-example
+  // CODEINCLUDE-END-MARKER: ref-code-example-request
 }
 
 module.exports = privateOrderServiceCancelOrder;

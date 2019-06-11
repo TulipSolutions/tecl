@@ -16,22 +16,22 @@ Get trades
       :sidebar:
 
       .. codeinclude:: /examples/go/docs/public_trade_service_get_trades.go
-         :marker-id: ref-code-example
+         :marker-id: ref-code-example-request
 
    .. tab-container:: Java
       :sidebar:
 
       .. codeinclude:: /examples/java/docs/PublicTradeServiceGetTrades.java
-         :marker-id: ref-code-example
+         :marker-id: ref-code-example-request
 
    .. tab-container:: Node
       :sidebar:
 
       .. codeinclude:: /examples/node/docs/publicTradeServiceGetTrades.js
-         :marker-id: ref-code-example
+         :marker-id: ref-code-example-request
 
    .. tab-container:: Python
       :sidebar:
 
       .. codeinclude:: /examples/python/docs/public_trade_service_get_trades.py
-         :marker-id: ref-code-example
+         :marker-id: ref-code-example-request

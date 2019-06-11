@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 public class PublicOrderbookServiceGetOrderbook {
     public static void run(ManagedChannel channel) {
-        // CODEINCLUDE-BEGIN-MARKER: ref-code-example
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
         PublicOrderbookServiceStub stub = PublicOrderbookServiceGrpc.newStub(channel);
 
         // Create a request for the BTC_EUR orderbook, with the greatest precision and largest length
@@ -54,6 +54,6 @@ public class PublicOrderbookServiceGetOrderbook {
                     System.out.println("PublicOrderbookService.GetOrderbook completed");
                 }
             });
-        // CODEINCLUDE-END-MARKER: ref-code-example
+        // CODEINCLUDE-END-MARKER: ref-code-example-request
     }
 }

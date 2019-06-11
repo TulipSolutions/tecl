@@ -19,7 +19,7 @@ var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
 var public_trade_grpc = require("@tulipsolutions/tecl/pub/trade_grpc_pb");
 
 function publicTradeServiceStreamTrades(host, credentials, options) {
-  // CODEINCLUDE-BEGIN-MARKER: ref-code-example
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
   var client = new public_trade_grpc.PublicTradeServiceClient(host, credentials);
 
   // Create a request for streaming all trades in the BTC_EUR market that occur after initiation of the request
@@ -37,7 +37,7 @@ function publicTradeServiceStreamTrades(host, credentials, options) {
   call.on("end", function () {
     console.log("PublicTradeService.StreamTrades completed");
   });
-  // CODEINCLUDE-END-MARKER: ref-code-example
+  // CODEINCLUDE-END-MARKER: ref-code-example-request
 }
 
 module.exports = publicTradeServiceStreamTrades;

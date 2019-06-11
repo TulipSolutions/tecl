@@ -25,7 +25,7 @@ import (
 )
 
 func publicOrderbookServiceGetOrderbook(conn *grpc.ClientConn, parentContext context.Context) {
-	// CODEINCLUDE-BEGIN-MARKER: ref-code-example
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
 	client := orderbook.NewPublicOrderbookServiceClient(conn)
 
 	// Create a request for the BTC_EUR orderbook, with the greatest precision and largest length
@@ -45,5 +45,5 @@ func publicOrderbookServiceGetOrderbook(conn *grpc.ClientConn, parentContext con
 		return
 	}
 	fmt.Println(response)
-	// CODEINCLUDE-END-MARKER: ref-code-example
+	// CODEINCLUDE-END-MARKER: ref-code-example-request
 }

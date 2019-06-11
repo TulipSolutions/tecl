@@ -19,7 +19,7 @@ var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
 var order_grpc = require("@tulipsolutions/tecl/priv/order_grpc_pb");
 
 function privateOrderServiceCreateOrder(host, credentials, options) {
-  // CODEINCLUDE-BEGIN-MARKER: ref-code-example
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
   var client = new order_grpc.PrivateOrderServiceClient(host, credentials);
 
   // CODEINCLUDE-BEGIN-MARKER: authentication-request
@@ -46,7 +46,7 @@ function privateOrderServiceCreateOrder(host, credentials, options) {
       console.log(response.toObject());
     }
   });
-  // CODEINCLUDE-END-MARKER: ref-code-example
+  // CODEINCLUDE-END-MARKER: ref-code-example-request
 }
 
 module.exports = privateOrderServiceCreateOrder;

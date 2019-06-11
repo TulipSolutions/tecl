@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 
 public class PublicOhlcServiceGetOhlcData {
     public static void run(ManagedChannel channel) {
-        // CODEINCLUDE-BEGIN-MARKER: ref-code-example
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
         PublicOhlcServiceStub stub = PublicOhlcServiceGrpc.newStub(channel);
 
         // Create a request for the OhlcBins for specified market and intervals.
@@ -60,6 +60,6 @@ public class PublicOhlcServiceGetOhlcData {
                     System.out.println("PublicOhlcService.GetOhlcData completed");
                 }
             });
-        // CODEINCLUDE-END-MARKER: ref-code-example
+        // CODEINCLUDE-END-MARKER: ref-code-example-request
     }
 }

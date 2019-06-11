@@ -24,7 +24,7 @@ import nl.tulipsolutions.api.priv.StreamPrivateTradesRequest;
 
 public class PrivateTradeServiceStreamTrades {
     public static void run(ManagedChannel channel) {
-        // CODEINCLUDE-BEGIN-MARKER: ref-code-example
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
         PrivateTradeServiceStub stub = PrivateTradeServiceGrpc.newStub(channel);
 
         // Create a request for streaming all your trades in the BTC_EUR that occur after initiation of the request
@@ -46,6 +46,6 @@ public class PrivateTradeServiceStreamTrades {
                 System.out.println("PrivateTradeService.StreamTrades completed");
             }
         });
-        // CODEINCLUDE-END-MARKER: ref-code-example
+        // CODEINCLUDE-END-MARKER: ref-code-example-request
     }
 }

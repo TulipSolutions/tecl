@@ -25,7 +25,7 @@ import (
 )
 
 func privateTradeServiceStreamTrades(conn *grpc.ClientConn, parentContext context.Context) {
-	// CODEINCLUDE-BEGIN-MARKER: ref-code-example
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
 	client := trade.NewPrivateTradeServiceClient(conn)
 
 	// Create a request for streaming all your trades in the BTC_EUR that occur after initiation of the request
@@ -54,5 +54,5 @@ func privateTradeServiceStreamTrades(conn *grpc.ClientConn, parentContext contex
 		}
 		fmt.Println(entry)
 	}
-	// CODEINCLUDE-END-MARKER: ref-code-example
+	// CODEINCLUDE-END-MARKER: ref-code-example-request
 }

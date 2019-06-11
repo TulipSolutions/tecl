@@ -27,7 +27,7 @@ import nl.tulipsolutions.api.pub.StreamOhlcRequest;
 
 public class PublicOhlcServiceStreamOhlcData {
     public static void run(ManagedChannel channel) {
-        // CODEINCLUDE-BEGIN-MARKER: ref-code-example
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
         PublicOhlcServiceStub stub = PublicOhlcServiceGrpc.newStub(channel);
 
         // Create a request for the OhlcBins for specified market and intervals.
@@ -56,6 +56,6 @@ public class PublicOhlcServiceStreamOhlcData {
                 System.out.println("PublicOhlcService.StreamOhlcData completed");
             }
         });
-        // CODEINCLUDE-END-MARKER: ref-code-example
+        // CODEINCLUDE-END-MARKER: ref-code-example-request
     }
 }

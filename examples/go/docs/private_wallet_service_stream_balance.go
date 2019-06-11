@@ -24,7 +24,7 @@ import (
 )
 
 func privateWalletServiceStreamBalance(conn *grpc.ClientConn, parentContext context.Context) {
-	// CODEINCLUDE-BEGIN-MARKER: ref-code-example
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
 	client := wallet.NewPrivateWalletServiceClient(conn)
 
 	// Create a request for streaming your balances for all currencies
@@ -51,5 +51,5 @@ func privateWalletServiceStreamBalance(conn *grpc.ClientConn, parentContext cont
 		}
 		fmt.Println(entry)
 	}
-	// CODEINCLUDE-END-MARKER: ref-code-example
+	// CODEINCLUDE-END-MARKER: ref-code-example-request
 }

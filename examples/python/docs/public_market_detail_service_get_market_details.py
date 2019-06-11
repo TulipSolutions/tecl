@@ -22,7 +22,7 @@ from tulipsolutions.api.pub import market_detail_pb2, market_detail_pb2_grpc
 
 
 def public_market_detail_service_get_market_details(channel):
-    # CODEINCLUDE-BEGIN-MARKER: ref-code-example
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
     stub = market_detail_pb2_grpc.PublicMarketDetailServiceStub(channel)
 
     # Create a request for the details for all markets
@@ -34,4 +34,4 @@ def public_market_detail_service_get_market_details(channel):
         print(response)
     except grpc.RpcError as e:
         print("PublicMarketDetailService.GetMarketDetails error: " + str(e), file=sys.stderr)
-    # CODEINCLUDE-END-MARKER: ref-code-example
+    # CODEINCLUDE-END-MARKER: ref-code-example-request

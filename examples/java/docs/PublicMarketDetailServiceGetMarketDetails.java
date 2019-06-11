@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 public class PublicMarketDetailServiceGetMarketDetails {
     public static void run(ManagedChannel channel) {
-        // CODEINCLUDE-BEGIN-MARKER: ref-code-example
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
         PublicMarketDetailServiceStub stub = PublicMarketDetailServiceGrpc.newStub(channel);
 
         // Create a request for the details for all markets
@@ -46,6 +46,6 @@ public class PublicMarketDetailServiceGetMarketDetails {
                     System.out.println("PublicMarketDetailService.GetMarketDetails completed");
                 }
             });
-        // CODEINCLUDE-END-MARKER: ref-code-example
+        // CODEINCLUDE-END-MARKER: ref-code-example-request
     }
 }

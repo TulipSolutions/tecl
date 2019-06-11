@@ -27,7 +27,7 @@ import nl.tulipsolutions.api.pub.StreamOrderbookRequest;
 
 public class PublicOrderbookServiceStreamOrderbook {
     public static void run(ManagedChannel channel) {
-        // CODEINCLUDE-BEGIN-MARKER: ref-code-example
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
         PublicOrderbookServiceStub stub = PublicOrderbookServiceGrpc.newStub(channel);
 
         // Create a request for streaming the BTC_EUR orderbook, with the greatest precision, largest length,
@@ -54,6 +54,6 @@ public class PublicOrderbookServiceStreamOrderbook {
                 System.out.println("PublicOrderbookService.StreamOrderbook completed");
             }
         });
-        // CODEINCLUDE-END-MARKER: ref-code-example
+        // CODEINCLUDE-END-MARKER: ref-code-example-request
     }
 }

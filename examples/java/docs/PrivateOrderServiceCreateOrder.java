@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 
 public class PrivateOrderServiceCreateOrder {
     public static void run(ManagedChannel channel) {
-        // CODEINCLUDE-BEGIN-MARKER: ref-code-example
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
         PrivateOrderServiceStub stub = PrivateOrderServiceGrpc.newStub(channel);
 
         // CODEINCLUDE-BEGIN-MARKER: authentication-request
@@ -62,6 +62,6 @@ public class PrivateOrderServiceCreateOrder {
                     System.out.println("PrivateOrderService.CreateOrder completed");
                 }
             });
-        // CODEINCLUDE-END-MARKER: ref-code-example
+        // CODEINCLUDE-END-MARKER: ref-code-example-request
     }
 }

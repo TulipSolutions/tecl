@@ -18,7 +18,7 @@ var order_pb = require("@tulipsolutions/tecl/priv/order_pb");
 var order_grpc = require("@tulipsolutions/tecl/priv/order_grpc_pb");
 
 function privateActiveOrdersServiceStreamActiveOrders(host, credentials, options) {
-  // CODEINCLUDE-BEGIN-MARKER: ref-code-example
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
   var client = new order_grpc.PrivateActiveOrdersServiceClient(host, credentials);
 
   // Create a request for streaming all your active orders
@@ -36,7 +36,7 @@ function privateActiveOrdersServiceStreamActiveOrders(host, credentials, options
   call.on("end", function () {
     console.log("PrivateActiveOrdersService.StreamActiveOrders completed");
   });
-  // CODEINCLUDE-END-MARKER: ref-code-example
+  // CODEINCLUDE-END-MARKER: ref-code-example-request
 }
 
 module.exports = privateActiveOrdersServiceStreamActiveOrders;

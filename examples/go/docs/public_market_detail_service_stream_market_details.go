@@ -24,7 +24,7 @@ import (
 )
 
 func publicMarketDetailServiceStreamMarketDetails(conn *grpc.ClientConn, parentContext context.Context) {
-	// CODEINCLUDE-BEGIN-MARKER: ref-code-example
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
 	client := market_detail.NewPublicMarketDetailServiceClient(conn)
 
 	// Create a request for streaming the details for all markets
@@ -51,5 +51,5 @@ func publicMarketDetailServiceStreamMarketDetails(conn *grpc.ClientConn, parentC
 		}
 		fmt.Println(entry)
 	}
-	// CODEINCLUDE-END-MARKER: ref-code-example
+	// CODEINCLUDE-END-MARKER: ref-code-example-request
 }

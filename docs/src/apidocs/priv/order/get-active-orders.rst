@@ -18,22 +18,22 @@ Get active orders
       :sidebar:
 
       .. codeinclude:: /examples/go/docs/private_active_orders_service_get_active_orders.go
-         :marker-id: ref-code-example
+         :marker-id: ref-code-example-request
 
    .. tab-container:: Java
       :sidebar:
 
       .. codeinclude:: /examples/java/docs/PrivateActiveOrdersServiceGetActiveOrders.java
-         :marker-id: ref-code-example
+         :marker-id: ref-code-example-request
 
    .. tab-container:: Node
       :sidebar:
 
       .. codeinclude:: /examples/node/docs/privateActiveOrdersServiceGetActiveOrders.js
-         :marker-id: ref-code-example
+         :marker-id: ref-code-example-request
 
    .. tab-container:: Python
       :sidebar:
 
       .. codeinclude:: /examples/python/docs/private_active_orders_service_get_active_orders.py
-         :marker-id: ref-code-example
+         :marker-id: ref-code-example-request

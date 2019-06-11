@@ -18,7 +18,7 @@ var market_detail_pb = require("@tulipsolutions/tecl/pub/market_detail_pb");
 var market_detail_grpc = require("@tulipsolutions/tecl/pub/market_detail_grpc_pb");
 
 function publicMarketDetailServiceGetMarketDetails(host, credentials, options) {
-  // CODEINCLUDE-BEGIN-MARKER: ref-code-example
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
   var client = new market_detail_grpc.PublicMarketDetailServiceClient(host, credentials);
 
   // Create a request for the details for all markets
@@ -35,7 +35,7 @@ function publicMarketDetailServiceGetMarketDetails(host, credentials, options) {
       console.log(response.toObject());
     }
   });
-  // CODEINCLUDE-END-MARKER: ref-code-example
+  // CODEINCLUDE-END-MARKER: ref-code-example-request
 }
 
 module.exports = publicMarketDetailServiceGetMarketDetails;

@@ -25,7 +25,7 @@ import (
 )
 
 func publicTradeServiceGetTrades(conn *grpc.ClientConn, parentContext context.Context) {
-	// CODEINCLUDE-BEGIN-MARKER: ref-code-example
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
 	client := trade.NewPublicTradeServiceClient(conn)
 
 	// Create a request for the most recent trades in the BTC_EUR market
@@ -42,5 +42,5 @@ func publicTradeServiceGetTrades(conn *grpc.ClientConn, parentContext context.Co
 		return
 	}
 	fmt.Println(response)
-	// CODEINCLUDE-END-MARKER: ref-code-example
+	// CODEINCLUDE-END-MARKER: ref-code-example-request
 }

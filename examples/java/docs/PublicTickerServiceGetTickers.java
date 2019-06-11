@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 public class PublicTickerServiceGetTickers {
     public static void run(ManagedChannel channel) {
-        // CODEINCLUDE-BEGIN-MARKER: ref-code-example
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
         PublicTickerServiceStub stub = PublicTickerServiceGrpc.newStub(channel);
 
         // Create a request for the tickers for all markets
@@ -46,6 +46,6 @@ public class PublicTickerServiceGetTickers {
                     System.out.println("PublicTickerService.GetTickers completed");
                 }
             });
-        // CODEINCLUDE-END-MARKER: ref-code-example
+        // CODEINCLUDE-END-MARKER: ref-code-example-request
     }
 }

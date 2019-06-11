@@ -24,7 +24,7 @@ import (
 )
 
 func publicTickerServiceStreamTickers(conn *grpc.ClientConn, parentContext context.Context) {
-	// CODEINCLUDE-BEGIN-MARKER: ref-code-example
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
 	client := ticker.NewPublicTickerServiceClient(conn)
 
 	// Create a request for streaming the tickers for all markets
@@ -51,5 +51,5 @@ func publicTickerServiceStreamTickers(conn *grpc.ClientConn, parentContext conte
 		}
 		fmt.Println(entry)
 	}
-	// CODEINCLUDE-END-MARKER: ref-code-example
+	// CODEINCLUDE-END-MARKER: ref-code-example-request
 }

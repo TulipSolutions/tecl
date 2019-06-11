@@ -14,22 +14,22 @@ Stream tickers
       :sidebar:
 
       .. codeinclude:: /examples/go/docs/public_ticker_service_stream_tickers.go
-         :marker-id: ref-code-example
+         :marker-id: ref-code-example-request
 
    .. tab-container:: Java
       :sidebar:
 
       .. codeinclude:: /examples/java/docs/PublicTickerServiceStreamTickers.java
-         :marker-id: ref-code-example
+         :marker-id: ref-code-example-request
 
    .. tab-container:: Node
       :sidebar:
 
       .. codeinclude:: /examples/node/docs/publicTickerServiceStreamTickers.js
-         :marker-id: ref-code-example
+         :marker-id: ref-code-example-request
 
    .. tab-container:: Python
       :sidebar:
 
       .. codeinclude:: /examples/python/docs/public_ticker_service_stream_tickers.py
-         :marker-id: ref-code-example
+         :marker-id: ref-code-example-request

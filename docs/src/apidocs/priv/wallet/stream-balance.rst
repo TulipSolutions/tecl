@@ -14,22 +14,22 @@ Stream balance
       :sidebar:
 
       .. codeinclude:: /examples/go/docs/private_wallet_service_stream_balance.go
-         :marker-id: ref-code-example
+         :marker-id: ref-code-example-request
 
    .. tab-container:: Java
       :sidebar:
 
       .. codeinclude:: /examples/java/docs/PrivateWalletServiceStreamBalance.java
-         :marker-id: ref-code-example
+         :marker-id: ref-code-example-request
 
    .. tab-container:: Node
       :sidebar:
 
       .. codeinclude:: /examples/node/docs/privateWalletServiceStreamBalance.js
-         :marker-id: ref-code-example
+         :marker-id: ref-code-example-request
 
    .. tab-container:: Python
       :sidebar:
 
       .. codeinclude:: /examples/python/docs/private_wallet_service_stream_balance.py
-         :marker-id: ref-code-example
+         :marker-id: ref-code-example-request

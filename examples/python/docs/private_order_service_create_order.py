@@ -25,7 +25,7 @@ from tulipsolutions.api.priv import order_pb2, order_pb2_grpc
 
 
 def private_order_service_create_order(channel):
-    # CODEINCLUDE-BEGIN-MARKER: ref-code-example
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
     stub = order_pb2_grpc.PrivateOrderServiceStub(channel)
 
     # CODEINCLUDE-BEGIN-MARKER: authentication-request
@@ -48,4 +48,4 @@ def private_order_service_create_order(channel):
         print(response)
     except grpc.RpcError as e:
         print("PrivateOrderService.CreateOrder error: " + str(e), file=sys.stderr)
-    # CODEINCLUDE-END-MARKER: ref-code-example
+    # CODEINCLUDE-END-MARKER: ref-code-example-request

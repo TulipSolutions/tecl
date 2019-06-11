@@ -24,7 +24,7 @@ import (
 )
 
 func publicMarketDetailServiceGetMarketDetails(conn *grpc.ClientConn, parentContext context.Context) {
-	// CODEINCLUDE-BEGIN-MARKER: ref-code-example
+	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
 	client := market_detail.NewPublicMarketDetailServiceClient(conn)
 
 	// Create a request for the details for all markets
@@ -39,5 +39,5 @@ func publicMarketDetailServiceGetMarketDetails(conn *grpc.ClientConn, parentCont
 		return
 	}
 	fmt.Println(response)
-	// CODEINCLUDE-END-MARKER: ref-code-example
+	// CODEINCLUDE-END-MARKER: ref-code-example-request
 }

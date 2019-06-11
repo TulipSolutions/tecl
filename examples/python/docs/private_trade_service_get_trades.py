@@ -23,7 +23,7 @@ from tulipsolutions.api.priv import trade_pb2, trade_pb2_grpc
 
 
 def private_trade_service_get_trades(channel):
-    # CODEINCLUDE-BEGIN-MARKER: ref-code-example
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
     stub = trade_pb2_grpc.PrivateTradeServiceStub(channel)
 
     # Create a request for your most recent trades in the BTC_EUR market
@@ -37,4 +37,4 @@ def private_trade_service_get_trades(channel):
         print(response)
     except grpc.RpcError as e:
         print("PrivateTradeService.GetTrades error: " + str(e), file=sys.stderr)
-    # CODEINCLUDE-END-MARKER: ref-code-example
+    # CODEINCLUDE-END-MARKER: ref-code-example-request

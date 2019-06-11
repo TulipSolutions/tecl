@@ -22,7 +22,7 @@ from tulipsolutions.api.common import orders_pb2
 
 
 def public_ohlc_service_stream_ohlc_data(channel):
-    # CODEINCLUDE-BEGIN-MARKER: ref-code-example
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
     stub = ohlc_pb2_grpc.PublicOhlcServiceStub(channel)
 
     # Create a request for the OhlcBins for specified market and intervals.
@@ -37,4 +37,4 @@ def public_ohlc_service_stream_ohlc_data(channel):
             print(response)
     except grpc.RpcError as e:
         print("PublicOhlcService.StreamOhlcData error: " + str(e), file=sys.stderr)
-    # CODEINCLUDE-END-MARKER: ref-code-example
+    # CODEINCLUDE-END-MARKER: ref-code-example-request

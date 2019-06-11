@@ -19,7 +19,7 @@ var orderbook_pb = require("@tulipsolutions/tecl/pub/orderbook_pb");
 var orderbook_grpc = require("@tulipsolutions/tecl/pub/orderbook_grpc_pb");
 
 function publicOrderbookServiceStreamOrderbook(host, credentials, options) {
-  // CODEINCLUDE-BEGIN-MARKER: ref-code-example
+  // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
   var client = new orderbook_grpc.PublicOrderbookServiceClient(host, credentials);
 
   // Create a request for streaming the BTC_EUR orderbook, with the greatest precision, largest length,
@@ -42,7 +42,7 @@ function publicOrderbookServiceStreamOrderbook(host, credentials, options) {
   call.on("end", function () {
     console.log("PublicOrderbookService.StreamOrderbook completed");
   });
-  // CODEINCLUDE-END-MARKER: ref-code-example
+  // CODEINCLUDE-END-MARKER: ref-code-example-request
 }
 
 module.exports = publicOrderbookServiceStreamOrderbook;

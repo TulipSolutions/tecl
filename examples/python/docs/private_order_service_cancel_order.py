@@ -25,7 +25,7 @@ from tulipsolutions.api.priv import order_pb2, order_pb2_grpc
 
 
 def private_order_service_cancel_order(channel):
-    # CODEINCLUDE-BEGIN-MARKER: ref-code-example
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
     stub = order_pb2_grpc.PrivateOrderServiceStub(channel)
 
     # Create a request for an order cancellation with a tonce that is the nanos since unix epoch
@@ -42,4 +42,4 @@ def private_order_service_cancel_order(channel):
         print(response)
     except grpc.RpcError as e:
         print("PrivateOrderService.CancelOrder error: " + str(e), file=sys.stderr)
-    # CODEINCLUDE-END-MARKER: ref-code-example
+    # CODEINCLUDE-END-MARKER: ref-code-example-request

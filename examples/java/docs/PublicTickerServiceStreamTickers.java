@@ -23,7 +23,7 @@ import nl.tulipsolutions.api.pub.Tick;
 
 public class PublicTickerServiceStreamTickers {
     public static void run(ManagedChannel channel) {
-        // CODEINCLUDE-BEGIN-MARKER: ref-code-example
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
         PublicTickerServiceStub stub = PublicTickerServiceGrpc.newStub(channel);
 
         // Create a request for streaming the tickers for all markets
@@ -43,6 +43,6 @@ public class PublicTickerServiceStreamTickers {
                 System.out.println("PublicTickerService.StreamTickers completed");
             }
         });
-        // CODEINCLUDE-END-MARKER: ref-code-example
+        // CODEINCLUDE-END-MARKER: ref-code-example-request
     }
 }

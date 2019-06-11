@@ -22,7 +22,7 @@ from tulipsolutions.api.pub import ticker_pb2, ticker_pb2_grpc
 
 
 def public_ticker_service_stream_tickers(channel):
-    # CODEINCLUDE-BEGIN-MARKER: ref-code-example
+    # CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
     stub = ticker_pb2_grpc.PublicTickerServiceStub(channel)
 
     # Create a request for streaming the tickers for all markets
@@ -34,4 +34,4 @@ def public_ticker_service_stream_tickers(channel):
             print(response)
     except grpc.RpcError as e:
         print("PublicTickerService.StreamTickers error: " + str(e), file=sys.stderr)
-    # CODEINCLUDE-END-MARKER: ref-code-example
+    # CODEINCLUDE-END-MARKER: ref-code-example-request

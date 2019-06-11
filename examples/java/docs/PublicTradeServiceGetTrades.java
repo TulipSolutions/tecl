@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 public class PublicTradeServiceGetTrades {
     public static void run(ManagedChannel channel) {
-        // CODEINCLUDE-BEGIN-MARKER: ref-code-example
+        // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
         PublicTradeServiceStub stub = PublicTradeServiceGrpc.newStub(channel);
 
         // Create a request for the most recent trades in the BTC_EUR market
@@ -49,6 +49,6 @@ public class PublicTradeServiceGetTrades {
                     System.out.println("PublicTradeService.GetTrades completed");
                 }
             });
-        // CODEINCLUDE-END-MARKER: ref-code-example
+        // CODEINCLUDE-END-MARKER: ref-code-example-request
     }
 }
