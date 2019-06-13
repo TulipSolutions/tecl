@@ -26,9 +26,11 @@ def private_trade_service_get_trades(channel):
     # CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
     stub = trade_pb2_grpc.PrivateTradeServiceStub(channel)
 
-    # Create a request for your most recent trades in the BTC_EUR market
+    # Create a request for your 10 most recent trades in the BTC_EUR market
     request = trade_pb2.GetPrivateTradesRequest(
-        market=orders_pb2.BTC_EUR,
+        search_direction=orders_pb2.BACKWARD,
+        limit=10,
+        markets=[orders_pb2.BTC_EUR]
     )
 
     try:
@@ -53,7 +55,7 @@ def private_trade_service_get_trades(channel):
                 orders_pb2.Currency.Name(trade.fee_currency),
                 trade.fee,
                 trade.timestamp_ns,
-                trade.trade_id,
+                trade.event_id,
                 trade.order_id,
             )
     print(result_string)

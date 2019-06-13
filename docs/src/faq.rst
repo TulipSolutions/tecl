@@ -21,7 +21,11 @@ Please note that the precision for :ref:`Public Orderbook <tulip_api_public_orde
 
 .. _faq_trade_order_id_unique:
 
-Are trade and order IDs globally unique?
-----------------------------------------
+Are IDs globally unique?
+------------------------
 
-No, not globally, but they are unique *per market*.
+Event IDs (``event_id`` fields) for orders and trades such as the ones used in
+:protobuf:message:`tulipsolutions.api.priv.PrivateTrade`, :protobuf:message:`tulipsolutions.api.priv.OrderEvent` and
+:protobuf:message:`tulipsolutions.api.pub.PublicTrade` are guaranteed unique.
+
+Order IDs (``order_id`` fields) are set by end-users and are unique *per market*.

@@ -22,6 +22,7 @@ proto_library(
     visibility = ["//visibility:public"],
     deps = [
         ":message_authentication_proto",
+        "//tulipsolutions/api/common:options_proto",
         "//tulipsolutions/api/common:orders_proto",
         "@com_envoyproxy_protoc_gen_validate//validate:validate_proto",
     ],
@@ -64,6 +65,7 @@ go_proto_library(
     visibility = ["//visibility:public"],
     deps = [
         ":message_authentication_go_proto",
+        "//tulipsolutions/api/common:options_go_proto",
         "//tulipsolutions/api/common:orders_go_proto",
         "@com_envoyproxy_protoc_gen_validate//validate:go_default_library",
     ],

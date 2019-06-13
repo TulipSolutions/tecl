@@ -54,7 +54,7 @@ def parse_and_print(response):
             response.price,
             response.quote_amount,
             response.timestamp_ns,
-            response.trade_id,
+            response.event_id,
         )
     )
     # CODEINCLUDE-END-MARKER: ref-code-example-response

@@ -51,7 +51,7 @@ def public_trade_service_get_trades(channel):
                 trade.price,
                 trade.quote_amount,
                 trade.timestamp_ns,
-                trade.trade_id,
+                trade.event_id,
             )
     print(result_string)
     # CODEINCLUDE-END-MARKER: ref-code-example-response

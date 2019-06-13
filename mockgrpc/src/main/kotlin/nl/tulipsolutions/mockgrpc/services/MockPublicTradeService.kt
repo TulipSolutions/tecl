@@ -48,7 +48,7 @@ class MockPublicTradeService : ReactorPublicTradeServiceGrpc.PublicTradeServiceI
                 synchronousSink.next(
                     PublicTrade.newBuilder()
                         .setMarket(market)
-                        .setTradeId(nextId)
+                        .setEventId(nextId)
                         .setPrice(price)
                         .setBaseAmount(baseAmount)
                         .setQuoteAmount(quoteAmount)

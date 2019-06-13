@@ -70,7 +70,7 @@ public class PublicTradeServiceGetTrades {
                     trade.getPrice(),
                     trade.getQuoteAmount(),
                     trade.getTimestampNs(),
-                    trade.getTradeId()
+                    trade.getEventId()
                 );
         }
         System.out.println(result_string);

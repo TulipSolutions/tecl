@@ -16,6 +16,8 @@ from __future__ import print_function
 
 import sys
 
+import time
+
 import grpc
 
 from tulipsolutions.api.common import orders_pb2
@@ -26,9 +28,12 @@ def private_trade_service_stream_trades(channel):
     # CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
     stub = trade_pb2_grpc.PrivateTradeServiceStub(channel)
 
+    start = long(time.time() * 1E9)
     # Create a request for streaming all your trades in the BTC_EUR that occur after initiation of the request
     request = trade_pb2.StreamPrivateTradesRequest(
-        market=orders_pb2.BTC_EUR,
+        search_direction=orders_pb2.BACKWARD,
+        timestamp_ns=start,
+        markets=[orders_pb2.BTC_EUR]
     )
 
     try:
@@ -56,7 +61,7 @@ def parse_and_print(response):
             orders_pb2.Currency.Name(response.fee_currency),
             response.fee,
             response.timestamp_ns,
-            response.trade_id,
+            response.event_id,
             response.order_id,
         )
     )

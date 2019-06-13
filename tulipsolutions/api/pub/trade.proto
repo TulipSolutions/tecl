@@ -25,14 +25,14 @@ import "validate/validate.proto";
 import "tulipsolutions/api/common/orders.proto";
 import "tulipsolutions/api/common/options.proto";
 
-// Request for public trades on a single market. If ``trade_id`` and ``timestamp_ns`` are not provided, it will return
+// Request for public trades on a single market. If ``event_id`` and ``timestamp_ns`` are not provided, it will return
 // the most recent amount of trades, limited by the number given in ``limit``.
 message GetPublicTradesRequest {
     common.Market market = 1 [(validate.rules).enum = { not_in: [ 0 ], defined_only: true }];
-    // From which trade_id or timestamp trades will be returned, default: (latest trade id - limit)
+    // From which event_id or timestamp trades will be returned, default: (latest event id - limit)
     oneof from {
         // Return trades with id greater or equal to the one given.
-        fixed64 trade_id = 2 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
+        fixed64 event_id = 2 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
         // Return trades with timestamp greater or equal. Unit in nanoseconds.
         fixed64 timestamp_ns = 3 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
     }
@@ -40,22 +40,22 @@ message GetPublicTradesRequest {
     uint32 limit = 4 [(validate.rules).uint32 = { gte: 0, lte: 1000 }, (common.default_limit) = 1000];
 }
 
-// Stream for public trades on a single market. If ``trade_id`` and ``timestamp_ns`` are not provided, it will only
+// Stream for public trades on a single market. If ``event_id`` and ``timestamp_ns`` are not provided, it will only
 // stream trades occurred after initiation of the request.
 message StreamPublicTradesRequest {
     common.Market market = 1 [(validate.rules).enum = { not_in: [ 0 ], defined_only: true }];
     oneof from {
         // Stream trades with id greater or equal to the one given.
-        fixed64 trade_id = 2 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
+        fixed64 event_id = 2 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
         // Stream trades with timestamp greater or equal. Unit in nanoseconds.
         fixed64 timestamp_ns = 3 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
     }
 }
 
+// See also: :ref:`faq_trade_order_id_unique`
 message PublicTrade {
-    common.Market market = 1;
-    // See also: :ref:`faq_trade_order_id_unique`
-    fixed64 trade_id = 2 [jstype = JS_STRING];
+    fixed64 event_id = 1 [jstype = JS_STRING];
+    common.Market market = 2;
     double price = 3;
     double base_amount = 4;
     double quote_amount = 5;

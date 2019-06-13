@@ -16,20 +16,27 @@ package docs;
 
 import io.grpc.ManagedChannel;
 import io.grpc.stub.StreamObserver;
+import nl.tulipsolutions.api.common.SearchDirection;
 import nl.tulipsolutions.api.common.Market;
 import nl.tulipsolutions.api.priv.PrivateTrade;
 import nl.tulipsolutions.api.priv.PrivateTradeServiceGrpc;
 import nl.tulipsolutions.api.priv.PrivateTradeServiceGrpc.PrivateTradeServiceStub;
 import nl.tulipsolutions.api.priv.StreamPrivateTradesRequest;
 
+import java.time.Instant;
+import java.util.concurrent.TimeUnit;
+
 public class PrivateTradeServiceStreamTrades {
     public static void run(ManagedChannel channel) {
         // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
         PrivateTradeServiceStub stub = PrivateTradeServiceGrpc.newStub(channel);
 
-        // Create a request for streaming all your trades in the BTC_EUR that occur after initiation of the request
+        long start = TimeUnit.SECONDS.toNanos(Instant.now().getEpochSecond());
+        // Create a request for streaming all your trades in the BTC_EUR market that occur after start
         StreamPrivateTradesRequest request = StreamPrivateTradesRequest.newBuilder()
-            .setMarket(Market.BTC_EUR)
+            .addMarkets(Market.BTC_EUR)
+            .setSearchDirection(SearchDirection.FORWARD)
+            .setTimestampNs(start)
             .build();
 
         // Make the request asynchronously
@@ -66,7 +73,7 @@ public class PrivateTradeServiceStreamTrades {
                 response.getFeeCurrency().getValueDescriptor().getName(),
                 response.getFee(),
                 response.getTimestampNs(),
-                response.getTradeId(),
+                response.getEventId(),
                 response.getOrderId()
             )
         );

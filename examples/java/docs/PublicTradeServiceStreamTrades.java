@@ -64,7 +64,7 @@ public class PublicTradeServiceStreamTrades {
                 response.getPrice(),
                 response.getQuoteAmount(),
                 response.getTimestampNs(),
-                response.getTradeId()
+                response.getEventId()
             )
         );
         // CODEINCLUDE-END-MARKER: ref-code-example-response

@@ -55,7 +55,7 @@ func publicTradeServiceGetTrades(conn *grpc.ClientConn, parentContext context.Co
 			trade.Price,
 			trade.QuoteAmount,
 			trade.TimestampNs,
-			trade.TradeId,
+			trade.EventId,
 		)
 	}
 	fmt.Printf(resultString)

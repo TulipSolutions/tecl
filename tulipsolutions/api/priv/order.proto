@@ -23,6 +23,7 @@ option go_package = "github.com/tulipsolutions/tecl/tulipsolutions/api/priv/orde
 
 import "validate/validate.proto";
 import "tulipsolutions/api/common/orders.proto";
+import "tulipsolutions/api/common/options.proto";
 import "tulipsolutions/api/priv/message_authentication.proto";
 
 message LimitOrderStatus {
@@ -94,6 +95,107 @@ message CancelOrderResponse {
     common.Market market = 2;
 }
 
+message CreateLimitOrderEvent {
+    common.Side side = 1;
+    double base_amount = 2;
+    double price = 3;
+}
+
+message CancelOrderEvent {
+}
+
+message FillOrderEvent {
+    double price = 1;
+    double base_amount = 2;
+    double quote_amount = 3;
+    double fee = 4;
+    common.Currency fee_currency = 5;
+    common.Side side = 6;
+}
+
+message OrderEvent {
+    fixed64 event_id = 1 [jstype = JS_STRING];
+    fixed64 order_id = 2 [jstype = JS_STRING];
+    common.Market market = 3;
+    fixed64 timestamp_ns = 4 [jstype = JS_STRING];
+    oneof event {
+        CreateLimitOrderEvent create_limit_order_event = 5;
+        FillOrderEvent fill_order_event = 6;
+        CancelOrderEvent cancel_order_event = 7;
+    }
+}
+
+enum OrderEventType {
+    INVALID_ORDER_EVENT_TYPE = 0;
+    // [#example-value-ok:]
+    CREATE = 1;
+    // [#example-value-ok:]
+    FILL = 2;
+    // [#example-value-ok:]
+    CANCEL = 3;
+}
+
+message GetOrderEventsRequest {
+    // Only return order events for provided markets. If empty, events for all markets are returned.
+    repeated common.Market markets = 1 [
+        (validate.rules).repeated .unique = true,
+        (validate.rules).repeated .items.enum = { not_in: [ 0 ], defined_only: true }
+    ];
+    repeated OrderEventType event_type = 2 [
+        (validate.rules).repeated .unique = true,
+        (validate.rules).repeated .items.enum = { not_in: [ 0 ], defined_only: true }
+    ];
+    common.SearchDirection search_direction = 3 [(validate.rules).enum = { not_in: [ 0 ], defined_only: true }];
+    // The ID or timestamp of the earliest order event in the case of forward search direction,
+    // otherwise the ID or timestamp of the latest order event.
+    // If omitted, ``start = 0`` for ``search_direction = FORWARD`` and ``start = <infinity>`` for ``search_direction =
+    // BACKWARD``
+    oneof start {
+        fixed64 order_id = 4 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
+        fixed64 timestamp_ns = 5 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
+        fixed64 event_id = 6 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
+    }
+    // Maximum number of order events returned. Defaults to 1000.
+    uint32 limit = 7 [(validate.rules).uint32 = { gte: 0, lte: 1000 }, (common.default_limit) = 1000];
+}
+
+message StreamOrderEventsRequest {
+    // Only stream order events for provided markets. If empty, events for all markets are streamed.
+    repeated common.Market markets = 1 [
+        (validate.rules).repeated .unique = true,
+        (validate.rules).repeated .items.enum = { not_in: [ 0 ], defined_only: true }
+    ];
+    repeated OrderEventType event_type = 2 [
+        (validate.rules).repeated .unique = true,
+        (validate.rules).repeated .items.enum = { not_in: [ 0 ], defined_only: true }
+    ];
+    common.SearchDirection search_direction = 3 [(validate.rules).enum = { not_in: [ 0 ], defined_only: true }];
+    // The ID or timestamp of the earliest order event in the case of forward search direction,
+    // otherwise the ID or timestamp of the latest order event.
+    // If omitted, ``start = now``
+    oneof start {
+        fixed64 order_id = 4 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
+        fixed64 timestamp_ns = 5 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
+        fixed64 event_id = 6 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
+    }
+}
+
+message GetEventsForOrderRequest {
+    fixed64 order_id = 1 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
+    common.Market market = 2 [(validate.rules).enum = { not_in: [ 0 ], defined_only: true }];
+    common.SearchDirection search_direction = 3 [(validate.rules).enum = { not_in: [ 0 ], defined_only: true }];
+    // Optional: The event ID of the earliest order event.
+    // If omitted, ``start = 0`` for ``search_direction = FORWARD`` and ``start = <infinity>`` for ``search_direction =
+    // BACKWARD``
+    fixed64 start_event_id = 4 [jstype = JS_STRING];
+    // Maximum number of order events returned. Defaults to 1000.
+    uint32 limit = 5 [(validate.rules).uint32 = { gte: 0, lte: 1000 }, (common.default_limit) = 1000];
+}
+
+message GetOrderEventsResponse {
+    repeated OrderEvent events = 1;
+}
+
 message GetActiveOrdersRequest {
 }
 
@@ -103,6 +205,14 @@ message StreamActiveOrdersRequest {
 service PrivateOrderService {
     rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
     rpc CancelOrder(CancelOrderRequest) returns (CancelOrderResponse);
+    // Request up to 1000 order events.
+    // Note: we do not guarantee events arrive in the exact correct ordering, nor that they are deduplicated.
+    rpc GetOrderEvents(GetOrderEventsRequest) returns (GetOrderEventsResponse);
+    // Stream order events.
+    // Note: we do not guarantee events arrive in the exact correct ordering, nor that they are deduplicated.
+    rpc StreamOrderEvents(StreamOrderEventsRequest) returns (stream OrderEvent);
+    // Request all order events for a specific order.
+    rpc GetEventsForOrder(GetEventsForOrderRequest) returns (GetOrderEventsResponse);
 }
 
 service PrivateActiveOrdersService {

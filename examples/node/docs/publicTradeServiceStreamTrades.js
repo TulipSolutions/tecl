@@ -56,7 +56,7 @@ function parseAndPrint(response) {
       response.getPrice(),
       response.getQuoteAmount(),
       response.getTimestampNs(),
-      response.getTradeId()
+      response.getEventId()
     )
   );
   // CODEINCLUDE-END-MARKER: ref-code-example-response

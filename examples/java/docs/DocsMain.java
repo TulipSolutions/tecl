@@ -53,6 +53,9 @@ class DocsMain {
         PrivateActiveOrdersServiceStreamActiveOrders.run(channel);
         PrivateOrderServiceCreateOrder.run(channel);
         PrivateOrderServiceCancelOrder.run(channel);
+        PrivateOrderServiceGetEventsForOrder.run(channel);
+        PrivateOrderServiceGetOrderEvents.run(channel);
+        PrivateOrderServiceStreamOrderEvents.run(channel);
         PrivateTradeServiceGetTrades.run(channel);
         PrivateTradeServiceStreamTrades.run(channel);
         PrivateWalletServiceGetBalance.run(channel);

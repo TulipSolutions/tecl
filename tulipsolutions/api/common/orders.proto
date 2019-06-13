@@ -46,3 +46,13 @@ enum Side {
     // [#example-value-ok:]
     SELL = 2;
 }
+
+enum SearchDirection {
+    INVALID_SEARCH_DIRECTION = 0;
+    // Old first; ascending in time
+    // [#example-value-ok:]
+    FORWARD = 1;
+    // Recent first; descending in time
+    // [#example-value-ok:]
+    BACKWARD = 2;
+}

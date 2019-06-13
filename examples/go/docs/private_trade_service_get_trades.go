@@ -28,9 +28,11 @@ func privateTradeServiceGetTrades(conn *grpc.ClientConn, parentContext context.C
 	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
 	client := trade.NewPrivateTradeServiceClient(conn)
 
-	// Create a request for your most recent trades in the BTC_EUR market
+	// Create a request for your 10 most recent trades in the BTC_EUR market
 	request := trade.GetPrivateTradesRequest{
-		Market: orders.Market_BTC_EUR,
+		Markets:         []orders.Market{orders.Market_BTC_EUR},
+		SearchDirection: orders.SearchDirection_BACKWARD,
+		Limit:           10,
 	}
 
 	// Create a new context with a 1s deadline and make the request synchronously
@@ -57,7 +59,7 @@ func privateTradeServiceGetTrades(conn *grpc.ClientConn, parentContext context.C
 			trade.FeeCurrency.String(),
 			trade.Fee,
 			trade.TimestampNs,
-			trade.TradeId,
+			trade.EventId,
 			trade.OrderId,
 		)
 	}

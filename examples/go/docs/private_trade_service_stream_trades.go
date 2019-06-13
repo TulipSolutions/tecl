@@ -22,15 +22,21 @@ import (
 	"google.golang.org/grpc"
 	"io"
 	"os"
+	"time"
 )
 
 func privateTradeServiceStreamTrades(conn *grpc.ClientConn, parentContext context.Context) {
 	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
 	client := trade.NewPrivateTradeServiceClient(conn)
 
-	// Create a request for streaming all your trades in the BTC_EUR that occur after initiation of the request
+	start := uint64(time.Now().UnixNano())
+	// Create a request for streaming all your trades in the BTC_EUR market that occur after start
 	request := trade.StreamPrivateTradesRequest{
-		Market: orders.Market_BTC_EUR,
+		Markets:         []orders.Market{orders.Market_BTC_EUR},
+		SearchDirection: orders.SearchDirection_BACKWARD,
+		Start: &trade.StreamPrivateTradesRequest_TimestampNs{
+			TimestampNs: start,
+		},
 	}
 
 	// Create a new cancelable context and make the request synchronously
@@ -73,7 +79,7 @@ func parseAndPrintPrivateTrade(response *trade.PrivateTrade) {
 		response.FeeCurrency.String(),
 		response.Fee,
 		response.TimestampNs,
-		response.TradeId,
+		response.EventId,
 		response.OrderId,
 	)
 	// CODEINCLUDE-END-MARKER: ref-code-example-response

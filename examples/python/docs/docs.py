@@ -24,6 +24,9 @@ from private_active_orders_service_get_active_orders import private_active_order
 from private_active_orders_service_stream_active_orders import private_active_orders_service_stream_active_orders
 from private_order_service_cancel_order import private_order_service_cancel_order
 from private_order_service_create_order import private_order_service_create_order
+from private_order_service_get_events_for_order import private_order_service_get_events_for_order
+from private_order_service_get_order_events import private_order_service_get_order_events
+from private_order_service_stream_order_events import private_order_service_stream_order_events
 from private_trade_service_get_trades import private_trade_service_get_trades
 from private_trade_service_stream_trades import private_trade_service_stream_trades
 from private_wallet_service_get_balance import private_wallet_service_get_balance
@@ -87,6 +90,9 @@ if __name__ == '__main__':
                 executor.submit(private_active_orders_service_stream_active_orders, channel),
                 executor.submit(private_order_service_cancel_order, channel),
                 executor.submit(private_order_service_create_order, channel),
+                executor.submit(private_order_service_get_events_for_order, channel),
+                executor.submit(private_order_service_get_order_events, channel),
+                executor.submit(private_order_service_stream_order_events, channel),
                 executor.submit(private_trade_service_get_trades, channel),
                 executor.submit(private_trade_service_stream_trades, channel),
                 executor.submit(private_wallet_service_get_balance, channel),

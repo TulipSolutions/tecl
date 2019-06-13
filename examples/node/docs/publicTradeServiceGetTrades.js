@@ -57,7 +57,7 @@ function parseAndPrint(response) {
       trade.getPrice(),
       trade.getQuoteAmount(),
       trade.getTimestampNs(),
-      trade.getTradeId()
+      trade.getEventId()
     );
   });
   console.log(resultString);

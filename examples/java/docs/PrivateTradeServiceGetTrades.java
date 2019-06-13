@@ -16,6 +16,7 @@ package docs;
 
 import io.grpc.ManagedChannel;
 import io.grpc.stub.StreamObserver;
+import nl.tulipsolutions.api.common.SearchDirection;
 import nl.tulipsolutions.api.common.Market;
 import nl.tulipsolutions.api.priv.GetPrivateTradesRequest;
 import nl.tulipsolutions.api.priv.PrivateTrade;
@@ -30,9 +31,11 @@ public class PrivateTradeServiceGetTrades {
         // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
         PrivateTradeServiceStub stub = PrivateTradeServiceGrpc.newStub(channel);
 
-        // Create a request for your most recent trades in the BTC_EUR market
+        // Create a request for your 10 most recent trades in the BTC_EUR market
         GetPrivateTradesRequest getPrivateTradesRequest = GetPrivateTradesRequest.newBuilder()
-            .setMarket(Market.BTC_EUR)
+            .addMarkets(Market.BTC_EUR)
+            .setSearchDirection(SearchDirection.BACKWARD)
+            .setLimit(10)
             .build();
 
         // Make the request asynchronously with a one second deadline
@@ -72,7 +75,7 @@ public class PrivateTradeServiceGetTrades {
                     trade.getFeeCurrency().getValueDescriptor().getName(),
                     trade.getFee(),
                     trade.getTimestampNs(),
-                    trade.getTradeId(),
+                    trade.getEventId(),
                     trade.getOrderId()
                 );
         }

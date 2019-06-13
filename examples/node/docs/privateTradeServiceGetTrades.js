@@ -23,9 +23,11 @@ function privateTradeServiceGetTrades(host, credentials, options) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
   const client = new private_trade_grpc.PrivateTradeServiceClient(host, credentials);
 
-  // Create a request for your most recent trades in the BTC_EUR market
+  // Create a request for your 10 most recent trades in the BTC_EUR market
   const request = new trade_pb.GetPrivateTradesRequest();
-  request.setMarket(orders_pb.Market.BTC_EUR);
+  request.addMarkets(orders_pb.Market.BTC_EUR);
+  request.setSearchDirection(orders_pb.SearchDirection.BACKWARD);
+  request.setLimit(10);
 
   // Add a 1s deadline, and make the request asynchronously
   const deadline = new Date().setSeconds(new Date().getSeconds() + 1);
@@ -59,7 +61,7 @@ function parseAndPrint(response) {
       Object.keys(orders_pb.Currency).find(key => orders_pb.Currency[key] === trade.getFeeCurrency()),
       trade.getFee(),
       trade.getTimestampNs(),
-      trade.getTradeId(),
+      trade.getEventId(),
       trade.getOrderId()
     );
   });

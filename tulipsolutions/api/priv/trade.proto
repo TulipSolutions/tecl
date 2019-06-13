@@ -25,31 +25,37 @@ import "validate/validate.proto";
 import "tulipsolutions/api/common/orders.proto";
 import "tulipsolutions/api/common/options.proto";
 
-// Request your trades on a single market. If trade_id and timestamp_ns are not provided, it will return the most recent
-// amount of trades, limited by the number given in limit.
 message GetPrivateTradesRequest {
-    common.Market market = 1 [(validate.rules).enum = { not_in: [ 0 ], defined_only: true }];
-    // [#comment:TODO: need to find a fix to query all private trades due to missing Global unique trade ids]
-    oneof from {
-        // Return trades with id greater or equal to the one given.
-        fixed64 trade_id = 2 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
-        // Return trades with timestamp greater or equal. Unit in nanoseconds.
-        fixed64 timestamp_ns = 3 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
+    // Only return trades for provided markets. If empty, trades for all markets are returned.
+    repeated common.Market markets = 1 [
+        (validate.rules).repeated .unique = true,
+        (validate.rules).repeated .items.enum = { not_in: [ 0 ], defined_only: true }
+    ];
+    common.SearchDirection search_direction = 2 [(validate.rules).enum = { not_in: [ 0 ], defined_only: true }];
+    // The ID or timestamp of the earliest trade in the case of forward event search direction,
+    // otherwise the ID or timestamp of the latest trade.
+    // If omitted, defaults to the first or last order event, depending on the search direction.
+    oneof start {
+        fixed64 event_id = 3 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
+        fixed64 timestamp_ns = 4 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
     }
     // Maximum number of trades returned. Defaults to 1000.
-    uint32 limit = 4 [(validate.rules).uint32 = { gte: 0, lte: 1000 }, (common.default_limit) = 1000];
+    uint32 limit = 5 [(validate.rules).uint32 = { gte: 0, lte: 1000 }, (common.default_limit) = 1000];
 }
 
-// Stream your trades on a single market. If `trade_id` and `timestamp_ns` are not provided, it will only stream trades
-// occurred after initiation of the request.
 message StreamPrivateTradesRequest {
-    common.Market market = 1 [(validate.rules).enum = { not_in: [ 0 ], defined_only: true }];
-    // From which trade_id or timestamp trades will be returned, default: now
-    oneof from {
-        // Stream trades with id greater or equal to the one given.
-        fixed64 trade_id = 2 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
-        // Stream trades with timestamp greater or equal. Unit in nanoseconds.
-        fixed64 timestamp_ns = 3 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
+    // Only return trades for provided markets. If empty, trades for all markets are returned.
+    repeated common.Market markets = 1 [
+        (validate.rules).repeated .unique = true,
+        (validate.rules).repeated .items.enum = { not_in: [ 0 ], defined_only: true }
+    ];
+    common.SearchDirection search_direction = 2 [(validate.rules).enum = { not_in: [ 0 ], defined_only: true }];
+    // The ID or timestamp of the earliest trade in the case of forward search direction,
+    // otherwise the ID or timestamp of the latest trade.
+    // If omitted, ``start = now``
+    oneof start {
+        fixed64 event_id = 3 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
+        fixed64 timestamp_ns = 4 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
     }
 }
 
@@ -58,8 +64,8 @@ message StreamPrivateTradesRequest {
 //
 // See also: :ref:`faq_trade_order_id_unique`
 message PrivateTrade {
-    common.Market market = 1;
-    fixed64 trade_id = 2 [jstype = JS_STRING];
+    fixed64 event_id = 1 [jstype = JS_STRING];
+    common.Market market = 2;
     fixed64 order_id = 3 [jstype = JS_STRING];
     double price = 4;
     double base_amount = 5;

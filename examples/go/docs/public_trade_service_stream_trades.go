@@ -70,7 +70,7 @@ func parseAndPrintTrade(trade *trade.PublicTrade) {
 		trade.Price,
 		trade.QuoteAmount,
 		trade.TimestampNs,
-		trade.TradeId,
+		trade.EventId,
 	)
 	// CODEINCLUDE-END-MARKER: ref-code-example-response
 }

@@ -23,9 +23,12 @@ function privateTradeServiceStreamTrades(host, credentials, options) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
   const client = new private_trade_grpc.PrivateTradeServiceClient(host, credentials);
 
-  // Create a request for streaming all your trades in the BTC_EUR that occur after initiation of the request
+  const start = Date.now() * 1000000;
+  // Create a request for streaming all your trades in the BTC_EUR market that occur after start
   const request = new trade_pb.StreamPrivateTradesRequest();
-  request.setMarket(orders_pb.Market.BTC_EUR);
+  request.addMarkets(orders_pb.Market.BTC_EUR);
+  request.setSearchDirection(orders_pb.SearchDirection.FORWARD);
+  request.setTimestampNs(start.toString());
 
   // Make the request asynchronously
   const call = client.streamTrades(request, options);
@@ -58,7 +61,7 @@ function parseAndPrint(response) {
       Object.keys(orders_pb.Currency).find(key => orders_pb.Currency[key] === response.getFeeCurrency()),
       response.getFee(),
       response.getTimestampNs(),
-      response.getTradeId(),
+      response.getEventId(),
       response.getOrderId()
     )
   );
