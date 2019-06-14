@@ -32,7 +32,7 @@ function privateOrderServiceCreateOrder(host, credentials, options) {
   limitOrderRequest.setPrice(3000);
   var request = new order_pb.CreateOrderRequest();
   request.setMarket(orders_pb.Market.BTC_EUR);
-  request.setTonce(orderId);
+  request.setTonce(orderId.toString());
   request.setLimitOrder(limitOrderRequest);
   // CODEINCLUDE-END-MARKER: authentication-request
 

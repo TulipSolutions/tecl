@@ -78,24 +78,24 @@ message InvalidPricePrecision {
 }
 
 message TonceAlreadyUsed {
-    fixed64 tonce = 1;
+    fixed64 tonce = 1 [jstype = JS_STRING];
 }
 
 message TonceTooNew {
-    fixed64 message_accepted_timestamp_ns = 1;
-    fixed64 tonce = 2;
-    fixed64 max_difference = 3;
+    fixed64 message_accepted_timestamp_ns = 1 [jstype = JS_STRING];
+    fixed64 tonce = 2 [jstype = JS_STRING];
+    fixed64 max_difference = 3 [jstype = JS_STRING];
 }
 
 message TonceTooOld {
-    fixed64 message_accepted_timestamp_ns = 1;
-    fixed64 tonce = 2;
-    fixed64 max_difference = 3;
+    fixed64 message_accepted_timestamp_ns = 1 [jstype = JS_STRING];
+    fixed64 tonce = 2 [jstype = JS_STRING];
+    fixed64 max_difference = 3 [jstype = JS_STRING];
 }
 
 message DeadlineExceeded {
-    fixed64 deadline_ns = 1;
-    fixed64 received_at_ns = 2;
+    fixed64 deadline_ns = 1 [jstype = JS_STRING];
+    fixed64 received_at_ns = 2 [jstype = JS_STRING];
 }
 
 message ValidateViolation {

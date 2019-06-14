@@ -32,9 +32,9 @@ message GetPrivateTradesRequest {
     // [#comment:TODO: need to find a fix to query all private trades due to missing Global unique trade ids]
     oneof from {
         // Return trades with id greater or equal to the one given.
-        fixed64 trade_id = 2 [(validate.rules).fixed64.gt = 0];
+        fixed64 trade_id = 2 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
         // Return trades with timestamp greater or equal. Unit in nanoseconds.
-        fixed64 timestamp_ns = 3 [(validate.rules).fixed64.gt = 0];
+        fixed64 timestamp_ns = 3 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
     }
     // Maximum number of trades returned. Defaults to 1000.
     uint32 limit = 4 [(validate.rules).uint32 = { gte: 0, lte: 1000 }, (common.default_limit) = 1000];
@@ -47,9 +47,9 @@ message StreamPrivateTradesRequest {
     // From which trade_id or timestamp trades will be returned, default: now
     oneof from {
         // Stream trades with id greater or equal to the one given.
-        fixed64 trade_id = 2 [(validate.rules).fixed64.gt = 0];
+        fixed64 trade_id = 2 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
         // Stream trades with timestamp greater or equal. Unit in nanoseconds.
-        fixed64 timestamp_ns = 3 [(validate.rules).fixed64.gt = 0];
+        fixed64 timestamp_ns = 3 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
     }
 }
 
@@ -59,15 +59,15 @@ message StreamPrivateTradesRequest {
 // See also: :ref:`faq_trade_order_id_unique`
 message PrivateTrade {
     common.Market market = 1;
-    fixed64 trade_id = 2;
-    fixed64 order_id = 3;
+    fixed64 trade_id = 2 [jstype = JS_STRING];
+    fixed64 order_id = 3 [jstype = JS_STRING];
     double price = 4;
     double base_amount = 5;
     double quote_amount = 6;
     double fee = 7;
     common.Currency fee_currency = 8;
     common.Side side = 9;
-    fixed64 timestamp_ns = 10;
+    fixed64 timestamp_ns = 10 [jstype = JS_STRING];
 }
 
 message PrivateTrades {

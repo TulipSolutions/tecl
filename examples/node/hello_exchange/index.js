@@ -82,7 +82,7 @@ limitOrderRequest.setBaseAmount(1.0);
 limitOrderRequest.setPrice(3000);
 var createOrderRequest = new order_pb.CreateOrderRequest();
 createOrderRequest.setMarket(orders_pb.Market.BTC_EUR);
-createOrderRequest.setTonce(orderId);
+createOrderRequest.setTonce(orderId.toString());
 createOrderRequest.setLimitOrder(limitOrderRequest);
 
 // Add a 1s deadline, and make the request asynchronously

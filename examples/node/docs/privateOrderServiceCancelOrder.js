@@ -26,9 +26,9 @@ function privateOrderServiceCancelOrder(host, credentials, options) {
   // Create a request for an order cancellation with a tonce that is the nanos since unix epoch
   var tonce = Date.now() * 1000000;
   var request = new order_pb.CancelOrderRequest();
-  request.setOrderId(1);
+  request.setOrderId("1");
   request.setMarket(orders_pb.Market.BTC_EUR);
-  request.setTonce(tonce);
+  request.setTonce(tonce.toString());
 
   // Add a 1s deadline, and make the request asynchronously
   var deadline = new Date().setSeconds(new Date().getSeconds() + 1);

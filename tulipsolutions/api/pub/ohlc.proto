@@ -62,7 +62,7 @@ message GetOhlcResponse {
 
 message OhlcBin {
     Interval interval = 1;
-    fixed64 timestamp_ns = 2;
+    fixed64 timestamp_ns = 2 [jstype = JS_STRING];
     double open = 3;
     double high = 4;
     double low = 5;

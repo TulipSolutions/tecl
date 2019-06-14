@@ -41,7 +41,7 @@ message OrderbookSnapshot {
 // A message with empty `oneof order` indicates the order was removed from the orderbook
 message ActiveOrderStatus {
     // See also: :ref:`faq_trade_order_id_unique`
-    fixed64 order_id = 1;
+    fixed64 order_id = 1 [jstype = JS_STRING];
     common.Market market = 3;
     oneof order {
         LimitOrderStatus limit_order = 4;
@@ -60,7 +60,7 @@ message CreateOrderRequest {
         option (validate.required) = true;
         LimitOrderRequest limit_order = 2;
     }
-    fixed64 tonce = 4 [(validate.rules).fixed64.gt = 0];
+    fixed64 tonce = 4 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
     // Value is set by the message interceptor of the Tulip Exchange client library. Do not set it manually. See also
     // :ref:`authentication_request_authentication`.
     Signed signed = 5;
@@ -73,7 +73,7 @@ message LimitOrderResponse {
 }
 
 message CreateOrderResponse {
-    fixed64 order_id = 1;
+    fixed64 order_id = 1 [jstype = JS_STRING];
     common.Market market = 2;
     oneof order_type {
         LimitOrderResponse limit_order = 3;
@@ -81,16 +81,16 @@ message CreateOrderResponse {
 }
 
 message CancelOrderRequest {
-    fixed64 order_id = 1 [(validate.rules).fixed64.gt = 0];
+    fixed64 order_id = 1 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
     common.Market market = 2 [(validate.rules).enum = { not_in: [ 0 ], defined_only: true }];
-    fixed64 tonce = 3 [(validate.rules).fixed64.gt = 0];
+    fixed64 tonce = 3 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
     // Value is set by the message interceptor of the Tulip Exchange client library. Do not set it manually. See also
     // :ref:`authentication_request_authentication`.
     Signed signed = 4;
 }
 
 message CancelOrderResponse {
-    fixed64 order_id = 1;
+    fixed64 order_id = 1 [jstype = JS_STRING];
     common.Market market = 2;
 }
 
