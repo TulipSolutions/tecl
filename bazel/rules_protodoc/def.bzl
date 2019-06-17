@@ -19,7 +19,7 @@ def _protoc_output_path(proto_src):
 
 def _rst_proto_gen_impl(ctx):
     srcs = [f for dep in ctx.attr.deps for f in dep.proto.direct_sources]
-    includes = [f for dep in ctx.attr.deps for f in dep.proto.transitive_imports]
+    includes = [f for dep in ctx.attr.deps for f in dep.proto.transitive_imports.to_list()]
 
     proto_include_args = ["--proto_path={0}={1}".format(_proto_path(include), include.path) for include in includes]
     options = ",".join([])  # Empty, for now.
@@ -35,7 +35,8 @@ def _rst_proto_gen_impl(ctx):
         outs.append(rst_out_file)
 
         ctx.actions.run(
-            inputs = [ctx.executable._plugin] + includes,
+            inputs = includes,
+            tools = [ctx.executable._plugin],
             outputs = [rst_out_file],
             executable = ctx.executable._protoc,
             arguments = proto_include_args + [plugin_arg, protoc_rst_out_arg, src.path],
@@ -52,8 +53,7 @@ _rst_proto_gen = rule(
         "_protoc": attr.label(
             default = Label("@com_google_protobuf//:protoc"),
             executable = True,
-            single_file = True,
-            allow_files = True,
+            allow_single_file = True,
             cfg = "host",
         ),
         "_plugin": attr.label(

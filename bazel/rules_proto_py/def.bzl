@@ -21,8 +21,8 @@ def _protoc_output_path(proto_src, suffix):
     return _proto_path(proto_src).replace("-", "_").replace(".proto", suffix)
 
 def _py_proto_library_gen_impl(ctx):
-    srcs = [f for dep in ctx.attr.deps for f in dep.proto.transitive_sources]
-    includes = [f for dep in ctx.attr.deps for f in dep.proto.transitive_imports]
+    srcs = [f for dep in ctx.attr.deps for f in dep.proto.transitive_sources.to_list()]
+    includes = [f for dep in ctx.attr.deps for f in dep.proto.transitive_imports.to_list()]
 
     proto_include_args = ["--proto_path={0}={1}".format(_proto_path(include), include.path) for include in includes]
     options = ",".join([])  # Empty, for now.
@@ -53,8 +53,7 @@ _py_proto_library_gen = rule(
         "_protoc": attr.label(
             default = Label("@com_google_protobuf//:protoc"),
             executable = True,
-            single_file = True,
-            allow_files = True,
+            allow_single_file = True,
             cfg = "host",
         ),
     },
@@ -80,8 +79,8 @@ def py_proto_library(name, deps, **kwargs):
     )
 
 def _py_grpc_library_gen_impl(ctx):
-    srcs = [f for dep in ctx.attr.deps for f in dep.proto.transitive_sources]
-    includes = [f for dep in ctx.attr.deps for f in dep.proto.transitive_imports]
+    srcs = [f for dep in ctx.attr.deps for f in dep.proto.transitive_sources.to_list()]
+    includes = [f for dep in ctx.attr.deps for f in dep.proto.transitive_imports.to_list()]
 
     proto_include_args = ["--proto_path={0}={1}".format(_proto_path(include), include.path) for include in includes]
     options = ",".join([])  # Empty, for now.
@@ -102,7 +101,8 @@ def _py_grpc_library_gen_impl(ctx):
         outs.append(py_grpc_out_file)
 
         ctx.actions.run(
-            inputs = [ctx.executable._plugin] + includes,
+            inputs = includes,
+            tools = [ctx.executable._plugin],
             outputs = [py_pb_out_file, py_grpc_out_file],
             executable = ctx.executable._protoc,
             arguments = proto_include_args + [plugin_arg, protoc_py_pb_out_arg, protoc_py_grpc_out_arg, src.path],
@@ -114,7 +114,7 @@ def _py_grpc_library_gen_impl(ctx):
     # This is done to enable placing generated files in the same namespace as non-generated files
     # e.g., tulipsolutions.api.priv.order_pb2 and tulipsolutions.api.auth.jwt_interceptor
     for include in ctx.attr.includes:
-        for file in include.files:
+        for file in include.files.to_list():
             path_without_ws = _proto_path(file)
             py_package_path = path_without_ws.replace(include.label.package, "").lstrip("/")
 
@@ -139,15 +139,13 @@ _py_grpc_library_gen = rule(
         "_protoc": attr.label(
             default = Label("@com_google_protobuf//:protoc"),
             executable = True,
-            single_file = True,
-            allow_files = True,
+            allow_single_file = True,
             cfg = "host",
         ),
         "_plugin": attr.label(
             default = Label("@com_github_grpc_grpc//:grpc_python_plugin"),
             executable = True,
-            single_file = True,
-            allow_files = True,
+            allow_single_file = True,
             cfg = "host",
         ),
     },

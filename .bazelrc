@@ -1,0 +1,3 @@
+# Force Python 2 for targets built in the 'host' configuration
+# See also https://github.com/bazelbuild/bazel/issues/7899
+build --host_force_python=PY2
