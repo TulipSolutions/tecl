@@ -12,6 +12,9 @@
 * `contentui` is a self-developed plugin to show/hide content based on a
   page-wide selector. We use this to show the relevant programming language
   instructions or code for the selection given.
+* `codeinclude` is a small self-developed plugin to include code snippets much
+  like Sphinx's `.. literalinclude::` does, but with support for selection of
+  ranges via markers in the source file.
 
 Additionally, some glue logic is self-developed to *Bazelify* all of it in
 `rules_protodoc` and `rules_sphinx`.
@@ -39,7 +42,7 @@ directory printed by Bazel. E.g.:
 ---
 **Note**
 
-> The protocol buffer files (`*.proto`) are parsed by protodoc, and is made
+> The protocol buffer files (`*.proto`) are parsed by protodoc, and made
 available build-time by Bazel rule magic in the `protodoc/` path
 relative to the `src` source directory for Sphinx pages. See
 [Add/remove Protobuf files for docs](#addremove-protobuf-files-for-docs) for
@@ -209,4 +212,4 @@ to build the documentation.
 * Does not parse custom Protobuf extensions (e.g.
   `extend google.protobuf.EnumValueOptions { [...]`).
 
-Ideas for future improvements in Issue: trading-platform/180.
+Ideas for future improvements in (internal) Issue: trading-platform/180.
