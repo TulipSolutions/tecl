@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@tulipsolutions/tecl@0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@tulipsolutions/tecl/-/tecl-0.0.3.tgz#93b0b0bcf493263972dddd273e05e4440b31ba6a"
-  integrity sha512-S8Ae0Q9KIZ6stfofQZ36ZilQ5U9IvzemcL7HQXxErUO3nOWzhh4Q7dEiZoqvgZpoXm1UJNOOrWB9HaGRx8HUiQ==
+"@tulipsolutions/tecl@0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@tulipsolutions/tecl/-/tecl-0.0.5.tgz#69facddd836ef86de7be115f24ffcb8a5c26eaa3"
+  integrity sha512-e2jO4ZhkDJEpKfg35UX4KomdDoVzBFLVXRTYfz3XQewsPbLESxOCj2zZ0B5fY+ToU6IBqcYnOjWfQa/Gmz4FGw==
 
 abbrev@1:
   version "1.1.1"
