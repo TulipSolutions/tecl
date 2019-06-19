@@ -1,7 +1,5 @@
 # Protocol documentation
 
-[TOC]
-
 
 ## Documentation framework using Sphinx & protodoc
 
@@ -38,19 +36,21 @@ directory printed by Bazel. E.g.:
 
     $ firefox $(bazel info bazel-bin)/docs/html/index.html
 
-*** aside
-The protocol buffer files (`*.proto`) are parsed by protodoc, and is made
+---
+**Note**
+
+> The protocol buffer files (`*.proto`) are parsed by protodoc, and is made
 available build-time by Bazel rule magic in the `protodoc/` path
 relative to the `src` source directory for Sphinx pages. See
-[Add/remove protobuf files for docs](#add-remove-proto-files) for how to
-control which files are sourced.
-***
+[Add/remove Protobuf files for docs](#addremove-protobuf-files-for-docs) for
+how to control which files are sourced.
 
+---
 
 ## Protodoc documentation how-to
 
 
-### Leading comments are docs {#leading-comments-and-title}
+### Leading comments are docs
 
 Comments on the files should be placed in the top and a title can be given with
 the `protodoc-title` annotation, e.g.:
@@ -71,16 +71,18 @@ message MyMessage {
 }
 ```
 
-*** note
-Comments following the declaration are *not* parsed currently.
+---
+**Note**
 
-```proto
-message MyMessage {
-    int32 user_id = 1; // only positive! (but no-one will be able to read this...)
-}
-```
-***
+> Comments following the declaration are *not* parsed currently.
+>
+> ```proto
+> message MyMessage {
+>     int32 user_id = 1; // only positive! (but no-one will be able to read this...)
+> }
+> ```
 
+---
 
 ### Support for Envoy's protoc validate plugin
 
@@ -143,11 +145,14 @@ Also, this way you can refer from/to any other document in the (broader)
 documentation project, such as a 'Getting started' page referring to specific
 API endpoint pages and vice versa.
 
-*** note
-Always make sure to include the fully qualified name of the object, because the
+---
+**Note**
+
+> Always make sure to include the fully qualified name of the object, because the
 protobufdomain is not yet aware of a "package" scope and the "current package"
 you're in.
-***
+
+---
 
 Instead of referring to a certain object, you can also re-include it in the
 output at any point with the special `:protobuf:include:` xref-role. For
@@ -160,7 +165,7 @@ To make the request, send the `MyMessageRequest` as shown below:
 ```
 
 
-### Non-docs comments {#non-doc-comments}
+### Non-docs comments
 
 In case you want to write Protobuf comments which should *not* end up in
 documentation, use the `comment` annotation, e.g.:
@@ -171,11 +176,11 @@ documentation, use the `comment` annotation, e.g.:
 ### Special Protodoc annotations
 
 * `protodoc-title` - see
-  [Leading comments are docs](#leading-comments-and-title).
+  [Leading comments are docs](#leading-comments-are-docs).
 * `not-implemented-warn` - adds a warning box with the contents: "Not
   implemented yet".
 * `not-implemented-hide` - hide this field/enumvalue/service/method.
-* `comment` - see [Non-docs comments](#non-doc-comments)
+* `comment` - see [Non-docs comments](#non-docs-comments)
 * `proto-status:<status>` - with `status` set to either `frozen`, `draft` or
   `experimental`, the message/enum/service/field/method will have a warning box
   indicating this status.
@@ -183,7 +188,7 @@ documentation, use the `comment` annotation, e.g.:
   examples on message fields of this enum type.
 
 
-### Add/remove Protobuf files for docs {#add-remove-proto-files}
+### Add/remove Protobuf files for docs
 
 Adjust the `srcs` labels for the `sphinx_docs` rule in the `BUILD.bazel` file in
 this directory to control which Protobuf files are included when invoking Sphinx
