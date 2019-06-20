@@ -1,0 +1,25 @@
+workspace(
+    name = "nl_tulipsolutions_tecl_examples_node",
+    managed_directories = {"@npm": ["node_modules"]},
+)
+
+local_repository(
+    name = "nl_tulipsolutions_tecl",
+    path = "../..",
+)
+
+load("@nl_tulipsolutions_tecl//bazel:repositories.bzl", nl_tulipsolutions_tecl_repositories = "repositories")
+
+nl_tulipsolutions_tecl_repositories()
+
+load("@bazel_skylib//lib:versions.bzl", "versions")
+
+versions.check(minimum_bazel_version = "0.26.0")
+
+load("@build_bazel_rules_nodejs//:defs.bzl", "yarn_install")
+
+yarn_install(
+    name = "npm",
+    package_json = "@nl_tulipsolutions_tecl//:package.json",
+    yarn_lock = "@nl_tulipsolutions_tecl//:yarn.lock",
+)

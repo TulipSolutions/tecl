@@ -1,8 +1,15 @@
-workspace(name = "nl_tulipsolutions_tecl")
+workspace(
+    name = "nl_tulipsolutions_tecl",
+    managed_directories = {"@npm": ["node_modules"]},
+)
 
 load("//bazel:repositories.bzl", "repositories")
 
 repositories()
+
+load("@bazel_skylib//lib:versions.bzl", "versions")
+
+versions.check(minimum_bazel_version = "0.26.0")
 
 load("@io_bazel_rules_python//python:pip.bzl", "pip_import", "pip_repositories")
 
@@ -44,14 +51,14 @@ grpc_java_repositories(
     omit_com_google_protobuf = True,
 )
 
-load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories", "npm_install")
+load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories", "yarn_install")
 
 node_repositories()
 
-npm_install(
+yarn_install(
     name = "npm",
     package_json = "//:package.json",
-    package_lock_json = "//:package-lock.json",
+    yarn_lock = "//:yarn.lock",
 )
 
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")

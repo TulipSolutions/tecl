@@ -12,6 +12,5 @@ nodejs_binary(
         ":srcs",
         "@npm//@tulipsolutions/tecl",
     ],
-    # node examples cannot contain a workspace file because of this path
-    entry_point = "nl_tulipsolutions_tecl/examples/node/hello_exchange/index.js",
+    entry_point = "index.js",
 )

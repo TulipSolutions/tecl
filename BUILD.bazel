@@ -48,6 +48,8 @@ clang_formatter(
 # gazelle:resolve proto go validate/validate.proto @com_envoyproxy_protoc_gen_validate//validate:go_default_library
 # gazelle:exclude docs
 # gazelle:exclude third_party/protoc-gen-validate
+# gazelle:exclude node_modules
+# gazelle:exclude examples/node/node_modules
 # gazelle:ignore
 
 gazelle(

@@ -207,13 +207,13 @@ sh_binary(
         )
 
     if not omit_build_bazel_rules_nodejs:
-        build_bazel_rules_nodejs_version = "0.18.7"
+        build_bazel_rules_nodejs_version = "0.32.1"
 
         # Not a github source archive as it is not recommended (https://github.com/bazelbuild/rules_nodejs/releases/tag/0.18.4)
         http_archive(
             name = "build_bazel_rules_nodejs",
             urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/{0}/rules_nodejs-{0}.tar.gz".format(build_bazel_rules_nodejs_version)],
-            sha256 = "a69c5bd317beef982298ea7b5ed8b5c5275d1b55ee199e98a0ca088f8e0c6cce",
+            sha256 = "8a913d257f3a14c0663107607205e3bbf8d5ddd306a0e54ce28c79cb76f9122e",
         )
 
     if not omit_com_google_errorprone_error_prone_annotations:
