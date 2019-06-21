@@ -14,27 +14,25 @@
  * limitations under the License.
  */
 
-var langSelection = localStorage.getItem("contentui-lang");
-if (!(langSelection && langSelection !== "")) {
-  // Default lang (Go is generally the first tab)
-  langSelection = "Go"
-}
+window.addEventListener('DOMContentLoaded', () => {
+  const selectEl = document.querySelector('#contentui-lang-select');
 
-$(document).ready(function () {
-  function toggleTabActivation(selected) {
-    $(".tab-content").each(function () {
-      if ($(this).hasClass("tab-" + selected)) {
-        $(this).addClass("active");
+  const setSelected = selected => {
+    selectEl.value = selected;
+    document.querySelectorAll('.tab-content').forEach(tabEl => {
+      if (tabEl.classList.contains('tab-' + selected)) {
+        tabEl.classList.add('active');
       } else {
-        $(this).removeClass("active");
+        tabEl.classList.remove('active');
       }
     });
-  }
+  };
 
-  $("#contentui-lang-select").change(function () {
-    toggleTabActivation($(this).val());
-    localStorage.setItem("contentui-lang", $(this).val());
+  selectEl.addEventListener('change', event => {
+    const selected = event.target.value;
+    setSelected(selected);
+    localStorage.setItem('contentui-lang', selected);
   });
 
-  $("#contentui-lang-select").val(langSelection).change();
+  setSelected(localStorage.getItem('contentui-lang'));
 });

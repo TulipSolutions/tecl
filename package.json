@@ -6,5 +6,17 @@
         "google-protobuf": "^3.7.1",
         "grpc": "^1.20.0",
         "@tulipsolutions/tecl": "0.0.5"
+    },
+    "devDependencies": {
+        "eslint": "^5.16.0",
+        "eslint-config-prettier": "^5.0.0",
+        "eslint-plugin-prettier": "^3.1.0",
+        "prettier": "^1.18.2"
+    },
+    "scripts": {
+        "prettier-format": "node_modules/prettier/bin-prettier.js --write '**/*.js' ",
+        "prettier-check": "node_modules/prettier/bin-prettier.js --check '**/*.js' ",
+        "eslint-format": "node_modules/eslint/bin/eslint.js --fix **/*.js",
+        "eslint-check": "node_modules/eslint/bin/eslint.js **/*.js"
     }
 }

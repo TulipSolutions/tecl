@@ -13,34 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var util = require("util");
+const util = require('util');
 
-var ohlc_pb = require("@tulipsolutions/tecl/pub/ohlc_pb");
-var ohlc_grpc = require("@tulipsolutions/tecl/pub/ohlc_grpc_pb");
-var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
+const ohlc_pb = require('@tulipsolutions/tecl/pub/ohlc_pb');
+const ohlc_grpc = require('@tulipsolutions/tecl/pub/ohlc_grpc_pb');
+const orders_pb = require('@tulipsolutions/tecl/common/orders_pb');
 
 function publicOhlcServiceStreamOhlcData(host, credentials, options) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
-  var client = new ohlc_grpc.PublicOhlcServiceClient(host, credentials);
+  const client = new ohlc_grpc.PublicOhlcServiceClient(host, credentials);
 
   // Create a request for the OhlcBins for specified market and intervals.
-  var request = new ohlc_pb.StreamOhlcRequest();
+  const request = new ohlc_pb.StreamOhlcRequest();
   request.setMarket(orders_pb.Market.BTC_EUR);
   request.setIntervalsList([ohlc_pb.Interval.ONE_SECOND, ohlc_pb.Interval.ONE_MINUTE, ohlc_pb.Interval.FIVE_MINUTES]);
 
   // Make the request asynchronously
-  var call = client.streamOhlcData(request);
-  call.on("data", function (response) {
+  const call = client.streamOhlcData(request, options);
+  call.on('data', response => {
     console.log(response.toObject());
     // CODEINCLUDE-END-MARKER: ref-code-example-request
     parseAndPrint(response);
     // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
   });
-  call.on("error", function (err) {
-    console.error("PublicOhlcService.StreamOhlcData error: " + err.message);
+  call.on('error', err => {
+    console.error('PublicOhlcService.StreamOhlcData error: ' + err.message);
   });
-  call.on("end", function () {
-    console.log("PublicOhlcService.StreamOhlcData completed");
+  call.on('end', () => {
+    console.log('PublicOhlcService.StreamOhlcData completed');
   });
   // CODEINCLUDE-END-MARKER: ref-code-example-request
 }
@@ -49,8 +49,8 @@ function parseAndPrint(response) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
   console.log(
     util.format(
-      "%s %d %s open: %f, high: %f low: %f close: %f volume_base: %f volume_quote: %f nr_trades: %d",
-      "OhlcBin",
+      '%s %s %s open: %f, high: %f low: %f close: %f volume_base: %f volume_quote: %f nr_trades: %d',
+      'OhlcBin',
       response.getTimestampNs(),
       Object.keys(ohlc_pb.Interval).find(key => ohlc_pb.Interval[key] === response.getInterval()),
       response.getOpen(),

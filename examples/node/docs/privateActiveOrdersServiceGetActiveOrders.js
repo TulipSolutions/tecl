@@ -13,26 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var util = require("util");
+const util = require('util');
 
-var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
-var order_pb = require("@tulipsolutions/tecl/priv/order_pb");
-var order_grpc = require("@tulipsolutions/tecl/priv/order_grpc_pb");
+const orders_pb = require('@tulipsolutions/tecl/common/orders_pb');
+const order_pb = require('@tulipsolutions/tecl/priv/order_pb');
+const order_grpc = require('@tulipsolutions/tecl/priv/order_grpc_pb');
 
 function privateActiveOrdersServiceGetActiveOrders(host, credentials, options) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
-  var client = new order_grpc.PrivateActiveOrdersServiceClient(host, credentials);
+  const client = new order_grpc.PrivateActiveOrdersServiceClient(host, credentials);
 
   // Create a request for all your active orders
   // no fields are set as it does not have any
-  var request = new order_pb.GetActiveOrdersRequest();
+  const request = new order_pb.GetActiveOrdersRequest();
 
   // Add a 1s deadline, and make the request asynchronously
-  var deadline = new Date().setSeconds(new Date().getSeconds() + 1);
-  var callOptions = Object.assign({deadline: deadline}, options);
-  client.getActiveOrders(request, callOptions, function (err, response) {
+  const deadline = new Date().setSeconds(new Date().getSeconds() + 1);
+  const callOptions = Object.assign({ deadline: deadline }, options);
+  client.getActiveOrders(request, callOptions, (err, response) => {
     if (err) {
-      console.error("PrivateActiveOrdersService.GetActiveOrders error: " + err.message);
+      console.error('PrivateActiveOrdersService.GetActiveOrders error: ' + err.message);
     }
     if (response) {
       console.log(response.toObject());
@@ -46,33 +46,32 @@ function privateActiveOrdersServiceGetActiveOrders(host, credentials, options) {
 
 function parseAndPrint(response) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
-  var resultString = util.format("%s\n", "OrderbookSnapshot");
-  response.getOrdersList().forEach(
-    function (activeOrder) {
-      var orderTypeDetail = "";
-      switch (activeOrder.getOrderCase()) {
-        case order_pb.ActiveOrderStatus.OrderCase.LIMIT_ORDER:
-          var order = activeOrder.getLimitOrder();
-          orderTypeDetail = util.format(
-            "%s %f@%f remaining %f",
-            Object.keys(orders_pb.Side).find(key => orders_pb.Side[key] === order.getSide()),
-            order.getBaseAmount(),
-            order.getPrice(),
-            order.getBaseRemaining(),
-          );
-          break;
-        default:
-          orderTypeDetail = "was removed from orderbook";
-      }
-      resultString +=
-        util.format(
-          "\t%s: %s for market %s %s\n",
-          "ActiveOrderStatus",
-          activeOrder.getOrderId(),
-          Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === activeOrder.getMarket()),
-          orderTypeDetail
+  let resultString = util.format('%s\n', 'OrderbookSnapshot');
+  response.getOrdersList().forEach(activeOrder => {
+    let orderTypeDetail = '';
+    switch (activeOrder.getOrderCase()) {
+      case order_pb.ActiveOrderStatus.OrderCase.LIMIT_ORDER: {
+        const limitOrder = activeOrder.getLimitOrder();
+        orderTypeDetail = util.format(
+          '%s %f@%f remaining %f',
+          Object.keys(orders_pb.Side).find(key => orders_pb.Side[key] === limitOrder.getSide()),
+          limitOrder.getBaseAmount(),
+          limitOrder.getPrice(),
+          limitOrder.getBaseRemaining()
         );
-    });
+        break;
+      }
+      default:
+        orderTypeDetail = 'was removed from orderbook';
+    }
+    resultString += util.format(
+      '\t%s: %s for market %s %s\n',
+      'ActiveOrderStatus',
+      activeOrder.getOrderId(),
+      Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === activeOrder.getMarket()),
+      orderTypeDetail
+    );
+  });
   console.log(resultString);
   // CODEINCLUDE-END-MARKER: ref-code-example-response
 }

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-var grpc = require("grpc");
-var crypto = require("crypto");
-var common_message_auth_proto = require("../priv/message_authentication_pb");
+const grpc = require('grpc');
+const crypto = require('crypto');
+const common_message_auth_proto = require('../priv/message_authentication_pb');
 
 // Create an interceptor that adds a JWT token to outgoing calls to services in the private API
 // Adding a JWT token could also be done using grpc.credentials.createFromMetadataGenerator
@@ -24,39 +24,39 @@ var common_message_auth_proto = require("../priv/message_authentication_pb");
 function createJwtInterceptor(jwt) {
   return function jwtInterceptor(options, nextCall) {
     return new grpc.InterceptingCall(nextCall(options), {
-      start: function (metadata, listener, next) {
-        metadata.add("authorization", "Bearer " + jwt);
+      start: function(metadata, listener, next) {
+        metadata.add('authorization', 'Bearer ' + jwt);
         next(metadata, listener);
       },
     });
-  }
+  };
 }
 
 // Create an interceptor that adds a signature to outgoing messages with a 'signed' field
 function createMessageAuthInterceptor(secret) {
   return function messageAuthInterceptor(options, nextCall) {
     return new grpc.InterceptingCall(nextCall(options), {
-      sendMessage: function (message, next) {
+      sendMessage: function(message, next) {
         if (typeof message.getSigned === 'function') {
           // Mac newly instantiated per call as it does not have a reset
-          var mac = crypto.createHmac('sha256', secret);
-          var raw = message.serializeBinary();
+          const mac = crypto.createHmac('sha256', secret);
+          const raw = message.serializeBinary();
           mac.update(raw);
-          var sig = mac.digest();
+          const sig = mac.digest();
 
-          var signed = new common_message_auth_proto.Signed();
+          const signed = new common_message_auth_proto.Signed();
           signed.setRaw(raw);
           signed.setSig(sig);
-          var signedMessage = new message.constructor();
+          const signedMessage = new message.constructor();
           signedMessage.setSigned(signed);
 
           next(signedMessage);
         } else {
           next(message);
         }
-      }
+      },
     });
-  }
+  };
 }
 
 module.exports.createJwtInterceptor = createJwtInterceptor;

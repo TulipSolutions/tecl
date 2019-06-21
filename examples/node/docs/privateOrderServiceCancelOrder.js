@@ -13,29 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var util = require("util");
+const util = require('util');
 
-var order_pb = require("@tulipsolutions/tecl/priv/order_pb");
-var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
-var order_grpc = require("@tulipsolutions/tecl/priv/order_grpc_pb");
+const order_pb = require('@tulipsolutions/tecl/priv/order_pb');
+const orders_pb = require('@tulipsolutions/tecl/common/orders_pb');
+const order_grpc = require('@tulipsolutions/tecl/priv/order_grpc_pb');
 
 function privateOrderServiceCancelOrder(host, credentials, options) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
-  var client = new order_grpc.PrivateOrderServiceClient(host, credentials);
+  const client = new order_grpc.PrivateOrderServiceClient(host, credentials);
 
   // Create a request for an order cancellation with a tonce that is the nanos since unix epoch
-  var tonce = Date.now() * 1000000;
-  var request = new order_pb.CancelOrderRequest();
-  request.setOrderId("1");
+  const tonce = Date.now() * 1000000;
+  const request = new order_pb.CancelOrderRequest();
+  request.setOrderId('1');
   request.setMarket(orders_pb.Market.BTC_EUR);
   request.setTonce(tonce.toString());
 
   // Add a 1s deadline, and make the request asynchronously
-  var deadline = new Date().setSeconds(new Date().getSeconds() + 1);
-  var callOptions = Object.assign({deadline: deadline}, options);
-  client.cancelOrder(request, callOptions, function (err, response) {
+  const deadline = new Date().setSeconds(new Date().getSeconds() + 1);
+  const callOptions = Object.assign({ deadline: deadline }, options);
+  client.cancelOrder(request, callOptions, (err, response) => {
     if (err) {
-      console.error("PrivateOrderService.CancelOrder error: " + err.message);
+      console.error('PrivateOrderService.CancelOrder error: ' + err.message);
     }
     if (response) {
       console.log(response.toObject());
@@ -51,10 +51,10 @@ function parseAndPrint(response) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
   console.log(
     util.format(
-      "%s: %s for %s",
-      "CancelOrderResponse",
+      '%s: %s for %s',
+      'CancelOrderResponse',
       response.getOrderId(),
-      Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === response.getMarket()),
+      Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === response.getMarket())
     )
   );
   // CODEINCLUDE-END-MARKER: ref-code-example-response

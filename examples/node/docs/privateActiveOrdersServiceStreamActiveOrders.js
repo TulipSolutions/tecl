@@ -13,58 +13,59 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var util = require("util");
+const util = require('util');
 
-var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
-var order_pb = require("@tulipsolutions/tecl/priv/order_pb");
-var order_grpc = require("@tulipsolutions/tecl/priv/order_grpc_pb");
+const orders_pb = require('@tulipsolutions/tecl/common/orders_pb');
+const order_pb = require('@tulipsolutions/tecl/priv/order_pb');
+const order_grpc = require('@tulipsolutions/tecl/priv/order_grpc_pb');
 
 function privateActiveOrdersServiceStreamActiveOrders(host, credentials, options) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
-  var client = new order_grpc.PrivateActiveOrdersServiceClient(host, credentials);
+  const client = new order_grpc.PrivateActiveOrdersServiceClient(host, credentials);
 
   // Create a request for streaming all your active orders
   // no fields are set as it does not have any
-  var request = new order_pb.StreamActiveOrdersRequest();
+  const request = new order_pb.StreamActiveOrdersRequest();
 
   // Make the request asynchronously
-  var call = client.streamActiveOrders(request, options);
-  call.on("data", function (response) {
+  const call = client.streamActiveOrders(request, options);
+  call.on('data', response => {
     console.log(response.toObject());
     // CODEINCLUDE-END-MARKER: ref-code-example-request
     parseAndPrint(response);
     // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
   });
-  call.on("error", function (err) {
-    console.error("PrivateActiveOrdersService.StreamActiveOrders error: " + err.message)
+  call.on('error', err => {
+    console.error('PrivateActiveOrdersService.StreamActiveOrders error: ' + err.message);
   });
-  call.on("end", function () {
-    console.log("PrivateActiveOrdersService.StreamActiveOrders completed");
+  call.on('end', () => {
+    console.log('PrivateActiveOrdersService.StreamActiveOrders completed');
   });
   // CODEINCLUDE-END-MARKER: ref-code-example-request
 }
 
 function parseAndPrint(response) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
-  var orderTypeDetail = "";
+  let orderTypeDetail = '';
   switch (response.getOrderCase()) {
-    case order_pb.ActiveOrderStatus.OrderCase.LIMIT_ORDER:
-      var order = response.getLimitOrder();
+    case order_pb.ActiveOrderStatus.OrderCase.LIMIT_ORDER: {
+      const order = response.getLimitOrder();
       orderTypeDetail = util.format(
-        "%s %f@%f remaining %f",
+        '%s %f@%f remaining %f',
         Object.keys(orders_pb.Side).find(key => orders_pb.Side[key] === order.getSide()),
         order.getBaseAmount(),
         order.getPrice(),
-        order.getBaseRemaining(),
+        order.getBaseRemaining()
       );
       break;
+    }
     default:
-      orderTypeDetail = "was removed from orderbook";
+      orderTypeDetail = 'was removed from orderbook';
   }
   console.log(
     util.format(
-      "%s: %s for market %s %s",
-      "ActiveOrderStatus",
+      '%s: %s for market %s %s',
+      'ActiveOrderStatus',
       response.getOrderId(),
       Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === response.getMarket()),
       orderTypeDetail

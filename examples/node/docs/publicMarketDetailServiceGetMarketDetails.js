@@ -13,25 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var util = require("util");
+const util = require('util');
 
-var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
-var market_detail_pb = require("@tulipsolutions/tecl/pub/market_detail_pb");
-var market_detail_grpc = require("@tulipsolutions/tecl/pub/market_detail_grpc_pb");
+const orders_pb = require('@tulipsolutions/tecl/common/orders_pb');
+const market_detail_pb = require('@tulipsolutions/tecl/pub/market_detail_pb');
+const market_detail_grpc = require('@tulipsolutions/tecl/pub/market_detail_grpc_pb');
 
 function publicMarketDetailServiceGetMarketDetails(host, credentials, options) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
-  var client = new market_detail_grpc.PublicMarketDetailServiceClient(host, credentials);
+  const client = new market_detail_grpc.PublicMarketDetailServiceClient(host, credentials);
 
   // Create a request for the details for all markets
-  var request = new market_detail_pb.GetMarketDetailsRequest();
+  const request = new market_detail_pb.GetMarketDetailsRequest();
 
   // Add a 1s deadline, and make the request asynchronously
-  var deadline = new Date().setSeconds(new Date().getSeconds() + 1);
-  var callOptions = Object.assign({deadline: deadline}, options);
-  client.getMarketDetails(request, callOptions, function (err, response) {
+  const deadline = new Date().setSeconds(new Date().getSeconds() + 1);
+  const callOptions = Object.assign({ deadline: deadline }, options);
+  client.getMarketDetails(request, callOptions, (err, response) => {
     if (err) {
-      console.error("PublicMarketDetailService.GetMarketDetails error: " + err.message);
+      console.error('PublicMarketDetailService.GetMarketDetails error: ' + err.message);
     }
     if (response) {
       console.log(response.toObject());
@@ -45,28 +45,27 @@ function publicMarketDetailServiceGetMarketDetails(host, credentials, options) {
 
 function parseAndPrint(response) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
-  var resultString = util.format("%s\n", "MarketDetails");
-  response.getMarketDetailsList().forEach(
-    function (detail) {
-      resultString +=
-        util.format(
-          "\t%s %s %s base currency: %s, quote currency: %s price resolution: %f amount resolution: %f " +
-          "minimum base order amount: %f maximum base order amount: %f, minimum quote order amount: %f " +
-          "maximum quote order amount: %f\n",
-          "MarketDetail",
-          Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === detail.getMarket()),
-          Object.keys(market_detail_pb.MarketStatus).find(key => market_detail_pb.MarketStatus[key] === detail.getMarketStatus()),
-          Object.keys(orders_pb.Currency).find(key => orders_pb.Currency[key] === detail.getBase()),
-          Object.keys(orders_pb.Currency).find(key => orders_pb.Currency[key] === detail.getQuote()),
-          detail.getPriceResolution(),
-          detail.getAmountResolution(),
-          detail.getMinimumBaseOrderAmount(),
-          detail.getMaximumBaseOrderAmount(),
-          detail.getMinimumQuoteOrderAmount(),
-          detail.getMaximumQuoteOrderAmount(),
-        );
-    }
-  );
+  let resultString = util.format('%s\n', 'MarketDetails');
+  response.getMarketDetailsList().forEach(detail => {
+    resultString += util.format(
+      '\t%s %s %s base currency: %s, quote currency: %s price resolution: %f amount resolution: %f ' +
+        'minimum base order amount: %f maximum base order amount: %f, minimum quote order amount: %f ' +
+        'maximum quote order amount: %f\n',
+      'MarketDetail',
+      Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === detail.getMarket()),
+      Object.keys(market_detail_pb.MarketStatus).find(
+        key => market_detail_pb.MarketStatus[key] === detail.getMarketStatus()
+      ),
+      Object.keys(orders_pb.Currency).find(key => orders_pb.Currency[key] === detail.getBase()),
+      Object.keys(orders_pb.Currency).find(key => orders_pb.Currency[key] === detail.getQuote()),
+      detail.getPriceResolution(),
+      detail.getAmountResolution(),
+      detail.getMinimumBaseOrderAmount(),
+      detail.getMaximumBaseOrderAmount(),
+      detail.getMinimumQuoteOrderAmount(),
+      detail.getMaximumQuoteOrderAmount()
+    );
+  });
   console.log(resultString);
   // CODEINCLUDE-END-MARKER: ref-code-example-response
 }

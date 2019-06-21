@@ -13,25 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var util = require("util");
+const util = require('util');
 
-var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
-var ticker_pb = require("@tulipsolutions/tecl/pub/ticker_pb");
-var ticker_grpc = require("@tulipsolutions/tecl/pub/ticker_grpc_pb");
+const orders_pb = require('@tulipsolutions/tecl/common/orders_pb');
+const ticker_pb = require('@tulipsolutions/tecl/pub/ticker_pb');
+const ticker_grpc = require('@tulipsolutions/tecl/pub/ticker_grpc_pb');
 
 function publicTickerServiceGetTickers(host, credentials, options) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
-  var client = new ticker_grpc.PublicTickerServiceClient(host, credentials);
+  const client = new ticker_grpc.PublicTickerServiceClient(host, credentials);
 
   // Create a request for the tickers for all markets
-  var request = new ticker_pb.GetTickersRequest();
+  const request = new ticker_pb.GetTickersRequest();
 
   // Add a 1s deadline, and make the request asynchronously
-  var deadline = new Date().setSeconds(new Date().getSeconds() + 1);
-  var callOptions = Object.assign({deadline: deadline}, options);
-  client.getTickers(request, callOptions, function (err, response) {
+  const deadline = new Date().setSeconds(new Date().getSeconds() + 1);
+  const callOptions = Object.assign({ deadline: deadline }, options);
+  client.getTickers(request, callOptions, (err, response) => {
     if (err) {
-      console.error("PublicTickerService.GetTickers error: " + err.message);
+      console.error('PublicTickerService.GetTickers error: ' + err.message);
     }
     if (response) {
       console.log(response.toObject());
@@ -45,30 +45,27 @@ function publicTickerServiceGetTickers(host, credentials, options) {
 
 function parseAndPrint(response) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
-  var resultString = util.format("%s\n", "Tickers");
-  response.getTicksList().forEach(
-    function (tick) {
-      resultString +=
-        util.format(
-          "\t%s %s mid_price %f best_buy_price: %f best_buy_size: %f " +
-          "best_sell_price: %f best_sell_size: %f open: %f, high: %f low: %f close: %f " +
-          "volume_base: %f volume_quote: %f\n",
-          "Tick",
-          Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === tick.getMarket()),
-          tick.getMidPrice(),
-          tick.getBestBuyPrice(),
-          tick.getBestBuySize(),
-          tick.getBestSellPrice(),
-          tick.getBestSellSize(),
-          tick.getDailyOpen(),
-          tick.getDailyHigh(),
-          tick.getDailyLow(),
-          tick.getDailyClose(),
-          tick.getDailyVolumeBase(),
-          tick.getDailyVolumeQuote()
-        );
-    }
-  );
+  let resultString = util.format('%s\n', 'Tickers');
+  response.getTicksList().forEach(tick => {
+    resultString += util.format(
+      '\t%s %s mid_price %f best_buy_price: %f best_buy_size: %f ' +
+        'best_sell_price: %f best_sell_size: %f open: %f, high: %f low: %f close: %f ' +
+        'volume_base: %f volume_quote: %f\n',
+      'Tick',
+      Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === tick.getMarket()),
+      tick.getMidPrice(),
+      tick.getBestBuyPrice(),
+      tick.getBestBuySize(),
+      tick.getBestSellPrice(),
+      tick.getBestSellSize(),
+      tick.getDailyOpen(),
+      tick.getDailyHigh(),
+      tick.getDailyLow(),
+      tick.getDailyClose(),
+      tick.getDailyVolumeBase(),
+      tick.getDailyVolumeQuote()
+    );
+  });
   console.log(resultString);
   // CODEINCLUDE-END-MARKER: ref-code-example-response
 }

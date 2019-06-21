@@ -13,29 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var util = require("util");
+const util = require('util');
 
-var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
-var orderbook_pb = require("@tulipsolutions/tecl/pub/orderbook_pb");
-var orderbook_grpc = require("@tulipsolutions/tecl/pub/orderbook_grpc_pb");
+const orders_pb = require('@tulipsolutions/tecl/common/orders_pb');
+const orderbook_pb = require('@tulipsolutions/tecl/pub/orderbook_pb');
+const orderbook_grpc = require('@tulipsolutions/tecl/pub/orderbook_grpc_pb');
 
 function publicOrderbookServiceGetOrderbook(host, credentials, options) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
-  var client = new orderbook_grpc.PublicOrderbookServiceClient(host, credentials);
+  const client = new orderbook_grpc.PublicOrderbookServiceClient(host, credentials);
 
   // Create a request for the BTC_EUR orderbook, with the greatest precision and largest length
   // See TBD for semantics of Precision and Length
-  var request = new orderbook_pb.GetOrderbookRequest();
+  const request = new orderbook_pb.GetOrderbookRequest();
   request.setMarket(orders_pb.Market.BTC_EUR);
   request.setPrecision(orderbook_pb.Precision.P3);
   request.setLength(orderbook_pb.Length.NUM_ENTRIES_100);
 
   // Add a 1s deadline, and make the request asynchronously
-  var deadline = new Date().setSeconds(new Date().getSeconds() + 1);
-  var callOptions = Object.assign({deadline: deadline}, options);
-  client.getOrderbook(request, callOptions, function (err, response) {
+  const deadline = new Date().setSeconds(new Date().getSeconds() + 1);
+  const callOptions = Object.assign({ deadline: deadline }, options);
+  client.getOrderbook(request, callOptions, (err, response) => {
     if (err) {
-      console.error("PublicOrderbookService.GetOrderbook error: " + err.message);
+      console.error('PublicOrderbookService.GetOrderbook error: ' + err.message);
     }
     if (response) {
       console.log(response.toObject());
@@ -49,20 +49,17 @@ function publicOrderbookServiceGetOrderbook(host, credentials, options) {
 
 function parseAndPrint(response) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
-  var resultString = util.format("%s\n", "OrderbookEntries");
-  response.getEntriesList().forEach(
-    function (entry) {
-      resultString +=
-        util.format(
-          "\t%s %s %d orders @ %f total %f\n",
-          "OrderbookEntry",
-          Object.keys(orders_pb.Side).find(key => orders_pb.Side[key] === entry.getSide()),
-          entry.getOrdersAtPriceLevel(),
-          entry.getPriceLevel(),
-          entry.getAmount()
-        );
-    }
-  );
+  let resultString = util.format('%s\n', 'OrderbookEntries');
+  response.getEntriesList().forEach(entry => {
+    resultString += util.format(
+      '\t%s %s %d orders @ %f total %f\n',
+      'OrderbookEntry',
+      Object.keys(orders_pb.Side).find(key => orders_pb.Side[key] === entry.getSide()),
+      entry.getOrdersAtPriceLevel(),
+      entry.getPriceLevel(),
+      entry.getAmount()
+    );
+  });
   console.log(resultString);
   // CODEINCLUDE-END-MARKER: ref-code-example-response
 }

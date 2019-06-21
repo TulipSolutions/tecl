@@ -13,32 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var util = require("util");
+const util = require('util');
 
-var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
-var wallet_pb = require("@tulipsolutions/tecl/priv/wallet_pb");
-var wallet_grpc = require("@tulipsolutions/tecl/priv/wallet_grpc_pb");
+const orders_pb = require('@tulipsolutions/tecl/common/orders_pb');
+const wallet_pb = require('@tulipsolutions/tecl/priv/wallet_pb');
+const wallet_grpc = require('@tulipsolutions/tecl/priv/wallet_grpc_pb');
 
 function privateWalletServiceStreamBalance(host, credentials, options) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
-  var client = new wallet_grpc.PrivateWalletServiceClient(host, credentials);
+  const client = new wallet_grpc.PrivateWalletServiceClient(host, credentials);
 
   // Create a request for streaming your balances for all currencies
-  var request = new wallet_pb.StreamBalanceRequest();
+  const request = new wallet_pb.StreamBalanceRequest();
 
   // Make the request asynchronously
-  var call = client.streamBalance(request, options);
-  call.on("data", function (response) {
+  const call = client.streamBalance(request, options);
+  call.on('data', response => {
     console.log(response.toObject());
     // CODEINCLUDE-END-MARKER: ref-code-example-request
     parseAndPrint(response);
     // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
   });
-  call.on("error", function (err) {
-    console.error("PrivateWalletService.StreamBalance error: " + err.message)
+  call.on('error', err => {
+    console.error('PrivateWalletService.StreamBalance error: ' + err.message);
   });
-  call.on("end", function () {
-    console.log("PrivateWalletService.StreamBalance completed");
+  call.on('end', () => {
+    console.log('PrivateWalletService.StreamBalance completed');
   });
   // CODEINCLUDE-END-MARKER: ref-code-example-request
 }
@@ -47,11 +47,11 @@ function parseAndPrint(response) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
   console.log(
     util.format(
-      "%s %s total: %f locked: %f",
-      "BalanceResponse",
+      '%s %s total: %f locked: %f',
+      'BalanceResponse',
       Object.keys(orders_pb.Currency).find(key => orders_pb.Currency[key] === response.getCurrency()),
       response.getTotalAmount(),
-      response.getLockedAmount(),
+      response.getLockedAmount()
     )
   );
   // CODEINCLUDE-END-MARKER: ref-code-example-response

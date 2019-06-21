@@ -13,35 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var util = require("util");
+const util = require('util');
 
-var order_pb = require("@tulipsolutions/tecl/priv/order_pb");
-var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
-var order_grpc = require("@tulipsolutions/tecl/priv/order_grpc_pb");
+const order_pb = require('@tulipsolutions/tecl/priv/order_pb');
+const orders_pb = require('@tulipsolutions/tecl/common/orders_pb');
+const order_grpc = require('@tulipsolutions/tecl/priv/order_grpc_pb');
 
 function privateOrderServiceCreateOrder(host, credentials, options) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
-  var client = new order_grpc.PrivateOrderServiceClient(host, credentials);
+  const client = new order_grpc.PrivateOrderServiceClient(host, credentials);
 
   // CODEINCLUDE-BEGIN-MARKER: authentication-request
   // Create a request for a new order with an orderId that is the nanos since unix epoch
-  var orderId = Date.now() * 1000000;
-  var limitOrderRequest = new order_pb.LimitOrderRequest();
+  const orderId = Date.now() * 1000000;
+  const limitOrderRequest = new order_pb.LimitOrderRequest();
   limitOrderRequest.setSide(orders_pb.Side.BUY);
   limitOrderRequest.setBaseAmount(1.0);
   limitOrderRequest.setPrice(3000);
-  var request = new order_pb.CreateOrderRequest();
+  const request = new order_pb.CreateOrderRequest();
   request.setMarket(orders_pb.Market.BTC_EUR);
   request.setTonce(orderId.toString());
   request.setLimitOrder(limitOrderRequest);
   // CODEINCLUDE-END-MARKER: authentication-request
 
   // Add a 1s deadline, and make the request asynchronously
-  var deadline = new Date().setSeconds(new Date().getSeconds() + 1);
-  var callOptions = Object.assign({deadline: deadline}, options);
-  client.createOrder(request, callOptions, function (err, response) {
+  const deadline = new Date().setSeconds(new Date().getSeconds() + 1);
+  const callOptions = Object.assign({ deadline: deadline }, options);
+  client.createOrder(request, callOptions, (err, response) => {
     if (err) {
-      console.error("PrivateOrderService.CreateOrder error: " + err.message);
+      console.error('PrivateOrderService.CreateOrder error: ' + err.message);
     }
     if (response) {
       console.log(response.toObject());
@@ -55,24 +55,25 @@ function privateOrderServiceCreateOrder(host, credentials, options) {
 
 function parseAndPrint(response) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
-  var orderTypeDetail = "";
+  let orderTypeDetail = '';
   switch (response.getOrderTypeCase()) {
-    case order_pb.CreateOrderResponse.OrderTypeCase.LIMIT_ORDER:
-      var order = response.getLimitOrder();
+    case order_pb.CreateOrderResponse.OrderTypeCase.LIMIT_ORDER: {
+      const order = response.getLimitOrder();
       orderTypeDetail = util.format(
-        "%s %f@%f",
+        '%s %f@%f',
         Object.keys(orders_pb.Side).find(key => orders_pb.Side[key] === order.getSide()),
         order.getBaseAmount(),
-        order.getPrice(),
+        order.getPrice()
       );
       break;
+    }
     default:
-      orderTypeDetail = "Should not be empty!";
+      orderTypeDetail = 'Should not be empty!';
   }
   console.log(
     util.format(
-      "%s: %s for market %s %s",
-      "CreateOrderResponse",
+      '%s: %s for market %s %s',
+      'CreateOrderResponse',
       response.getOrderId(),
       Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === response.getMarket()),
       orderTypeDetail

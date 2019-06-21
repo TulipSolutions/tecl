@@ -13,26 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var util = require("util");
+const util = require('util');
 
-var trade_pb = require("@tulipsolutions/tecl/pub/trade_pb");
-var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
-var public_trade_grpc = require("@tulipsolutions/tecl/pub/trade_grpc_pb");
+const trade_pb = require('@tulipsolutions/tecl/pub/trade_pb');
+const orders_pb = require('@tulipsolutions/tecl/common/orders_pb');
+const public_trade_grpc = require('@tulipsolutions/tecl/pub/trade_grpc_pb');
 
 function publicTradeServiceGetTrades(host, credentials, options) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
-  var client = new public_trade_grpc.PublicTradeServiceClient(host, credentials);
+  const client = new public_trade_grpc.PublicTradeServiceClient(host, credentials);
 
   // Create a request for the most recent trades in the BTC_EUR market
-  var request = new trade_pb.GetPublicTradesRequest();
+  const request = new trade_pb.GetPublicTradesRequest();
   request.setMarket(orders_pb.Market.BTC_EUR);
 
   // Add a 1s deadline, and make the request asynchronously
-  var deadline = new Date().setSeconds(new Date().getSeconds() + 1);
-  var callOptions = Object.assign({deadline: deadline}, options);
-  client.getTrades(request, callOptions, function (err, response) {
+  const deadline = new Date().setSeconds(new Date().getSeconds() + 1);
+  const callOptions = Object.assign({ deadline: deadline }, options);
+  client.getTrades(request, callOptions, (err, response) => {
     if (err) {
-      console.error("PublicTradeService.GetTrades error: " + err.message);
+      console.error('PublicTradeService.GetTrades error: ' + err.message);
     }
     if (response) {
       console.log(response.toObject());
@@ -46,23 +46,20 @@ function publicTradeServiceGetTrades(host, credentials, options) {
 
 function parseAndPrint(response) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
-  var resultString = util.format("%s\n", "PublicTrades");
-  response.getTradesList().forEach(
-    function (trade) {
-      resultString +=
-        util.format(
-          "\t%s: %s %s %f@%f quote_amount: %f time: %d id: %d\n",
-          "PublicTrade",
-          Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === trade.getMarket()),
-          Object.keys(orders_pb.Side).find(key => orders_pb.Side[key] === trade.getSide()),
-          trade.getBaseAmount(),
-          trade.getPrice(),
-          trade.getQuoteAmount(),
-          trade.getTimestampNs(),
-          trade.getTradeId()
-        );
-    }
-  );
+  let resultString = util.format('%s\n', 'PublicTrades');
+  response.getTradesList().forEach(trade => {
+    resultString += util.format(
+      '\t%s: %s %s %f@%f quote_amount: %f time: %s id: %s\n',
+      'PublicTrade',
+      Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === trade.getMarket()),
+      Object.keys(orders_pb.Side).find(key => orders_pb.Side[key] === trade.getSide()),
+      trade.getBaseAmount(),
+      trade.getPrice(),
+      trade.getQuoteAmount(),
+      trade.getTimestampNs(),
+      trade.getTradeId()
+    );
+  });
   console.log(resultString);
   // CODEINCLUDE-END-MARKER: ref-code-example-response
 }

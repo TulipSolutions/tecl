@@ -13,27 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var util = require("util");
+const util = require('util');
 
-var ohlc_pb = require("@tulipsolutions/tecl/pub/ohlc_pb");
-var ohlc_grpc = require("@tulipsolutions/tecl/pub/ohlc_grpc_pb");
-var orders_pb = require("@tulipsolutions/tecl/common/orders_pb");
+const ohlc_pb = require('@tulipsolutions/tecl/pub/ohlc_pb');
+const ohlc_grpc = require('@tulipsolutions/tecl/pub/ohlc_grpc_pb');
+const orders_pb = require('@tulipsolutions/tecl/common/orders_pb');
 
 function publicOhlcServiceGetOhlcData(host, credentials, options) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
-  var client = new ohlc_grpc.PublicOhlcServiceClient(host, credentials);
+  const client = new ohlc_grpc.PublicOhlcServiceClient(host, credentials);
 
   // Create a request for the OhlcBins for specified market and intervals.
-  var request = new ohlc_pb.GetOhlcRequest();
+  const request = new ohlc_pb.GetOhlcRequest();
   request.setMarket(orders_pb.Market.BTC_EUR);
   request.setIntervalsList([ohlc_pb.Interval.ONE_SECOND, ohlc_pb.Interval.ONE_MINUTE, ohlc_pb.Interval.FIVE_MINUTES]);
 
   // Add a 1s deadline, and make the request asynchronously
-  var deadline = new Date().setSeconds(new Date().getSeconds() + 1);
-  var callOptions = Object.assign({deadline: deadline}, options);
-  client.getOhlcData(request, callOptions, function (err, response) {
+  const deadline = new Date().setSeconds(new Date().getSeconds() + 1);
+  const callOptions = Object.assign({ deadline: deadline }, options);
+  client.getOhlcData(request, callOptions, (err, response) => {
     if (err) {
-      console.error("PublicOhlcService.GetOhlcData error: " + err.message);
+      console.error('PublicOhlcService.GetOhlcData error: ' + err.message);
     }
     if (response) {
       console.log(response.toObject());
@@ -47,25 +47,22 @@ function publicOhlcServiceGetOhlcData(host, credentials, options) {
 
 function parseAndPrint(response) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
-  var resultString = util.format("%s\n", "OhlcResponse");
-  response.getBinsList().forEach(
-    function (detail) {
-      resultString +=
-        util.format(
-          "\t%s %d %s open: %f, high: %f low: %f close: %f volume_base: %f volume_quote: %f nr_trades: %d\n",
-          "OhlcBin",
-          detail.getTimestampNs(),
-          Object.keys(ohlc_pb.Interval).find(key => ohlc_pb.Interval[key] === detail.getInterval()),
-          detail.getOpen(),
-          detail.getHigh(),
-          detail.getLow(),
-          detail.getClose(),
-          detail.getVolumeBase(),
-          detail.getVolumeQuote(),
-          detail.getNumberOfTrades()
-        );
-    }
-  );
+  let resultString = util.format('%s\n', 'OhlcResponse');
+  response.getBinsList().forEach(detail => {
+    resultString += util.format(
+      '\t%s %d %s open: %f, high: %f low: %f close: %f volume_base: %f volume_quote: %f nr_trades: %d\n',
+      'OhlcBin',
+      detail.getTimestampNs(),
+      Object.keys(ohlc_pb.Interval).find(key => ohlc_pb.Interval[key] === detail.getInterval()),
+      detail.getOpen(),
+      detail.getHigh(),
+      detail.getLow(),
+      detail.getClose(),
+      detail.getVolumeBase(),
+      detail.getVolumeQuote(),
+      detail.getNumberOfTrades()
+    );
+  });
   console.log(resultString);
   // CODEINCLUDE-END-MARKER: ref-code-example-response
 }

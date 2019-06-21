@@ -1,0 +1,18 @@
+{
+    "extends": [
+        "plugin:prettier/recommended",
+        "eslint:recommended"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 6
+    },
+    "rules": {
+        "no-console": "off",
+        "prefer-arrow-callback": 2,
+        "no-var": 2
+    },
+    "env": {
+        "node": true,
+        "browser": true
+    }
+}
