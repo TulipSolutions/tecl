@@ -66,7 +66,7 @@ function parseAndPrint(response) {
       }
       resultString +=
         util.format(
-          "\t%s: %d for market %s %s\n",
+          "\t%s: %s for market %s %s\n",
           "ActiveOrderStatus",
           activeOrder.getOrderId(),
           Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === activeOrder.getMarket()),

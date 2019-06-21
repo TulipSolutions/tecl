@@ -51,7 +51,7 @@ function parseAndPrint(response) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
   console.log(
     util.format(
-      "%s: %d for %s",
+      "%s: %s for %s",
       "CancelOrderResponse",
       response.getOrderId(),
       Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === response.getMarket()),

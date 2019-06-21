@@ -48,7 +48,7 @@ function parseAndPrint(response) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
   console.log(
     util.format(
-      "%s: %s %s %f@%f quote_amount: %f fee: %s %f time: %d id: %d matched_orderid: %d",
+      "%s: %s %s %f@%f quote_amount: %f fee: %s %f time: %s id: %s matched_orderid: %s",
       "PrivateTrade",
       Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === response.getMarket()),
       Object.keys(orders_pb.Side).find(key => orders_pb.Side[key] === response.getSide()),

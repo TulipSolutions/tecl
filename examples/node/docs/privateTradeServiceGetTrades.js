@@ -51,7 +51,7 @@ function parseAndPrint(response) {
     function (trade) {
       resultString +=
         util.format(
-          "\t%s: %s %s %f@%f quote_amount: %f fee: %s %f time: %d id %d matched_orderid: %d\n",
+          "\t%s: %s %s %f@%f quote_amount: %f fee: %s %f time: %s id %s matched_orderid: %s\n",
           "PrivateTrade",
           Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === trade.getMarket()),
           Object.keys(orders_pb.Side).find(key => orders_pb.Side[key] === trade.getSide()),

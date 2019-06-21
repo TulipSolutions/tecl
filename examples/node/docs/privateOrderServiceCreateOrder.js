@@ -71,7 +71,7 @@ function parseAndPrint(response) {
   }
   console.log(
     util.format(
-      "%s: %d for market %s %s",
+      "%s: %s for market %s %s",
       "CreateOrderResponse",
       response.getOrderId(),
       Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === response.getMarket()),
