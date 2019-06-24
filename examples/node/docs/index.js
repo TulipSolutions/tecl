@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+const fs = require('fs');
+
 const grpc = require('grpc');
 
 const auth = require('@tulipsolutions/tecl/auth');
@@ -37,13 +39,47 @@ const publicTradeServiceStreamTrades = require('./publicTradeServiceStreamTrades
 const publicOhlcServiceGetOhlcData = require('./publicOhlcServiceGetOhlcData');
 const publicOhlcServiceStreamOhlcData = require('./publicOhlcServiceStreamOhlcData');
 
+const args = process.argv;
+let host;
+let credentials;
+
+switch (args.length) {
+  case 2: {
+    // Use system CA trust store to connect to public MockGrpc service.
+    host = 'mockgrpc.test.tulipsolutions.nl:443';
+    credentials = grpc.credentials.createSsl();
+    break;
+  }
+  case 4: {
+    // Use Mock CA certificates from this repository
+    // The server cert is set up to accept connections to localhost
+    let caCertPath = 'mockgrpc/src/main/resources/certs/mock_ca.crt';
+    if (!fs.existsSync(caCertPath)) {
+      // If this file is run from the examples workspace, the cert file will be placed here by Bazel
+      caCertPath = 'external/nl_tulipsolutions_tecl/' + caCertPath;
+    }
+    const trustCertCollection = fs.readFileSync(caCertPath);
+    credentials = grpc.credentials.createSsl(trustCertCollection);
+    host = args[2] + ':' + args[3];
+    break;
+  }
+  case 5: {
+    // Use command line provided CA certificate bundle
+    host = args[2] + ':' + args[3];
+    const trustCertCollection = fs.readFileSync(args[4]);
+    credentials = grpc.credentials.createSsl(trustCertCollection);
+    break;
+  }
+  default: {
+    console.log('USAGE: DocsMain [host port [trustCertCollectionFilePath]]');
+    process.exit(1);
+  }
+}
+
 // Create a secret byte array from the base64 decoded 'secret' string
 const secret = Buffer.from('secret==', 'base64');
 const dummyJwt =
   'eyJraWQiOiI2YzY4OTIzMi03YTcxLTQ3NGItYjBlMi1lMmI1MzMyNDQzOWUiLCJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIxMjM0In0.IL9QJQl55qn3oPsT7sFa7iwd5g1GsEQVr0IO7gCe1UmQdjT7jCIc-pUfjyYUgptPR8HBQl5ncXuBnxwjdXqOMwW1WhPmi_B3BRHQh3Sfu0zNXqKhkuz2-6DffXK1ek3DmK1NpaSikXtg2ruSQ4Uk5xHcnxmXY_SwEij0yot_JRKYEs-0RbyD5Z4jOFKcsbEW46WQmiWdgG3PUKiJT5TfdFd55JM55BwzSOdPIP1S_3dQ4VTDo30mWqAs1KaVbcPqCQmjT1PL0QScTp4w8-YPDcajcafIj98ve9LUoLBLraCIAX34D-hOxu643h9DoG2kIPFfZyXbkDTiUKOl7t-Ykg';
-
-const host = 'mockgrpc.test.tulipsolutions.nl:443';
-const credentials = grpc.credentials.createSsl();
 
 const options = {
   interceptors: [

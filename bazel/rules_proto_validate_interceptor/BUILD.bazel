@@ -1,0 +1,11 @@
+java_binary(
+    name = "rules_proto_validate_interceptor",
+    main_class = "nl.tulipsolutions.compiler.interceptor.InterceptorPlugin",
+    resources = ["src/main/resources/interceptor.mustache"],
+    visibility = ["//visibility:public"],
+    runtime_deps = [
+        "//bazel/rules_proto_validate_interceptor/src/main/java/nl/tulipsolutions/compiler/interceptor",
+        "@com_github_spullara_mustache_java_compiler//jar",
+        "@com_google_protobuf//:protobuf_java",
+    ],
+)

@@ -50,6 +50,7 @@ go_library(
 
 go_binary(
     name = "docs",
+    data = ["@nl_tulipsolutions_tecl//mockgrpc/src/main/resources"],
     embed = [":go_default_library"],
     visibility = ["//visibility:public"],
 )

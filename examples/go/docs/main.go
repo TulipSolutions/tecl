@@ -25,14 +25,43 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"log"
-)
-
-const (
-	address = "mockgrpc.test.tulipsolutions.nl:443"
+	"os"
 )
 
 // Subscribe to a public orderbook stream and set a new order
 func main() {
+	var args = os.Args
+	var address string
+	var creds credentials.TransportCredentials
+	var err error
+
+	switch len(args) {
+	case 1:
+		// Use system CA trust store to connect to public MockGrpc service.
+		address = "mockgrpc.test.tulipsolutions.nl:443"
+		creds = credentials.NewTLS(&tls.Config{})
+	case 3:
+		// Use Mock CA certificates from this repository
+		// The server cert is set up to accept connections to localhost
+		caCertPath := "mockgrpc/src/main/resources/certs/mock_ca.crt"
+		if _, err := os.Stat(caCertPath); os.IsNotExist(err) {
+			// If this file is run from the examples workspace, the cert file will be placed here by Bazel
+			caCertPath = "external/nl_tulipsolutions_tecl/" + caCertPath
+		}
+		creds, err = credentials.NewClientTLSFromFile(caCertPath, "")
+		address = fmt.Sprintf("%s:%s", args[1], args[2])
+	case 4:
+		// Use command line provided CA certificate bundle
+		address = fmt.Sprintf("%s:%s", args[1], args[2])
+		creds, err = credentials.NewClientTLSFromFile(args[3], "")
+	default:
+		fmt.Println("USAGE: DocsMain [host port [trustCertCollectionFilePath]]")
+		os.Exit(1)
+	}
+	if err != nil {
+		log.Fatalf("failed to load credentials: %v", err)
+	}
+
 	// Create a SHA256 HMAC with the base64 decoded 'secret' string as its key
 	secret, err := base64.StdEncoding.DecodeString("secret==")
 	if err != nil {
@@ -49,7 +78,7 @@ func main() {
 		grpc.WithPerRPCCredentials(auth.TulipAuth{
 			Token: dummyJwt,
 		}),
-		grpc.WithTransportCredentials(credentials.NewTLS(&tls.Config{})),
+		grpc.WithTransportCredentials(creds),
 	}
 
 	// Set up a connection to the server.

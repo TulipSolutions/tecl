@@ -1,0 +1,42 @@
+load("@io_bazel_rules_kotlin//kotlin:kotlin.bzl", "kt_jvm_library")
+
+java_binary(
+    name = "mockgrpc_bin",
+    data = ["//mockgrpc/src/main/resources"],
+    main_class = "nl.tulipsolutions.mockgrpc.MockGrpcMain",
+    visibility = ["//mockgrpc:__pkg__"],
+    runtime_deps = [":mockgrpc"],
+)
+
+kt_jvm_library(
+    name = "mockgrpc",
+    srcs = glob(["*.kt"]),
+    runtime_deps = [
+        "@io_netty_netty_tcnative_boringssl_static//jar",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/priv:order_jvm_validate",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/priv:trade_jvm_validate",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/priv:wallet_jvm_validate",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/pub:market_detail_jvm_validate",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/pub:ohlc_jvm_validate",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/pub:orderbook_jvm_validate",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/pub:ticker_jvm_validate",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/pub:trade_jvm_validate",
+    ],
+    deps = [
+        "//mockgrpc/src/main/kotlin/nl/tulipsolutions/mockgrpc/interceptors",
+        "//mockgrpc/src/main/kotlin/nl/tulipsolutions/mockgrpc/services",
+        "@com_envoyproxy_protoc_gen_validate//java/pgv-java-stub/src/main/java/io/envoyproxy/pgv",
+        "@io_grpc_grpc_java//core",
+        "@io_grpc_grpc_java//core:internal",
+        "@io_grpc_grpc_java//netty",
+        "@io_netty_netty_handler//jar",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/priv:order_reactor_grpc",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/priv:trade_reactor_grpc",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/priv:wallet_reactor_grpc",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/pub:market_detail_reactor_grpc",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/pub:ohlc_reactor_grpc",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/pub:orderbook_reactor_grpc",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/pub:ticker_reactor_grpc",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/pub:trade_reactor_grpc",
+    ],
+)

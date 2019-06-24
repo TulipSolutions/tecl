@@ -1,0 +1,4 @@
+alias(
+    name = "mockgrpc",
+    actual = "//mockgrpc/src/main/kotlin/nl/tulipsolutions/mockgrpc:mockgrpc_bin",
+)

@@ -59,6 +59,33 @@ func (x *javaLang) Kinds() map[string]rule.KindInfo {
 			MergeableAttrs: map[string]bool{"srcs": true},
 			ResolveAttrs:   map[string]bool{"deps": true},
 		},
+		"reactor_grpc_library": {
+			MatchAny: false,
+			NonEmptyAttrs: map[string]bool{
+				"proto": true,
+				"deps":  true,
+			},
+			MergeableAttrs: map[string]bool{"proto": true},
+			ResolveAttrs:   map[string]bool{"deps": true},
+		},
+		"pgv_java_proto_library": {
+			MatchAny: false,
+			NonEmptyAttrs: map[string]bool{
+				"deps":      true,
+				"java_deps": true,
+			},
+			MergeableAttrs: map[string]bool{"deps": true},
+			ResolveAttrs:   map[string]bool{"java_deps": true},
+		},
+		"java_validate_interceptor_library": {
+			MatchAny: false,
+			NonEmptyAttrs: map[string]bool{
+				"deps": true,
+				"srcs": true,
+			},
+			MergeableAttrs: map[string]bool{"srcs": true},
+			ResolveAttrs:   map[string]bool{"deps": true},
+		},
 	}
 }
 
@@ -67,6 +94,18 @@ func (x *javaLang) Loads() []rule.LoadInfo {
 		{
 			Name:    "@io_grpc_grpc_java//:java_grpc_library.bzl",
 			Symbols: []string{"java_grpc_library"},
+		},
+		{
+			Name:    "@com_envoyproxy_protoc_gen_validate//bazel:pgv_proto_library.bzl",
+			Symbols: []string{"pgv_java_proto_library"},
+		},
+		{
+			Name:    "@nl_tulipsolutions_tecl//bazel/rules_proto_validate_interceptor:def.bzl",
+			Symbols: []string{"java_validate_interceptor_library"},
+		},
+		{
+			Name:    "@com_salesforce_servicelibs_reactive_grpc//bazel:java_reactive_grpc_library.bzl",
+			Symbols: []string{"reactor_grpc_library"},
 		},
 	}
 }
@@ -91,6 +130,18 @@ func ProtoRuleName(protoRuleName string) string {
 
 func GrpcRuleName(protoRuleName string) string {
 	return strings.TrimSuffix(protoRuleName, "_proto") + "_jvm_grpc"
+}
+
+func ReactorGrpcRuleName(protoRuleName string) string {
+	return strings.TrimSuffix(protoRuleName, "_proto") + "_reactor_grpc"
+}
+
+func ValidateRuleName(protoRuleName string) string {
+	return strings.TrimSuffix(protoRuleName, "_proto") + "_jvm_validate"
+}
+
+func ValidateInterceptorRuleName(protoRuleName string) string {
+	return strings.TrimSuffix(protoRuleName, "_proto") + "_jvm_validate_interceptor"
 }
 
 func (x *javaLang) GenerateRules(args language.GenerateArgs) language.GenerateResult {
@@ -129,6 +180,34 @@ func (x *javaLang) GenerateRules(args language.GenerateArgs) language.GenerateRe
 			javaGrpcRule.SetAttr("deps", []string{":" + javaProtoRuleName})
 			javaGrpcRule.SetAttr("visibility", []string{"//visibility:public"})
 			rules = append(rules, javaGrpcRule)
+
+			reactorGrpcRuleName := ReactorGrpcRuleName(protoRuleName)
+			reactorGrpcRule := rule.NewRule("reactor_grpc_library", reactorGrpcRuleName)
+			reactorGrpcRule.SetAttr("proto", ":"+protoRuleName)
+			javaReactorGrpcDeps := []string{":" + javaGrpcRuleName}
+			reactorGrpcRule.SetAttr("deps", javaReactorGrpcDeps)
+			reactorGrpcRule.SetAttr("visibility", []string{"//visibility:public"})
+			rules = append(rules, reactorGrpcRule)
+		}
+
+		if ppkg.Imports[validateProtoImportString] {
+			javaValidateRuleName := ValidateRuleName(protoRuleName)
+			javaValidateRule := rule.NewRule("pgv_java_proto_library", javaValidateRuleName)
+			javaValidateRule.SetAttr("visibility", []string{"//visibility:public"})
+			javaValidateRule.SetAttr("deps", []string{":" + protoRuleName})
+			javaValidateRule.SetAttr("java_deps", []string{":" + javaProtoRuleName})
+			rules = append(rules, javaValidateRule)
+
+			if ppkg.HasServices {
+				javaValidateInterceptorRuleName := ValidateInterceptorRuleName(protoRuleName)
+				javaValidateInterceptorRule := rule.NewRule("java_validate_interceptor_library", javaValidateInterceptorRuleName)
+				javaValidateInterceptorRule.SetAttr("srcs", []string{":" + protoRuleName})
+				javaValidateInterceptorDeps := []string{":" + javaProtoRuleName, ":" + javaValidateRuleName}
+				sort.Strings(javaValidateInterceptorDeps)
+				javaValidateInterceptorRule.SetAttr("deps", javaValidateInterceptorDeps)
+				javaValidateInterceptorRule.SetAttr("visibility", []string{"//visibility:public"})
+				rules = append(rules, javaValidateInterceptorRule)
+			}
 		}
 	}
 

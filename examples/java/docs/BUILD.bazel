@@ -7,11 +7,13 @@ filegroup(
 java_binary(
     name = "docs",
     srcs = glob(["*.java"]),
-    main_class = "docs.Main",
+    data = ["@nl_tulipsolutions_tecl//mockgrpc/src/main/resources"],
+    main_class = "docs.DocsMain",
     deps = [
         "@io_grpc_grpc_java//core",
         "@io_grpc_grpc_java//netty",
         "@io_grpc_grpc_java//stub",
+        "@io_netty_netty_handler",
         "@io_netty_netty_tcnative_boringssl_static//jar",
         "@nl_tulipsolutions_tecl//java/nl/tulipsolutions/api",
         "@nl_tulipsolutions_tecl//java/nl/tulipsolutions/api/auth",

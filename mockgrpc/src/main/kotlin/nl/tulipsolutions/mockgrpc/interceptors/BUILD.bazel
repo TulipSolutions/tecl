@@ -1,0 +1,18 @@
+load("@io_bazel_rules_kotlin//kotlin:kotlin.bzl", "kt_jvm_library")
+
+java_library(
+    name = "interceptors",
+    srcs = glob(["*.java"]),
+    visibility = ["//visibility:public"],
+    deps = [
+        "//java/nl/tulipsolutions/api",
+        "//tulipsolutions/api/common:errors_jvm_proto",
+        "@com_envoyproxy_protoc_gen_validate//java/pgv-java-stub/src/main/java/io/envoyproxy/pgv",
+        "@com_google_api_grpc_proto_google_common_protos//jar",
+        "@com_google_protobuf//:protobuf_java",
+        "@io_grpc_grpc_java//core",
+        "@io_grpc_grpc_java//protobuf",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/priv:message_authentication_jvm_proto",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/priv:message_authentication_jvm_validate",
+    ],
+)

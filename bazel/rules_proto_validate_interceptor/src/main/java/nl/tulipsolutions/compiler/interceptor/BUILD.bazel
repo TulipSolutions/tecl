@@ -1,0 +1,10 @@
+java_library(
+    name = "interceptor",
+    srcs = ["InterceptorPlugin.java"],
+    visibility = ["//bazel/rules_proto_validate_interceptor:__subpackages__"],
+    deps = [
+        "@com_github_spullara_mustache_java_compiler//jar",
+        "@com_google_guava_guava//jar",
+        "@com_google_protobuf//:protobuf_java",
+    ],
+)

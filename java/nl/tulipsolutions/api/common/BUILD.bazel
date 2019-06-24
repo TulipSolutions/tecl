@@ -1,0 +1,12 @@
+load("@io_bazel_rules_kotlin//kotlin:kotlin.bzl", "kt_jvm_library")
+
+kt_jvm_library(
+    name = "orders_extensions",
+    srcs = ["OrdersExtensions.kt"],
+    visibility = ["//visibility:public"],
+    exports = ["//tulipsolutions/api/common:orders_jvm_proto"],
+    deps = [
+        "//tulipsolutions/api/common:orders_jvm_proto",
+        "@com_google_protobuf//:protobuf_java",
+    ],
+)

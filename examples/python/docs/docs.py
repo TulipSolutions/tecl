@@ -15,6 +15,8 @@
 
 
 import base64
+import sys
+import os
 from concurrent.futures import ThreadPoolExecutor
 
 import grpc
@@ -28,23 +30,46 @@ from private_wallet_service_get_balance import private_wallet_service_get_balanc
 from private_wallet_service_stream_balance import private_wallet_service_stream_balance
 from public_market_detail_service_get_market_details import public_market_detail_service_get_market_details
 from public_market_detail_service_stream_market_details import public_market_detail_service_stream_market_details
+from public_ohlc_service_get_ohlc_data import public_ohlc_service_get_ohlc_data
+from public_ohlc_service_stream_ohlc_data import public_ohlc_service_stream_ohlc_data
 from public_orderbook_service_get_orderbook import public_orderbook_service_get_orderbook
 from public_orderbook_service_stream_orderbook import public_orderbook_service_stream_orderbook
 from public_ticker_service_get_tickers import public_ticker_service_get_tickers
 from public_ticker_service_stream_tickers import public_ticker_service_stream_tickers
 from public_trade_service_get_trades import public_trade_service_get_trades
 from public_trade_service_stream_trades import public_trade_service_stream_trades
-from public_ohlc_service_get_ohlc_data import public_ohlc_service_get_ohlc_data
-from public_ohlc_service_stream_ohlc_data import public_ohlc_service_stream_ohlc_data
-
 from tulipsolutions.api.auth import jwt_interceptor
 from tulipsolutions.api.auth import message_authentication_interceptor
 
 
 if __name__ == '__main__':
-    creds = grpc.ssl_channel_credentials()
+    args = sys.argv
+    if len(args) == 1:
+        # Use system CA trust store to connect to public MockGrpc service.
+        address = 'mockgrpc.test.tulipsolutions.nl:443'
+        creds = grpc.ssl_channel_credentials()
+    elif len(args) == 3:
+        # Use Mock CA certificates from this repository
+        # The server cert is set up to accept connections to localhost
+        ca_cert_path = 'mockgrpc/src/main/resources/certs/mock_ca.crt'
+        if not os.path.exists(ca_cert_path):
+            # If this file is run from the examples workspace, the cert file will be placed here by Bazel
+            ca_cert_path = "external/nl_tulipsolutions_tecl/" + ca_cert_path
+        with open(ca_cert_path, 'rb') as ca_cert_file:
+            trust_cert_collection = ca_cert_file.read()
+        creds = grpc.ssl_channel_credentials(trust_cert_collection)
+        address = '%s:%s' % (args[1], args[2])
+    elif len(args) == 4:
+        # Use command line provided CA certificate bundle
+        address = '%s:%s' % (args[1], args[2])
+        with open(args[3], 'rb') as ca_cert_file:
+            trust_cert_collection = ca_cert_file.read()
+        creds = grpc.ssl_channel_credentials(trust_cert_collection)
+    else:
+        print("USAGE: DocsMain [host port [trustCertCollectionFilePath]]")
+        sys.exit(1)
 
-    with grpc.secure_channel('mockgrpc.test.tulipsolutions.nl:443', creds) as channel:
+    with grpc.secure_channel(address, creds) as channel:
         # Create a SHA256 HMAC with the base64 decoded 'secret' string as its key
         dummy_secret = base64.standard_b64decode("secret==")
         dummy_jwt = "eyJraWQiOiI2YzY4OTIzMi03YTcxLTQ3NGItYjBlMi1lMmI1MzMyNDQzOWUiLCJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIxMjM0In0.IL9QJQl55qn3oPsT7sFa7iwd5g1GsEQVr0IO7gCe1UmQdjT7jCIc-pUfjyYUgptPR8HBQl5ncXuBnxwjdXqOMwW1WhPmi_B3BRHQh3Sfu0zNXqKhkuz2-6DffXK1ek3DmK1NpaSikXtg2ruSQ4Uk5xHcnxmXY_SwEij0yot_JRKYEs-0RbyD5Z4jOFKcsbEW46WQmiWdgG3PUKiJT5TfdFd55JM55BwzSOdPIP1S_3dQ4VTDo30mWqAs1KaVbcPqCQmjT1PL0QScTp4w8-YPDcajcafIj98ve9LUoLBLraCIAX34D-hOxu643h9DoG2kIPFfZyXbkDTiUKOl7t-Ykg"  # noqa E501

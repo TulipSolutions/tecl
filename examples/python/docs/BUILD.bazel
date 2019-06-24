@@ -9,6 +9,7 @@ filegroup(
 py_binary(
     name = "docs",
     srcs = glob(["*.py"]),
+    data = ["@nl_tulipsolutions_tecl//mockgrpc/src/main/resources"],
     python_version = "PY2",
     deps = [
         requirement("enum34"),

@@ -10,6 +10,7 @@ nodejs_binary(
     name = "docs",
     data = [
         ":srcs",
+        "@nl_tulipsolutions_tecl//mockgrpc/src/main/resources",
         "@npm//@tulipsolutions/tecl",
     ],
     entry_point = "index.js",

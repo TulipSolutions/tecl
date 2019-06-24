@@ -11,6 +11,12 @@ load("@bazel_skylib//lib:versions.bzl", "versions")
 
 versions.check(minimum_bazel_version = "0.27.0")
 
+load("@io_bazel_rules_kotlin//kotlin:kotlin.bzl", "kotlin_repositories", "kt_register_toolchains")
+
+kotlin_repositories()
+
+kt_register_toolchains()
+
 load("@io_bazel_rules_python//python:pip.bzl", "pip_import", "pip_repositories")
 
 pip_import(
@@ -84,4 +90,11 @@ go_repository(
     sha256 = "beeea8a9e2950a23b0bb1e22d94cd58bea9cfaf1d321ef9f2ac2707d92ce7ab3",
     strip_prefix = "addlicense-%s" % add_license_version,
     urls = ["https://github.com/google/addlicense/archive/%s.zip" % add_license_version],
+)
+
+load("@com_salesforce_servicelibs_reactive_grpc//bazel:repositories.bzl", reactive_grpc_repositories = "repositories")
+
+reactive_grpc_repositories(
+    omit_com_github_spullara_mustache_java_compiler = True,
+    omit_io_grpc_grpc_java = True,
 )

@@ -1,0 +1,13 @@
+load("@io_bazel_rules_kotlin//kotlin:kotlin.bzl", "kt_jvm_library")
+
+kt_jvm_library(
+    name = "ohlc_extensions",
+    srcs = ["OhlcExtensions.kt"],
+    visibility = ["//visibility:public"],
+    exports = ["//tulipsolutions/api/pub:ohlc_jvm_proto"],
+    deps = [
+        "//tulipsolutions/api/common:options_jvm_proto",
+        "//tulipsolutions/api/pub:ohlc_jvm_proto",
+        "@com_google_protobuf//:protobuf_java",
+    ],
+)

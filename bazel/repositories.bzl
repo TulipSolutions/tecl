@@ -6,6 +6,8 @@ load(
 )
 
 def repositories(
+        omit_com_salesforce_servicelibs_reactive_grpc = False,
+        omit_com_github_spullara_mustache_java_compiler = False,
         omit_bazel_skylib = False,
         omit_com_google_protobuf = False,
         omit_com_github_grpc_grpc = False,
@@ -25,7 +27,30 @@ def repositories(
         omit_build_bazel_rules_nodejs = False,
         omit_net_zlib = False,
         omit_com_google_errorprone_error_prone_annotations = False,
-        omit_com_envoyproxy_protoc_gen_validate = False):
+        omit_com_envoyproxy_protoc_gen_validate = False,
+        omit_io_bazel_rules_kotlin = False,
+        omit_org_apache_commons_validator = False):
+    if not omit_com_salesforce_servicelibs_reactive_grpc:
+        # Latest on master on 2019-06-25
+        version = "e7aa649e9a7d4af87fa17ccd6100c53758ee717d"
+
+        http_archive(
+            name = "com_salesforce_servicelibs_reactive_grpc",
+            strip_prefix = "reactive-grpc-%s" % version,
+            sha256 = "89ce5f010e517437a997107621cba355009d8397c76864e8ee1714f063482875",
+            url = "https://github.com/salesforce/reactive-grpc/archive/%s.zip" % version,
+        )
+
+    if not omit_com_github_spullara_mustache_java_compiler:
+        java_import_external(
+            name = "com_github_spullara_mustache_java_compiler",
+            jar_urls = ["http://central.maven.org/maven2/com/github/spullara/mustache/java/compiler/0.9.6/compiler-0.9.6.jar"],
+            jar_sha256 = "c4d697fd3619cb616cc5e22e9530c8a4fd4a8e9a76953c0655ee627cb2d22318",
+            srcjar_urls = ["http://central.maven.org/maven2/com/github/spullara/mustache/java/compiler/0.9.6/compiler-0.9.6-sources.jar"],
+            srcjar_sha256 = "fb3cf89e4daa0aaa4e659aca12a8ddb0d7b605271285f3e108201e0a389b4c7a",
+            licenses = ["notice"],  # Apache 2.0
+        )
+
     if not omit_bazel_skylib:
         bazel_skylib_version = "0.6.0"
         http_archive(
@@ -256,4 +281,24 @@ sh_binary(
             patches = [
                 "@nl_tulipsolutions_tecl//third_party/patches/com_envoyproxy_protoc_gen_validate:0001-Add-description-fields-to-ValidationException.patch",
             ],
+        )
+
+    if not omit_io_bazel_rules_kotlin:
+        rules_kotlin_version = "da1232eda2ef90d4375e2d1677b32c7ddf09e8a1"
+
+        http_archive(
+            name = "io_bazel_rules_kotlin",
+            sha256 = "f5d8148d965476cb4d968be5350085d6f4872569829c239f21fcee62ce487f7d",
+            strip_prefix = "rules_kotlin-%s" % rules_kotlin_version,
+            url = "https://github.com/bazelbuild/rules_kotlin/archive/%s.zip" % rules_kotlin_version,
+        )
+
+    if not omit_org_apache_commons_validator:
+        java_import_external(
+            name = "org_apache_commons_validator",
+            jar_urls = ["http://central.maven.org/maven2/commons-validator/commons-validator/1.6/commons-validator-1.6.jar"],
+            jar_sha256 = "bd62795d7068a69cbea333f6dbf9c9c1a6ad7521443fb57202a44874f240ba25",
+            srcjar_urls = ["http://central.maven.org/maven2/commons-validator/commons-validator/1.6/commons-validator-1.6-sources.jar"],
+            srcjar_sha256 = "9d4d052237a3b010138b853d8603d996cc3f89a6b3f793c5a50b93481cd8dea2",
+            licenses = ["notice"],  # Apache 2.0
         )
