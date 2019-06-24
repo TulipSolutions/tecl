@@ -1,13 +1,13 @@
-Sphinx==1.8.4
+Sphinx==1.8.5
 
 # The theme
 sphinx-rtd-theme==0.4.3
 
 # Only required for Python 2 and < 3.5 only. No-op for Python 3.5+.
-typing==3.6.6
+typing==3.7.4
 
 # Required on minimal environments
-setuptools==40.8.0
+setuptools==41.0.1
 
 # Sphinx's transitive dependencies listed below explicitly with their versions frozen. In order to update those on a new
 # version of Sphinx:
@@ -15,6 +15,7 @@ setuptools==40.8.0
 #    $ python3.6 -m venv my-temp-venv
 # 2. Install the desired Sphinx version in that virtualenv, e.g.:
 #    $ source my-temp-venv/bin/activate
+#    $ pip install -U pip  # Ensure pip itself is up to date
 #    $ pip install \
 #      Sphinx==<version> \
 #      sphinx_rtd_theme==<version> \
@@ -26,20 +27,20 @@ setuptools==40.8.0
 # 4. If any packages are added/removed, update the ./BUILD file accordingly.
 
 alabaster==0.7.12
-Babel==2.6.0
-certifi==2018.11.29
+Babel==2.7.0
+certifi==2019.6.16
 chardet==3.0.4
 docutils==0.14
 idna==2.8
 imagesize==1.1.0
-Jinja2==2.10
-MarkupSafe==1.1.0
+Jinja2==2.10.1
+MarkupSafe==1.1.1
 packaging==19.0
-Pygments==2.3.1
-pyparsing==2.3.1
-pytz==2018.9
-requests==2.21.0
+Pygments==2.4.2
+pyparsing==2.4.0
+pytz==2019.1
+requests==2.22.0
 six==1.12.0
 snowballstemmer==1.2.1
-sphinxcontrib-websupport==1.1.0
-urllib3==1.24.1
+sphinxcontrib-websupport==1.1.2
+urllib3==1.25.3
