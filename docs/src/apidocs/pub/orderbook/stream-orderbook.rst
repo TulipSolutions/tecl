@@ -11,6 +11,7 @@ Stream orderbook
    :class: code-example-responsive
 
    .. tab-container:: Go
+      :sidebar:
 
       .. codeinclude:: /examples/go/docs/public_orderbook_service_stream_orderbook.go
          :marker-id: ref-code-example-request
@@ -21,6 +22,7 @@ Stream orderbook
          :caption: Example response handling
 
    .. tab-container:: Java
+      :sidebar:
 
       .. codeinclude:: /examples/java/docs/PublicOrderbookServiceStreamOrderbook.java
          :marker-id: ref-code-example-request
@@ -31,6 +33,7 @@ Stream orderbook
          :caption: Example response handling
 
    .. tab-container:: Node
+      :sidebar:
 
       .. codeinclude:: /examples/node/docs/publicOrderbookServiceStreamOrderbook.js
          :marker-id: ref-code-example-request
@@ -41,6 +44,7 @@ Stream orderbook
          :caption: Example response handling
 
    .. tab-container:: Python
+      :sidebar:
 
       .. codeinclude:: /examples/python/docs/public_orderbook_service_stream_orderbook.py
          :marker-id: ref-code-example-request

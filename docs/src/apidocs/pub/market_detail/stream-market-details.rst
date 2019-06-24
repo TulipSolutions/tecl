@@ -13,6 +13,7 @@ Stream market details
    :class: code-example-responsive
 
    .. tab-container:: Go
+      :sidebar:
 
       .. codeinclude:: /examples/go/docs/public_market_detail_service_stream_market_details.go
          :marker-id: ref-code-example-request
@@ -23,6 +24,7 @@ Stream market details
          :caption: Example response handling
 
    .. tab-container:: Java
+      :sidebar:
 
       .. codeinclude:: /examples/java/docs/PublicMarketDetailServiceStreamMarketDetails.java
          :marker-id: ref-code-example-request
@@ -33,6 +35,7 @@ Stream market details
          :caption: Example response handling
 
    .. tab-container:: Node
+      :sidebar:
 
       .. codeinclude:: /examples/node/docs/publicMarketDetailServiceStreamMarketDetails.js
          :marker-id: ref-code-example-request
@@ -43,6 +46,7 @@ Stream market details
          :caption: Example response handling
 
    .. tab-container:: Python
+      :sidebar:
 
       .. codeinclude:: /examples/python/docs/public_market_detail_service_stream_market_details.py
          :marker-id: ref-code-example-request

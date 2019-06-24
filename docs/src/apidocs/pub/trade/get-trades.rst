@@ -13,6 +13,7 @@ Get trades
    :class: code-example-responsive
 
    .. tab-container:: Go
+      :sidebar:
 
       .. codeinclude:: /examples/go/docs/public_trade_service_get_trades.go
          :marker-id: ref-code-example-request
@@ -23,6 +24,7 @@ Get trades
          :caption: Example response handling
 
    .. tab-container:: Java
+      :sidebar:
 
       .. codeinclude:: /examples/java/docs/PublicTradeServiceGetTrades.java
          :marker-id: ref-code-example-request
@@ -33,6 +35,7 @@ Get trades
          :caption: Example response handling
 
    .. tab-container:: Node
+      :sidebar:
 
       .. codeinclude:: /examples/node/docs/publicTradeServiceGetTrades.js
          :marker-id: ref-code-example-request
@@ -43,6 +46,7 @@ Get trades
          :caption: Example response handling
 
    .. tab-container:: Python
+      :sidebar:
 
       .. codeinclude:: /examples/python/docs/public_trade_service_get_trades.py
          :marker-id: ref-code-example-request

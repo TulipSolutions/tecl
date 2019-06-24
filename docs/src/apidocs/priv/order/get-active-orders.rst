@@ -15,6 +15,7 @@ Get active orders
    :class: code-example-responsive
 
    .. tab-container:: Go
+      :sidebar:
 
       .. codeinclude:: /examples/go/docs/private_active_orders_service_get_active_orders.go
          :marker-id: ref-code-example-request
@@ -25,6 +26,7 @@ Get active orders
          :caption: Example response handling
 
    .. tab-container:: Java
+      :sidebar:
 
       .. codeinclude:: /examples/java/docs/PrivateActiveOrdersServiceGetActiveOrders.java
          :marker-id: ref-code-example-request
@@ -35,6 +37,7 @@ Get active orders
          :caption: Example response handling
 
    .. tab-container:: Node
+      :sidebar:
 
       .. codeinclude:: /examples/node/docs/privateActiveOrdersServiceGetActiveOrders.js
          :marker-id: ref-code-example-request
@@ -45,6 +48,7 @@ Get active orders
          :caption: Example response handling
 
    .. tab-container:: Python
+      :sidebar:
 
       .. codeinclude:: /examples/python/docs/private_active_orders_service_get_active_orders.py
          :marker-id: ref-code-example-request
