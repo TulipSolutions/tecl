@@ -28,11 +28,10 @@ func publicOhlcServiceStreamOhlcData(conn *grpc.ClientConn, parentContext contex
 	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
 	client := ohlc.NewPublicOhlcServiceClient(conn)
 
-	 // Create a request for streaming ohlcBins for the specified market and intervals.
+	// Create a request for streaming ohlcBins for the specified market and intervals.
 	request := ohlc.StreamOhlcRequest{
-		Market: orders.Market_BTC_EUR,
+		Market:    orders.Market_BTC_EUR,
 		Intervals: []ohlc.Interval{ohlc.Interval_ONE_SECOND, ohlc.Interval_ONE_MINUTE, ohlc.Interval_FIVE_MINUTES},
-
 	}
 
 	// Create a new cancelable context and make the request synchronously
@@ -62,7 +61,7 @@ func publicOhlcServiceStreamOhlcData(conn *grpc.ClientConn, parentContext contex
 	// CODEINCLUDE-END-MARKER: ref-code-example-request
 }
 
-func parseAndPrintOhlc(bin *ohlc.OhlcBin){
+func parseAndPrintOhlc(bin *ohlc.OhlcBin) {
 	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
 	fmt.Printf(
 		"%T %d %s open: %f, high: %f low: %f close: %f volume_base: %f volume_quote: %f nr_trades: %d\n",

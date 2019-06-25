@@ -29,8 +29,8 @@ import (
 
 const (
 	validateProtoImportString = "validate/validate.proto"
-	ProtoImportsKey = "_proto_imports"
-	ProtoRuleNameKey = "_proto_rule_name"
+	ProtoImportsKey           = "_proto_imports"
+	ProtoRuleNameKey          = "_proto_rule_name"
 )
 
 type javaLang struct{}
@@ -109,7 +109,7 @@ func (x *javaLang) GenerateRules(args language.GenerateArgs) language.GenerateRe
 	var rules []*rule.Rule
 	for _, protoRuleName := range protoRuleNames {
 		ppkg := protoPackages[protoRuleName]
-		imports := make([]string, 0, len(ppkg.Imports) + 1)
+		imports := make([]string, 0, len(ppkg.Imports)+1)
 		for i := range ppkg.Imports {
 			imports = append(imports, i)
 		}

@@ -30,7 +30,7 @@ func publicOhlcServiceGetOhlcData(conn *grpc.ClientConn, parentContext context.C
 
 	// Create a request for the OhlcBins for specified market and intervals.
 	request := ohlc.GetOhlcRequest{
-		Market: orders.Market_BTC_EUR,
+		Market:    orders.Market_BTC_EUR,
 		Intervals: []ohlc.Interval{ohlc.Interval_ONE_SECOND, ohlc.Interval_ONE_MINUTE, ohlc.Interval_FIVE_MINUTES},
 	}
 
@@ -48,7 +48,7 @@ func publicOhlcServiceGetOhlcData(conn *grpc.ClientConn, parentContext context.C
 	resultString := fmt.Sprintf("%T\n", response)
 	for _, ohlcBin := range response.Bins {
 		resultString += fmt.Sprintf(
-		"\t%T %d %s open: %f, high: %f low: %f close: %f volume_base: %f volume_quote: %f nr_trades: %d\n",
+			"\t%T %d %s open: %f, high: %f low: %f close: %f volume_base: %f volume_quote: %f nr_trades: %d\n",
 			ohlcBin,
 			ohlcBin.TimestampNs,
 			ohlcBin.Interval.String(),

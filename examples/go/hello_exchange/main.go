@@ -36,6 +36,7 @@ import (
 const (
 	address = "mockgrpc.test.tulipsolutions.nl:443"
 )
+
 // CODEINCLUDE-END-MARKER: getting-started-orderbook-service-init
 
 // CODEINCLUDE-BEGIN-MARKER: getting-started-orderbook-service-request
@@ -70,6 +71,7 @@ func streamOrderbook(client orderbook.PublicOrderbookServiceClient, parentContex
 		log.Println(entry)
 	}
 }
+
 // CODEINCLUDE-END-MARKER: getting-started-orderbook-service-request
 
 // CODEINCLUDE-BEGIN-MARKER: getting-started-create-order-request
@@ -97,13 +99,14 @@ func createOrder(client order.PrivateOrderServiceClient, parentContext context.C
 	}
 	log.Println(response)
 }
+
 // CODEINCLUDE-END-MARKER: getting-started-create-order-request
 
 // CODEINCLUDE-BEGIN-MARKER: getting-started-create-order-authentication
 // Subscribe to a public orderbook stream and set a new order
 // CODEINCLUDE-BEGIN-MARKER: getting-started-orderbook-service-init
 func main() {
-// CODEINCLUDE-END-MARKER: getting-started-orderbook-service-init
+	// CODEINCLUDE-END-MARKER: getting-started-orderbook-service-init
 	// Create a SHA256 HMAC with the base64 decoded 'secret' string as its key
 	secret, err := base64.StdEncoding.DecodeString("secret==")
 	if err != nil {
@@ -117,7 +120,7 @@ func main() {
 	// CODEINCLUDE-BEGIN-MARKER: getting-started-orderbook-service-init
 
 	opts := []grpc.DialOption{
-	// CODEINCLUDE-END-MARKER: getting-started-orderbook-service-init
+		// CODEINCLUDE-END-MARKER: getting-started-orderbook-service-init
 		// Add an interceptor that signs messages with the provided secret.
 		// Only messages to the private API that have a 'signed' field will be signed.
 		grpc.WithUnaryInterceptor(auth.CreateMessageAuthInterceptor(hmacSha256)),
@@ -158,4 +161,5 @@ func main() {
 	// Wait until cancel
 	fmt.Scanln()
 }
+
 // CODEINCLUDE-END-MARKER: getting-started-create-order-authentication

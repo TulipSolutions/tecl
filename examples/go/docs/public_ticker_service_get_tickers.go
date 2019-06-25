@@ -44,8 +44,8 @@ func publicTickerServiceGetTickers(conn *grpc.ClientConn, parentContext context.
 	resultString := fmt.Sprintf("%T\n", response)
 	for _, tick := range response.Ticks {
 		resultString += fmt.Sprintf(
-			"\t%T %s mid_price %f best_buy_price: %f best_buy_size: %f " +
-				"best_sell_price: %f best_sell_size: %f open: %f, high: %f low: %f close: %f " +
+			"\t%T %s mid_price %f best_buy_price: %f best_buy_size: %f "+
+				"best_sell_price: %f best_sell_size: %f open: %f, high: %f low: %f close: %f "+
 				"volume_base: %f volume_quote: %f\n",
 			tick,
 			tick.Market.String(),

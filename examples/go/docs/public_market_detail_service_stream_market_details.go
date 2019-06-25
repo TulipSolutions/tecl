@@ -57,11 +57,11 @@ func publicMarketDetailServiceStreamMarketDetails(conn *grpc.ClientConn, parentC
 	// CODEINCLUDE-END-MARKER: ref-code-example-request
 }
 
-func parseAndPrintMarketDetail(detail *market_detail.MarketDetail)  {
+func parseAndPrintMarketDetail(detail *market_detail.MarketDetail) {
 	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
 	fmt.Printf(
-		"%T %s %s base currency: %s, quote currency: %s price resolution: %.8f amount resolution: %.8f " +
-			"minimum base order amount: %.8f maximum base order amount: %.8f, minimum quote order amount: %.8f " +
+		"%T %s %s base currency: %s, quote currency: %s price resolution: %.8f amount resolution: %.8f "+
+			"minimum base order amount: %.8f maximum base order amount: %.8f, minimum quote order amount: %.8f "+
 			"maximum quote order amount: %.8f\n",
 		detail,
 		detail.Market.String(),

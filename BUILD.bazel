@@ -2,6 +2,7 @@ load("@com_github_bazelbuild_buildtools//buildifier:def.bzl", "buildifier")
 load("//bazel/rules_clang_format:def.bzl", "clang_formatter")
 load("@bazel_gazelle//:def.bzl", "gazelle")
 load("//bazel/rules_addlicense:def.bzl", "addlicense")
+load("//bazel/rules_gofmt:def.bzl", "gofmt")
 
 exclude_patterns = [
     "./third_party/protoc-gen-validate/*",
@@ -65,6 +66,17 @@ addlicense(
 
 addlicense(
     name = "addlicense_check",
+    exclude_patterns = exclude_patterns,
+    mode = "check",
+)
+
+gofmt(
+    name = "gofmt_format",
+    exclude_patterns = exclude_patterns,
+)
+
+gofmt(
+    name = "gofmt_check",
     exclude_patterns = exclude_patterns,
     mode = "check",
 )

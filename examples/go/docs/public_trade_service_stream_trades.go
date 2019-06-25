@@ -59,7 +59,7 @@ func publicTradeServiceStreamTrades(conn *grpc.ClientConn, parentContext context
 	}
 	// CODEINCLUDE-END-MARKER: ref-code-example-request
 }
-func parseAndPrintTrade(trade *trade.PublicTrade){
+func parseAndPrintTrade(trade *trade.PublicTrade) {
 	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
 	fmt.Printf(
 		"%T: %s %s %f@%f quote_amount: %f time: %d id: %d\n",

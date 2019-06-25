@@ -65,7 +65,7 @@ func publicOrderbookServiceStreamOrderbook(conn *grpc.ClientConn, parentContext 
 	// CODEINCLUDE-END-MARKER: ref-code-example-request
 }
 
-func parseAndPrintOrderbookEntry(entry *orderbook.OrderbookEntry){
+func parseAndPrintOrderbookEntry(entry *orderbook.OrderbookEntry) {
 	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
 	fmt.Printf(
 		"%T %s %d orders @ %f total %f\n",

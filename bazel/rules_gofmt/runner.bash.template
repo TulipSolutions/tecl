@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -e
+set -o pipefail
+
+# This *magic* path depends on the implementation in rules_go
+go_format_path=$(realpath "external/go_sdk/bin/gofmt")
+
+cd "$BUILD_WORKSPACE_DIRECTORY"
+
+files_to_format=( $(find . -type f @@EXCLUDE_PATTERNS@@ \( -name '*.go' \)) )
+
+if [[ "@@MODE@@" == "format" ]]; then
+    "${go_format_path}" -s -w "${files_to_format[@]}"
+else
+    diff=$("${go_format_path}" -s -d -e "${files_to_format[@]}")
+    if [ ! -z "${diff}" ]; then
+        echo
+        echo "${diff}" >&2
+        echo >&2
+        echo "Found formatting violations, see diff above" >&2
+        exit 1
+    else
+        echo
+        echo "Found no formatting violations for Go"
+    fi
+fi
