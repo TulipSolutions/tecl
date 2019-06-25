@@ -33,39 +33,14 @@ Copy the following content into a file named WORKSPACE in the root of your proje
 
     .. tab-container:: Node
 
-        .. code-block:: python
+        .. literalinclude:: /examples/node/WORKSPACE.doc
+            :language: python
 
-            workspace(name = "tulip_api_example_node")
-             load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-
-             http_archive(
-                 name = "nl_tulipsolutions_protocol",
-                 sha256 = "<checksum>",
-                 strip_prefix = "tecl-<version>",
-                 url = "https://github.com/tulipsolutions/tecl/archive/<version>.tar.gz"
-             )
-
-             load(
-                 "@nl_tulipsolutions_tecl//bazel:repositories.bzl",
-                  nl_tulipsolutions_protocol_repositories = "repositories",
-              )
-
-             nl_tulipsolutions_protocol_repositories()
-
-             load("@build_bazel_rules_nodejs//:defs.bzl", "npm_install")
-
-             npm_install(
-                 name = "npm",
-                 package_json = "//:package.json",
-                 package_lock_json = "//:package-lock.json",
-             )
-
-        Node.js projects rely on released artifacts available through npm, therefore run
+        Node.js projects rely on released artifacts fetched locally by Yarn, therefore run
 
         .. code-block:: bash
 
-             $ npm install --save google-protobuf grpc @tulipsolutions/tecl
-
+             $ bazel run @nodejs//:bin/yarn -- install
 
     .. tab-container:: Python
 
@@ -114,26 +89,11 @@ In this directory create a BUILD.bazel file with the following content.
 
     .. tab-container:: Node
 
-        .. code-block:: python
+        .. codeinclude:: /examples/node/hello_exchange/BUILD.bazel
+            :marker-id: getting-started-bazel-package
 
-            load("@build_bazel_rules_nodejs//:defs.bzl", "nodejs_binary")
-
-            filegroup(
-                name = "srcs",
-                srcs = glob(["*.js"]),
-            )
-
-            nodejs_binary(
-                name = "hello_exchange",
-                data = [
-                    ":srcs",
-                    "@npm//tulip_api",
-                ],
-                entry_point = "tulip_api_example_node/hello_exchange/index.js",
-            )
-
-        The code above shows one rule that aggregates Javascript files.
-        A second rule uses these aggregated files and the Tulip Exchange NPM dependency to build an executable.
+        The code above shows a rule that builds a node binary from an :code:`index.js` file and
+        the Tulip Exchange Client Library (tecl) NPM package.
 
     .. tab-container:: Python
 

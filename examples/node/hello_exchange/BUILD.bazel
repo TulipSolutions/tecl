@@ -2,14 +2,14 @@ load("@build_bazel_rules_nodejs//:defs.bzl", "nodejs_binary")
 
 filegroup(
     name = "srcs",
-    srcs = ["index.js"],
+    srcs = glob(["*"]),
     visibility = ["//docs:__pkg__"],
 )
 
+# CODEINCLUDE-BEGIN-MARKER: getting-started-bazel-package
 nodejs_binary(
     name = "hello_exchange",
     data = [
-        ":srcs",
         "@npm//@tulipsolutions/tecl",
     ],
     entry_point = "index.js",

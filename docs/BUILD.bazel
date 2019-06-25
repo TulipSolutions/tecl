@@ -25,6 +25,7 @@ sphinx_docs(
         "//examples/java:workspace",
         "//examples/java/docs:srcs",
         "//examples/java/hello_exchange:srcs",
+        "//examples/node:workspace",
         "//examples/node/docs:srcs",
         "//examples/node/hello_exchange:srcs",
         "//examples/python:workspace",
