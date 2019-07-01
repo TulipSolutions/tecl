@@ -51,14 +51,12 @@ public class PrivateWalletServiceStreamBalance {
 
     public static void parseAndPrint(BalanceResponse response) {
         // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
-        System.out.println(
-            String.format(
-                "%s %s total: %f locked: %f",
-                response.getClass().getSimpleName(),
-                response.getCurrency().getValueDescriptor().getName(),
-                response.getTotalAmount(),
-                response.getLockedAmount()
-            )
+        System.out.printf(
+            "%s %s total: %f locked: %f\n",
+            response.getClass().getSimpleName(),
+            response.getCurrency(),
+            response.getTotalAmount(),
+            response.getLockedAmount()
         );
         // CODEINCLUDE-END-MARKER: ref-code-example-response
     }

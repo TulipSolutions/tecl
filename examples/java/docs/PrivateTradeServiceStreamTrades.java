@@ -61,21 +61,19 @@ public class PrivateTradeServiceStreamTrades {
 
     public static void parseAndPrint(PrivateTrade response) {
         // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
-        System.out.println(
-            String.format(
-                "%s: %s %s %f@%f quote_amount: %f fee: %s %f time: %d id %d matched_orderid: %d",
-                response.getClass().getSimpleName(),
-                response.getMarket().getValueDescriptor().getName(),
-                response.getSide().getValueDescriptor().getName(),
-                response.getBaseAmount(),
-                response.getPrice(),
-                response.getQuoteAmount(),
-                response.getFeeCurrency().getValueDescriptor().getName(),
-                response.getFee(),
-                response.getTimestampNs(),
-                response.getEventId(),
-                response.getOrderId()
-            )
+        System.out.printf(
+            "%s: %s %s %f@%f quote_amount: %f fee: %s %f time: %d id %d matched_orderid: %d\n",
+            response.getClass().getSimpleName(),
+            response.getMarket(),
+            response.getSide(),
+            response.getBaseAmount(),
+            response.getPrice(),
+            response.getQuoteAmount(),
+            response.getFeeCurrency(),
+            response.getFee(),
+            response.getTimestampNs(),
+            response.getEventId(),
+            response.getOrderId()
         );
         // CODEINCLUDE-END-MARKER: ref-code-example-response
     }

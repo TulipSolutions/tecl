@@ -54,18 +54,16 @@ public class PublicTradeServiceStreamTrades {
 
     public static void parseAndPrint(PublicTrade response) {
         // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
-        System.out.println(
-            String.format(
-                "%s: %s %s %f@%f quote_amount: %f time: %d id %d",
-                response.getClass().getSimpleName(),
-                response.getMarket().getValueDescriptor().getName(),
-                response.getSide().getValueDescriptor().getName(),
-                response.getBaseAmount(),
-                response.getPrice(),
-                response.getQuoteAmount(),
-                response.getTimestampNs(),
-                response.getEventId()
-            )
+        System.out.printf(
+            "%s: %s %s %f@%f quote_amount: %f time: %d id %d\n",
+            response.getClass().getSimpleName(),
+            response.getMarket(),
+            response.getSide(),
+            response.getBaseAmount(),
+            response.getPrice(),
+            response.getQuoteAmount(),
+            response.getTimestampNs(),
+            response.getEventId()
         );
         // CODEINCLUDE-END-MARKER: ref-code-example-response
     }

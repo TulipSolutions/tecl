@@ -55,15 +55,15 @@ public class PublicTickerServiceGetTickers {
 
     public static void parseAndPrint(Tickers response) {
         // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
-        String result_string = String.format("%s\n", response.getClass().getSimpleName());
+        StringBuilder formattedResponse = new StringBuilder(String.format("%s\n", response.getClass().getSimpleName()));
         for (Tick tick : response.getTicksList()) {
-            result_string +=
+            formattedResponse.append(
                 String.format(
                     "\t%s %s mid_price: %f best_buy_price: %f best_buy_size: %f " +
                         "best_sell_price: %f best_sell_size: %f open: %f, high: %f low: %f close: %f " +
                         "volume_base: %f volume_quote: %f\n",
                     tick.getClass().getSimpleName(),
-                    tick.getMarket().getValueDescriptor().getName(),
+                    tick.getMarket(),
                     tick.getMidPrice(),
                     tick.getBestBuyPrice(),
                     tick.getBestBuySize(),
@@ -75,9 +75,10 @@ public class PublicTickerServiceGetTickers {
                     tick.getDailyClose(),
                     tick.getDailyVolumeBase(),
                     tick.getDailyVolumeQuote()
-                );
+                )
+            );
         }
-        System.out.println(result_string);
+        System.out.println(formattedResponse);
         // CODEINCLUDE-END-MARKER: ref-code-example-response
     }
 }

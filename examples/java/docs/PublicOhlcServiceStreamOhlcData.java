@@ -64,20 +64,18 @@ public class PublicOhlcServiceStreamOhlcData {
 
     public static void parseAndPrint(OhlcBin response) {
         // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
-        System.out.println(
-            String.format(
-                "%s %d %s open: %f, high: %f low: %f close: %f volume_base: %f volume_quote: %f nr_trades: %d",
-                response.getClass().getSimpleName(),
-                response.getTimestampNs(),
-                response.getInterval().getValueDescriptor().getName(),
-                response.getOpen(),
-                response.getHigh(),
-                response.getLow(),
-                response.getClose(),
-                response.getVolumeBase(),
-                response.getVolumeQuote(),
-                response.getNumberOfTrades()
-            )
+        System.out.printf(
+            "%s %d %s open: %f, high: %f low: %f close: %f volume_base: %f volume_quote: %f nr_trades: %d\n",
+            response.getClass().getSimpleName(),
+            response.getTimestampNs(),
+            response.getInterval(),
+            response.getOpen(),
+            response.getHigh(),
+            response.getLow(),
+            response.getClose(),
+            response.getVolumeBase(),
+            response.getVolumeQuote(),
+            response.getNumberOfTrades()
         );
         // CODEINCLUDE-END-MARKER: ref-code-example-response
     }

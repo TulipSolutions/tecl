@@ -59,13 +59,11 @@ public class PrivateOrderServiceCancelOrder {
 
     public static void parseAndPrint(CancelOrderResponse response) {
         // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
-        System.out.println(
-            String.format(
-                "%s: %s for %s",
-                response.getClass().getSimpleName(),
-                response.getOrderId(),
-                response.getMarket().getValueDescriptor().getName()
-            )
+        System.out.printf(
+            "%s: %s for %s\n",
+            response.getClass().getSimpleName(),
+            response.getOrderId(),
+            response.getMarket()
         );
         // CODEINCLUDE-END-MARKER: ref-code-example-response
     }

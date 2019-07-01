@@ -62,15 +62,13 @@ public class PublicOrderbookServiceStreamOrderbook {
 
     public static void parseAndPrint(OrderbookEntry response) {
         // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
-        System.out.println(
-            String.format(
-                "%s %s %d orders @ %f total %f",
-                response.getClass().getSimpleName(),
-                response.getSide().getValueDescriptor().getName(),
-                response.getOrdersAtPriceLevel(),
-                response.getPriceLevel(),
-                response.getAmount()
-            )
+        System.out.printf(
+            "%s %s %d orders @ %f total %f\n",
+            response.getClass().getSimpleName(),
+            response.getSide(),
+            response.getOrdersAtPriceLevel(),
+            response.getPriceLevel(),
+            response.getAmount()
         );
         // CODEINCLUDE-END-MARKER: ref-code-example-response
     }

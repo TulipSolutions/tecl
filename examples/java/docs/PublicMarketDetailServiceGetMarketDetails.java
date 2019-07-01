@@ -53,27 +53,28 @@ public class PublicMarketDetailServiceGetMarketDetails {
 
     public static void parseAndPrint(MarketDetails response) {
         // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
-        String result_string = String.format("%s\n", response.getClass().getSimpleName());
+        StringBuilder formattedResponse = new StringBuilder(String.format("%s\n", response.getClass().getSimpleName()));
         for (MarketDetail detail : response.getMarketDetailsList()) {
-            result_string +=
+            formattedResponse.append(
                 String.format(
                     "\t%s %s %s base currency: %s, quote currency: %s price resolution: %.8f amount resolution: %.8f " +
                         "minimum base order amount: %.8f maximum base order amount: %.8f, minimum quote order amount: %.8f " +
                         "maximum quote order amount: %.8f\n",
                     detail.getClass().getSimpleName(),
-                    detail.getMarket().getValueDescriptor().getName(),
-                    detail.getMarketStatus().getValueDescriptor().getName(),
-                    detail.getBase().getValueDescriptor().getName(),
-                    detail.getQuote().getValueDescriptor().getName(),
+                    detail.getMarket(),
+                    detail.getMarketStatus(),
+                    detail.getBase(),
+                    detail.getQuote(),
                     detail.getPriceResolution(),
                     detail.getAmountResolution(),
                     detail.getMinimumBaseOrderAmount(),
                     detail.getMaximumBaseOrderAmount(),
                     detail.getMinimumQuoteOrderAmount(),
                     detail.getMaximumQuoteOrderAmount()
-                );
+                )
+            );
         }
-        System.out.println(result_string);
+        System.out.println(formattedResponse);
         // CODEINCLUDE-END-MARKER: ref-code-example-response
     }
 }

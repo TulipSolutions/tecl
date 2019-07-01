@@ -71,25 +71,22 @@ public class PrivateOrderServiceCreateOrder {
 
     public static void parseAndPrint(CreateOrderResponse response) {
         // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
-        String order_type_detail = "";
+        String formattedOrderType = "";
         if (response.getOrderTypeCase() == CreateOrderResponse.OrderTypeCase.LIMIT_ORDER) {
             LimitOrderResponse limitOrder = response.getLimitOrder();
-            order_type_detail = String.format(
+            formattedOrderType = String.format(
                 "%s %f@%f",
-                limitOrder.getSide().getValueDescriptor().getName(),
+                limitOrder.getSide(),
                 limitOrder.getBaseAmount(),
                 limitOrder.getPrice()
             );
-
         }
-        System.out.println(
-            String.format(
-                "%s: %d for %s %s",
-                response.getClass().getSimpleName(),
-                response.getOrderId(),
-                response.getMarket().getValueDescriptor().getName(),
-                order_type_detail
-            )
+        System.out.printf(
+            "%s: %d for %s %s\n",
+            response.getClass().getSimpleName(),
+            response.getOrderId(),
+            response.getMarket(),
+            formattedOrderType
         );
         // CODEINCLUDE-END-MARKER: ref-code-example-response
     }

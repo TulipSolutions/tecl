@@ -67,23 +67,25 @@ public class PublicOhlcServiceGetOhlcData {
 
     public static void parseAndPrint(GetOhlcResponse response) {
         // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
-        String result_string = response.getClass().getSimpleName();
+        StringBuilder formattedResponse = new StringBuilder(response.getClass().getSimpleName());
         for (OhlcBin detail : response.getBinsList()) {
-            result_string += String.format(
-                "\t%s %d %s open: %f, high: %f low: %f close: %f volume_base: %f volume_quote: %f nr_trades: %d\n",
-                detail.getClass().getSimpleName(),
-                detail.getTimestampNs(),
-                detail.getInterval().getValueDescriptor().getName(),
-                detail.getOpen(),
-                detail.getHigh(),
-                detail.getLow(),
-                detail.getClose(),
-                detail.getVolumeBase(),
-                detail.getVolumeQuote(),
-                detail.getNumberOfTrades()
+            formattedResponse.append(
+                String.format(
+                    "\t%s %d %s open: %f, high: %f low: %f close: %f volume_base: %f volume_quote: %f nr_trades: %d\n",
+                    detail.getClass().getSimpleName(),
+                    detail.getTimestampNs(),
+                    detail.getInterval(),
+                    detail.getOpen(),
+                    detail.getHigh(),
+                    detail.getLow(),
+                    detail.getClose(),
+                    detail.getVolumeBase(),
+                    detail.getVolumeQuote(),
+                    detail.getNumberOfTrades()
+                )
             );
         }
-        System.out.println(result_string);
+        System.out.println(formattedResponse);
         // CODEINCLUDE-END-MARKER: ref-code-example-response
     }
 }

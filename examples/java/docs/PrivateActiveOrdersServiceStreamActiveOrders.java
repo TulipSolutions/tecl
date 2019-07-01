@@ -54,28 +54,26 @@ public class PrivateActiveOrdersServiceStreamActiveOrders {
 
     public static void parseAndPrint(ActiveOrderStatus response) {
         // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
-        String order_type_detail = "";
+        String formattedOrderType;
         if (response.getOrderCase() == ActiveOrderStatus.OrderCase.LIMIT_ORDER) {
             LimitOrderStatus limitOrder = response.getLimitOrder();
-            order_type_detail =
+            formattedOrderType =
                 String.format(
                     "%s %f@%f remaining %f",
-                    limitOrder.getSide().getValueDescriptor().getName(),
+                    limitOrder.getSide(),
                     limitOrder.getBaseAmount(),
                     limitOrder.getPrice(),
                     limitOrder.getBaseRemaining()
                 );
         } else {
-            order_type_detail = "removed from orderbook";
+            formattedOrderType = "removed from orderbook";
         }
-        System.out.println(
-            String.format(
-                "%s: %d for market %s %s",
-                response.getClass().getSimpleName(),
-                response.getOrderId(),
-                response.getMarket().getValueDescriptor().getName(),
-                order_type_detail
-            )
+        System.out.printf(
+            "%s: %d for market %s %s\n",
+            response.getClass().getSimpleName(),
+            response.getOrderId(),
+            response.getMarket(),
+            formattedOrderType
         );
         // CODEINCLUDE-END-MARKER: ref-code-example-response
     }

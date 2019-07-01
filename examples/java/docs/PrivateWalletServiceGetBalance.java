@@ -55,18 +55,19 @@ public class PrivateWalletServiceGetBalance {
 
     public static void parseAndPrint(BalanceSnapshot response) {
         // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
-        String result_string = String.format("%s\n", response.getClass().getSimpleName());
+        StringBuilder formattedResponse = new StringBuilder(String.format("%s\n", response.getClass().getSimpleName()));
         for (BalanceResponse balance : response.getBalanceResponseList()) {
-            result_string +=
+            formattedResponse.append(
                 String.format(
                     "\t%s %s total: %f locked: %f\n",
                     balance.getClass().getSimpleName(),
-                    balance.getCurrency().getValueDescriptor().getName(),
+                    balance.getCurrency(),
                     balance.getTotalAmount(),
                     balance.getLockedAmount()
-                );
+                )
+            );
         }
-        System.out.println(result_string);
+        System.out.println(formattedResponse);
         // CODEINCLUDE-END-MARKER: ref-code-example-response
     }
 }

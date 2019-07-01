@@ -63,19 +63,20 @@ public class PublicOrderbookServiceGetOrderbook {
 
     public static void parseAndPrint(OrderbookEntries response) {
         // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
-        String result_string = String.format("%s\n", response.getClass().getSimpleName());
+        StringBuilder formattedResponse = new StringBuilder(String.format("%s\n", response.getClass().getSimpleName()));
         for (OrderbookEntry detail : response.getEntriesList()) {
-            result_string +=
+            formattedResponse.append(
                 String.format(
                     "\t%s %s %d orders @ %f total %f\n",
                     detail.getClass().getSimpleName(),
-                    detail.getSide().getValueDescriptor().getName(),
+                    detail.getSide(),
                     detail.getOrdersAtPriceLevel(),
                     detail.getPriceLevel(),
                     detail.getAmount()
-                );
+                )
+            );
         }
-        System.out.println(result_string);
+        System.out.println(formattedResponse);
         // CODEINCLUDE-END-MARKER: ref-code-example-response
     }
 }

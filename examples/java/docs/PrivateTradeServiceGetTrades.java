@@ -61,25 +61,26 @@ public class PrivateTradeServiceGetTrades {
 
     public static void parseAndPrint(PrivateTrades response) {
         // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
-        String result_string = String.format("%s\n", response.getClass().getSimpleName());
+        StringBuilder formattedResponse = new StringBuilder(String.format("%s\n", response.getClass().getSimpleName()));
         for (PrivateTrade trade : response.getTradesList()) {
-            result_string +=
+            formattedResponse.append(
                 String.format(
                     "\t%s: %s %s %f@%f quote_amount: %f fee: %s %f time: %d id %d matched_orderid: %d\n",
                     trade.getClass().getSimpleName(),
-                    trade.getMarket().getValueDescriptor().getName(),
-                    trade.getSide().getValueDescriptor().getName(),
+                    trade.getMarket(),
+                    trade.getSide(),
                     trade.getBaseAmount(),
                     trade.getPrice(),
                     trade.getQuoteAmount(),
-                    trade.getFeeCurrency().getValueDescriptor().getName(),
+                    trade.getFeeCurrency(),
                     trade.getFee(),
                     trade.getTimestampNs(),
                     trade.getEventId(),
                     trade.getOrderId()
-                );
+                )
+            );
         }
-        System.out.println(result_string);
+        System.out.println(formattedResponse);
         // CODEINCLUDE-END-MARKER: ref-code-example-response
     }
 }

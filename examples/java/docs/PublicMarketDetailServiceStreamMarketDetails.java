@@ -51,23 +51,21 @@ public class PublicMarketDetailServiceStreamMarketDetails {
 
     public static void parseAndPrint(MarketDetail response) {
         // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
-        System.out.println(
-            String.format(
-                "%s %s %s base currency: %s, quote currency: %s price resolution: %.8f amount resolution: %.8f " +
-                    "minimum base order amount: %.8f maximum base order amount: %.8f, minimum quote order amount: %.8f " +
-                    "maximum quote order amount: %.8f",
-                response.getClass().getSimpleName(),
-                response.getMarket().getValueDescriptor().getName(),
-                response.getMarketStatus().getValueDescriptor().getName(),
-                response.getBase().getValueDescriptor().getName(),
-                response.getQuote().getValueDescriptor().getName(),
-                response.getPriceResolution(),
-                response.getAmountResolution(),
-                response.getMinimumBaseOrderAmount(),
-                response.getMaximumBaseOrderAmount(),
-                response.getMinimumQuoteOrderAmount(),
-                response.getMaximumQuoteOrderAmount()
-            )
+        System.out.printf(
+            "%s %s %s base currency: %s, quote currency: %s price resolution: %.8f amount resolution: %.8f " +
+                "minimum base order amount: %.8f maximum base order amount: %.8f, minimum quote order amount: %.8f " +
+                "maximum quote order amount: %.8f\n",
+            response.getClass().getSimpleName(),
+            response.getMarket(),
+            response.getMarketStatus(),
+            response.getBase(),
+            response.getQuote(),
+            response.getPriceResolution(),
+            response.getAmountResolution(),
+            response.getMinimumBaseOrderAmount(),
+            response.getMaximumBaseOrderAmount(),
+            response.getMinimumQuoteOrderAmount(),
+            response.getMaximumQuoteOrderAmount()
         );
         // CODEINCLUDE-END-MARKER: ref-code-example-response
     }
