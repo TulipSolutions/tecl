@@ -329,7 +329,8 @@ class BaseProtobufObjectDescription(ObjectDescription):
         # Source links
         file_path = self.options.get('src_file_path', '').strip()
         if file_path:
-            base_url = self.options.get('src_base_url', '').strip() or self.env.config.protobufdomain_sourcelinks_base_url
+            base_url = self.options.get('src_base_url', '').strip() \
+                or self.env.config.protobufdomain_sourcelinks_base_url
             # TODO via config/template to allow custom line range anchors (e.g. '#1' for Gerrit or '#L1-L7' for GitHub).
             linerange = self.options.get('src_linerange', '').strip()
             linerange_anchor = "#" + linerange.split("-", 1)[0]
@@ -490,8 +491,11 @@ class ProtobufDomain(Domain):
         if self.prefixes_to_remove is None:
             if self.env.config.protobufdomain_strip_prefixes:
                 if self.env.config.protobufdomain_strip_prefixes_match_longest:
-                    self.prefixes_to_remove = sorted(list(self.env.config.protobufdomain_strip_prefixes),
-                                                                 key=len, reverse=True)
+                    self.prefixes_to_remove = sorted(
+                        list(self.env.config.protobufdomain_strip_prefixes),
+                        key=len,
+                        reverse=True
+                    )
                 else:
                     self.prefixes_to_remove = list(self.env.config.protobufdomain_strip_prefixes)
             else:

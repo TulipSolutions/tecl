@@ -36,7 +36,7 @@ logger = logging.getLogger(os.path.basename(__file__))
 CROSS_REF_LABEL_PREFIX = 'protodoc_'
 
 # Key-value annotation regex.
-ANNOTATION_REGEX = re.compile('\[#([\w-]+?):(.*?)\]\s?', re.DOTALL)
+ANNOTATION_REGEX = re.compile(r'\[#([\w-]+?):(.*?)\]\s?', re.DOTALL)
 # Page/section titles with special prefixes in the proto comments
 DOC_TITLE_ANNOTATION = 'protodoc-title'
 # Not implemented yet annotation on leading comments, leading to insertion of warning on field.
@@ -104,7 +104,7 @@ WKT_TYPES_OTHER = {
     FieldDescriptorProto.TYPE_BYTES,
 }
 
-WKT_TYPES_ALL = (WKT_TYPES_SIGNED|WKT_TYPES_UNSIGNED|WKT_TYPES_OTHER)
+WKT_TYPES_ALL = (WKT_TYPES_SIGNED | WKT_TYPES_UNSIGNED | WKT_TYPES_OTHER)
 
 RST_DEFAULT_INDENT_SPACES = 3
 
@@ -148,7 +148,8 @@ def merge_two_dicts(x, y):
 class SourceCodeInfo(object):
     """Wrapper for SourceCodeInfo proto. For more information what paths are, please refer to the Protobuf documentation
     on:
-    https://github.com/protocolbuffers/protobuf/blob/a18680890bd70407f889ccd652282f8092927397/src/google/protobuf/descriptor.proto#L726-L857"""
+    https://github.com/protocolbuffers/protobuf/blob/a18680890bd70407f889ccd652282f8092927397/src/google/protobuf/descriptor.proto#L726-L857  # noqa: E501
+    """
 
     # TODO: obtain this from the (meta) field descriptor of google/protobuf/descriptor.proto.
     PATH_NUMBER_MESSAGE = 4
@@ -168,7 +169,7 @@ class SourceCodeInfo(object):
         # Line number range in .proto file, by path. Line numbers by the Protobuf API are zero-based, so we add 1.
         self._line_spans = {
             tuple(location.path): (location.span[0] + 1, location.span[2] + 1)
-                    for location in self._source_code_info_proto.location
+            for location in self._source_code_info_proto.location
         }
         logger.debug("self._line_spans " + repr(self._line_spans))
         self._file_level_comment = None
@@ -283,6 +284,7 @@ def extract_annotations(s, type_name):
 
 def _get_filename_for_message(proto_file_output_dir, msg_name):
     return proto_file_output_dir + "msg_%s" % msg_name + '.rst'
+
 
 def _get_filename_for_service(proto_file_output_dir, svc_name):
     return proto_file_output_dir + "svc_%s" % svc_name + '.rst'
@@ -522,7 +524,7 @@ class Protodoc(object):
         )):
             return True
 
-        if (field.type in (WKT_TYPES_UNSIGNED|WKT_TYPES_SIGNED) or field.type == field.TYPE_ENUM) and any((
+        if (field.type in (WKT_TYPES_UNSIGNED | WKT_TYPES_SIGNED) or field.type == field.TYPE_ENUM) and any((
             rules_dict.get('in') and 0 not in rules_dict.get('in'),
             0 in rules_dict.get('not_in', []),
         )):
@@ -549,7 +551,6 @@ class Protodoc(object):
         )):
             return True
 
-
     def format_message_field(self, msg, msg_index, field, field_index, msg_oneof_decls={}):
         validation_rules_dict = self.get_field_validation_rules_as_dict(field)
         field_type_annotation_set = set()
@@ -559,7 +560,7 @@ class Protodoc(object):
             oneof_required = msg_oneof_decls[field.oneof_index].options.HasExtension(validate_pb2.required)
             siblings_in_oneof = len([f for f in msg.field
                                      if f.HasField("oneof_index") and f.oneof_index == field.oneof_index]) > 1
-            field_type_annotation_set.add("oneof_%d%s" % (field.oneof_index,  "_required" if oneof_required else ""))
+            field_type_annotation_set.add("oneof_%d%s" % (field.oneof_index, "_required" if oneof_required else ""))
             # Do not add 'required' annotations for each field if this is part of a oneof. (If the oneof itself is
             # required, then the requirement annotation will be part of the oneof annotation itself - 'must' instead of
             # 'may'.) However, if there's only one field in the oneof and the oneof itself is required, add the
@@ -735,6 +736,7 @@ def main():
     Protodoc(proto_file, response).generate_rsts()
 
     sys.stdout.write(response.SerializeToString())
+
 
 if __name__ == '__main__':
     main()

@@ -112,8 +112,10 @@ class CodeIncludeReader(LiteralIncludeReader):
                     within_boundary = False
                 elif self.begin_marker_prefix in line or self.end_marker_prefix in line:
                     # Skip lines with other markers.
-                    logger.debug(__('Skipping line number %d with non-matching marker' % (lineno + 1)),
-                                    location=location)
+                    logger.debug(
+                        __('Skipping line number %d with non-matching marker' % (lineno + 1)),
+                        location=location
+                    )
                 elif within_boundary:
                     return_lines.append(line)
 

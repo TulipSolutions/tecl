@@ -1,4 +1,4 @@
-# Copied from https://github.com/grpc/grpc/blob/7e57732a1f355bcdba54724d038d18c1475c5d61/examples/python/interceptors/headers/generic_client_interceptor.py
+# Copied from https://github.com/grpc/grpc/blob/7e57732a1f355bcdba54724d038d18c1475c5d61/examples/python/interceptors/headers/generic_client_interceptor.py  # noqa E501
 # Licensed under the Apache License, Version 2.0
 
 # Copyright 2017 gRPC authors.
@@ -19,9 +19,8 @@
 import grpc
 
 
-class _GenericClientInterceptor(
-    grpc.UnaryUnaryClientInterceptor, grpc.UnaryStreamClientInterceptor,
-    grpc.StreamUnaryClientInterceptor, grpc.StreamStreamClientInterceptor):
+class _GenericClientInterceptor(grpc.UnaryUnaryClientInterceptor, grpc.UnaryStreamClientInterceptor,
+                                grpc.StreamUnaryClientInterceptor, grpc.StreamStreamClientInterceptor):
 
     def __init__(self, interceptor_function):
         self._fn = interceptor_function

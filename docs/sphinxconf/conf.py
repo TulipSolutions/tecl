@@ -62,7 +62,7 @@ protobufdomain_strip_prefixes = [
     "tulipsolutions.api.common.",
 ]
 protobufdomain_strip_prefixes_match_longest = True
-protobufdomain_sourcelinks_base_url = "https://github.com/tulipsolutions/tecl/blob/%s/" % sourcelinks_branch
+protobufdomain_sourcelinks_base_url = "https://github.com/tulipsolutions/tecl/blob/%s/" % sourcelinks_branch  # noqa E501
 
 # The suffix(es) of source filenames.
 source_suffix = ['.rst', '.md']

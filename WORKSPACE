@@ -9,7 +9,7 @@ repositories()
 
 load("@bazel_skylib//lib:versions.bzl", "versions")
 
-versions.check(minimum_bazel_version = "0.26.0")
+versions.check(minimum_bazel_version = "0.27.0")
 
 load("@io_bazel_rules_python//python:pip.bzl", "pip_import", "pip_repositories")
 
@@ -30,6 +30,15 @@ pip_import(
 load("@grpc_python_dependencies//:requirements.bzl", grpc_python_pip_install = "pip_install")
 
 grpc_python_pip_install()
+
+pip_import(
+    name = "flake8_deps",
+    requirements = "//bazel/rules_flake8:requirements.txt",
+)
+
+load("@flake8_deps//:requirements.bzl", flake8_pip_install = "pip_install")
+
+flake8_pip_install()
 
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 

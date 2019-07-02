@@ -3,6 +3,8 @@ load("//bazel/rules_clang_format:def.bzl", "clang_formatter")
 load("@bazel_gazelle//:def.bzl", "gazelle")
 load("//bazel/rules_addlicense:def.bzl", "addlicense")
 load("//bazel/rules_gofmt:def.bzl", "gofmt")
+load("//bazel/rules_flake8:def.bzl", "flake8")
+load("@flake8_deps//:requirements.bzl", "requirement")
 
 exclude_patterns = [
     "./third_party/protoc-gen-validate/*",
@@ -11,6 +13,7 @@ exclude_patterns = [
     ".*.git/*",
     ".*.project/*",
     ".*idea/*",
+    "./.ijwb/*",
 ]
 
 # Formatting for BUILD, BUILD.bazel and WORKSPACE files
@@ -79,4 +82,9 @@ gofmt(
     name = "gofmt_check",
     exclude_patterns = exclude_patterns,
     mode = "check",
+)
+
+flake8(
+    name = "flake8_check",
+    exclude_patterns = exclude_patterns,
 )

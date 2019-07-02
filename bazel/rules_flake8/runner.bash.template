@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -e
+set -o pipefail
+
+FLAKE8_SHORT_PATH=@@FLAKE8_SHORT_PATH@@
+# cannot use $(readlink $FLAKE8_SHORT_PATH) since it will resolve the symlink and the runtime dependencies will
+# not be present anymore
+flake8_path="$(pwd)/$FLAKE8_SHORT_PATH"
+
+cd $BUILD_WORKSPACE_DIRECTORY
+
+files_to_format=( $(find . -type f @@EXCLUDE_PATTERNS@@ \( -name '*.py' \)) )
+
+"${flake8_path}" --show-source "${files_to_format[@]}"
