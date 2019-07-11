@@ -11,3 +11,14 @@ kt_jvm_library(
         "@com_google_protobuf//:protobuf_java",
     ],
 )
+
+kt_jvm_library(
+    name = "orderbook_extensions",
+    srcs = ["OrderbookExtensions.kt"],
+    visibility = ["//visibility:public"],
+    exports = ["//tulipsolutions/api/pub:orderbook_jvm_proto"],
+    deps = [
+        "//tulipsolutions/api/pub:orderbook_jvm_proto",
+        "@com_google_protobuf//:protobuf_java",
+    ],
+)
