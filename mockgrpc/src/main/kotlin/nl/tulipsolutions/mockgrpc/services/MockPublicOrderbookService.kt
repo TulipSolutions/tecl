@@ -122,7 +122,6 @@ class OrderbookStore(
         removeEntry(oldEntry)
 
         return oldEntry.toBuilder()
-            .clearSide()
             .setAmount(0.0)
             .setOrdersAtPriceLevel(0)
             .build()
