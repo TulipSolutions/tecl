@@ -101,8 +101,7 @@ message CreateLimitOrderEvent {
     double price = 3;
 }
 
-message CancelOrderEvent {
-}
+message CancelOrderEvent {}
 
 message FillOrderEvent {
     double price = 1;
@@ -196,11 +195,9 @@ message GetOrderEventsResponse {
     repeated OrderEvent events = 1;
 }
 
-message GetActiveOrdersRequest {
-}
+message GetActiveOrdersRequest {}
 
-message StreamActiveOrdersRequest {
-}
+message StreamActiveOrdersRequest {}
 
 service PrivateOrderService {
     rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
