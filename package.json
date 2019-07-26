@@ -3,7 +3,7 @@
     "private": true,
     "version": "0.0.1",
     "dependencies": {
-        "google-protobuf": "^3.7.1",
+        "google-protobuf": "^3.9.0",
         "grpc": "^1.20.0",
         "@tulipsolutions/tecl": "0.0.5"
     },

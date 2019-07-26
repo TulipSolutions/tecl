@@ -504,10 +504,10 @@ globals@^11.7.0:
   resolved "https://registry.yarnpkg.com/globals/-/globals-11.12.0.tgz#ab8795338868a0babd8525758018c2a7eb95c42e"
   integrity sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==
 
-google-protobuf@^3.7.1:
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/google-protobuf/-/google-protobuf-3.8.0.tgz#4fd2ee3a97751cb543dc5de85ffd264aff9f4980"
-  integrity sha512-tx39PTc//HaIT7K/baUF/8JYLGDozEi1e4xwPP1qSx3InP78cNpbSJpxiDsDMwj77qNOndVBDXnn7oi9zKxZew==
+google-protobuf@^3.9.0:
+  version "3.9.0"
+  resolved "https://registry.yarnpkg.com/google-protobuf/-/google-protobuf-3.9.0.tgz#1f33e51e7993ea51e758a82650ad4347273b9bc6"
+  integrity sha512-/t/7NvL9jAmfXLdqJG7Nv2c5Z2GTdZSKi/T6kI3hpIS4yA6rXqBAMF4Yx39xbICWDgRv+R+Z79n7ZxuvoUQU4w==
 
 grpc@^1.20.0:
   version "1.21.1"
