@@ -52,18 +52,24 @@ function parseAndPrint(event) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
   let result;
   switch (event.getEventCase()) {
-    case order_pb.OrderEvent.EventCase.CREATE_LIMIT_ORDER_EVENT: {
-      const limitOrderEvent = event.getCreateLimitOrderEvent();
-      result = util.format(
-        '%s: Event %d order %d on market %s %s %f@%f\n',
-        'CreateLimitOrderEvent',
-        event.getEventId(),
-        event.getOrderId(),
-        Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === event.getMarket()),
-        Object.keys(orders_pb.Side).find(key => orders_pb.Side[key] === limitOrderEvent.getSide()),
-        limitOrderEvent.getBaseAmount(),
-        limitOrderEvent.getPrice()
-      );
+    case order_pb.OrderEvent.EventCase.CREATE_ORDER_EVENT: {
+      const createOrderEvent = event.getCreateOrderEvent();
+      switch (createOrderEvent.getOrderTypeCase()) {
+        case order_pb.CreateOrderEvent.OrderTypeCase.CREATE_LIMIT_ORDER: {
+          const limitOrderEvent = createOrderEvent.getCreateLimitOrder();
+          result = util.format(
+            '%s: Event %d order %d on market %s %s %f@%f\n',
+            'CreateLimitOrderEvent',
+            event.getEventId(),
+            event.getOrderId(),
+            Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === event.getMarket()),
+            Object.keys(orders_pb.Side).find(key => orders_pb.Side[key] === limitOrderEvent.getSide()),
+            limitOrderEvent.getBaseAmount(),
+            limitOrderEvent.getPrice()
+          );
+          break;
+        }
+      }
       break;
     }
     case order_pb.OrderEvent.EventCase.FILL_ORDER_EVENT: {

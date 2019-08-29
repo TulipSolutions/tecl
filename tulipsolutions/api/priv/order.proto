@@ -101,6 +101,12 @@ message CreateLimitOrderEvent {
     double price = 3;
 }
 
+message CreateOrderEvent {
+    oneof order_type {
+        CreateLimitOrderEvent create_limit_order = 2;
+    }
+}
+
 message CancelOrderEvent {}
 
 message FillOrderEvent {
@@ -118,7 +124,7 @@ message OrderEvent {
     common.Market market = 3;
     fixed64 timestamp_ns = 4 [jstype = JS_STRING];
     oneof event {
-        CreateLimitOrderEvent create_limit_order_event = 5;
+        CreateOrderEvent create_order_event = 5;
         FillOrderEvent fill_order_event = 6;
         CancelOrderEvent cancel_order_event = 7;
     }

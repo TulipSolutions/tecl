@@ -52,18 +52,22 @@ func privateOrderServiceGetEventsForOrder(conn *grpc.ClientConn, parentContext c
 	resultString := fmt.Sprintf("%T\n", response)
 	for _, event := range response.Events {
 		switch event.GetEvent().(type) {
-		case *order.OrderEvent_CreateLimitOrderEvent:
-			limitOrderEvent := event.GetCreateLimitOrderEvent()
-			resultString += fmt.Sprintf(
-				"\t%T: Event %d order %d on market %s %s %f@%f\n",
-				limitOrderEvent,
-				event.GetEventId(),
-				event.GetOrderId(),
-				event.GetMarket(),
-				limitOrderEvent.GetSide(),
-				limitOrderEvent.GetBaseAmount(),
-				limitOrderEvent.GetPrice(),
-			)
+		case *order.OrderEvent_CreateOrderEvent:
+			orderEvent := event.GetCreateOrderEvent()
+			switch orderEvent.GetOrderType().(type) {
+			case *order.CreateOrderEvent_CreateLimitOrder:
+				limitOrderEvent := orderEvent.GetCreateLimitOrder()
+				resultString += fmt.Sprintf(
+					"\t%T: Event %d order %d on market %s limit %s %f@%f\n",
+					limitOrderEvent,
+					event.GetEventId(),
+					event.GetOrderId(),
+					event.GetMarket(),
+					limitOrderEvent.GetSide(),
+					limitOrderEvent.GetBaseAmount(),
+					limitOrderEvent.GetPrice(),
+				)
+			}
 		case *order.OrderEvent_FillOrderEvent:
 			fillOrderEvent := event.GetFillOrderEvent()
 			resultString += fmt.Sprintf(

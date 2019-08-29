@@ -72,18 +72,22 @@ func privateOrderServiceStreamOrderEvents(conn *grpc.ClientConn, parentContext c
 func parseAndPrintOrderEvent(event *order.OrderEvent) {
 	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
 	switch event.GetEvent().(type) {
-	case *order.OrderEvent_CreateLimitOrderEvent:
-		limitOrderEvent := event.GetCreateLimitOrderEvent()
-		fmt.Printf(
-			"%T: Event %d order %d on market %s %s %f@%f\n",
-			limitOrderEvent,
-			event.GetEventId(),
-			event.GetOrderId(),
-			event.GetMarket(),
-			limitOrderEvent.GetSide(),
-			limitOrderEvent.GetBaseAmount(),
-			limitOrderEvent.GetPrice(),
-		)
+	case *order.OrderEvent_CreateOrderEvent:
+		orderEvent := event.GetCreateOrderEvent()
+		switch orderEvent.GetOrderType().(type) {
+		case *order.CreateOrderEvent_CreateLimitOrder:
+			limitOrderEvent := orderEvent.GetCreateLimitOrder()
+			fmt.Printf(
+				"\t%T: Event %d order %d on market %s limit %s %f@%f\n",
+				limitOrderEvent,
+				event.GetEventId(),
+				event.GetOrderId(),
+				event.GetMarket(),
+				limitOrderEvent.GetSide(),
+				limitOrderEvent.GetBaseAmount(),
+				limitOrderEvent.GetPrice(),
+			)
+		}
 	case *order.OrderEvent_FillOrderEvent:
 		fillOrderEvent := event.GetFillOrderEvent()
 		fmt.Printf(

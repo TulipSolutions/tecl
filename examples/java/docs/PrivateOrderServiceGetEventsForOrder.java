@@ -23,6 +23,7 @@ import nl.tulipsolutions.api.common.SearchDirection;
 import nl.tulipsolutions.api.common.Market;
 import nl.tulipsolutions.api.priv.CancelOrderEvent;
 import nl.tulipsolutions.api.priv.CreateLimitOrderEvent;
+import nl.tulipsolutions.api.priv.CreateOrderEvent;
 import nl.tulipsolutions.api.priv.FillOrderEvent;
 import nl.tulipsolutions.api.priv.GetEventsForOrderRequest;
 import nl.tulipsolutions.api.priv.GetOrderEventsResponse;
@@ -71,18 +72,26 @@ public class PrivateOrderServiceGetEventsForOrder {
         for (OrderEvent event : response.getEventsList()) {
             String formattedEvent;
             switch (event.getEventCase()) {
-                case CREATE_LIMIT_ORDER_EVENT:
-                    CreateLimitOrderEvent limitOrderEvent = event.getCreateLimitOrderEvent();
-                    formattedEvent = String.format(
-                        "\t%s: Event %d order %d on market %s %s %f@%f\n",
-                        limitOrderEvent.getClass().getSimpleName(),
-                        event.getEventId(),
-                        event.getOrderId(),
-                        event.getMarket(),
-                        limitOrderEvent.getSide(),
-                        limitOrderEvent.getBaseAmount(),
-                        limitOrderEvent.getPrice()
-                    );
+                case CREATE_ORDER_EVENT:
+                    CreateOrderEvent createOrderEvent = event.getCreateOrderEvent();
+                    switch (createOrderEvent.getOrderTypeCase()) {
+                        case CREATE_LIMIT_ORDER:
+                            CreateLimitOrderEvent createLimitOrderEvent = createOrderEvent.getCreateLimitOrder();
+                            formattedEvent = String.format(
+                                "\t%s: Event %d order %d on market %s limit %s %f@%f\n",
+                                createLimitOrderEvent.getClass().getSimpleName(),
+                                event.getEventId(),
+                                event.getOrderId(),
+                                event.getMarket(),
+                                createLimitOrderEvent.getSide(),
+                                createLimitOrderEvent.getBaseAmount(),
+                                createLimitOrderEvent.getPrice()
+                            );
+                            break;
+                        default:
+                            formattedEvent = "";
+                            break;
+                    }
                     break;
                 case FILL_ORDER_EVENT:
                     FillOrderEvent fillOrderEvent = event.getFillOrderEvent();

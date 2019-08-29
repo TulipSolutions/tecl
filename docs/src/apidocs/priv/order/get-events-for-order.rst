@@ -9,6 +9,8 @@ Get events for order
 
 :protobuf:include:`tulipsolutions.api.priv.OrderEvent`
 
+:protobuf:include:`tulipsolutions.api.priv.CreateOrderEvent`
+
 :protobuf:include:`tulipsolutions.api.priv.FillOrderEvent`
 
 :protobuf:include:`tulipsolutions.api.priv.CancelOrderEvent`

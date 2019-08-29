@@ -27,6 +27,7 @@ import nl.tulipsolutions.api.priv.CancelOrderEvent
 import nl.tulipsolutions.api.priv.CancelOrderRequest
 import nl.tulipsolutions.api.priv.CancelOrderResponse
 import nl.tulipsolutions.api.priv.CreateLimitOrderEvent
+import nl.tulipsolutions.api.priv.CreateOrderEvent
 import nl.tulipsolutions.api.priv.CreateOrderRequest
 import nl.tulipsolutions.api.priv.CreateOrderResponse
 import nl.tulipsolutions.api.priv.FillOrderEvent
@@ -107,11 +108,14 @@ class MockPrivateOrderService : ReactorPrivateOrderServiceGrpc.PrivateOrderServi
                     .setTimestampNs(timestamp)
 
                 when (random.nextInt(10)) {
-                    in 0..4 -> orderEvent.setCreateLimitOrderEvent(
-                        CreateLimitOrderEvent.newBuilder()
-                            .setSide(getRandomSide())
-                            .setPrice(price)
-                            .setBaseAmount(baseAmount)
+                    in 0..4 -> orderEvent.setCreateOrderEvent(
+                        CreateOrderEvent.newBuilder()
+                            .setCreateLimitOrder(
+                                CreateLimitOrderEvent.newBuilder()
+                                    .setSide(getRandomSide())
+                                    .setPrice(price)
+                                    .setBaseAmount(baseAmount)
+                            )
                     )
                     in 5..7 -> orderEvent.setCancelOrderEvent(CancelOrderEvent.newBuilder())
                     in 8..9 -> orderEvent.setFillOrderEvent(
@@ -247,7 +251,7 @@ class MockPrivateOrderService : ReactorPrivateOrderServiceGrpc.PrivateOrderServi
                 )
 
                 Flux.merge(
-                    randomEvents.takeUntil { orderEvent -> orderEvent.hasCreateLimitOrderEvent() }.last(),
+                    randomEvents.takeUntil { orderEvent -> orderEvent.hasCreateOrderEvent() }.last(),
                     randomEvents.takeUntil { orderEvent -> orderEvent.hasFillOrderEvent() }.last(),
                     randomEvents.takeUntil { orderEvent -> orderEvent.hasFillOrderEvent() }.last(),
                     randomEvents.takeUntil { orderEvent -> orderEvent.hasCancelOrderEvent() }.last()
