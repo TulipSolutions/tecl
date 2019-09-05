@@ -7,6 +7,12 @@ Stream order events
 
 :protobuf:include:`tulipsolutions.api.priv.OrderEvent`
 
+:protobuf:include:`tulipsolutions.api.priv.FillOrderEvent`
+
+:protobuf:include:`tulipsolutions.api.priv.CancelOrderEvent`
+
+:protobuf:include:`tulipsolutions.api.priv.CreateLimitOrderEvent`
+
 .. content-tabs::
    :class: code-example-responsive
 
