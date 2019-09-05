@@ -22,6 +22,7 @@ import nl.tulipsolutions.api.priv.CreateOrderRequest;
 import nl.tulipsolutions.api.priv.CreateOrderResponse;
 import nl.tulipsolutions.api.priv.LimitOrderRequest;
 import nl.tulipsolutions.api.priv.LimitOrderResponse;
+import nl.tulipsolutions.api.priv.MarketOrderResponse;
 import nl.tulipsolutions.api.priv.PrivateOrderServiceGrpc;
 import nl.tulipsolutions.api.priv.PrivateOrderServiceGrpc.PrivateOrderServiceStub;
 
@@ -79,6 +80,13 @@ public class PrivateOrderServiceCreateOrder {
                 limitOrder.getSide(),
                 limitOrder.getBaseAmount(),
                 limitOrder.getPrice()
+            );
+        } else if (response.getOrderTypeCase() == CreateOrderResponse.OrderTypeCase.MARKET_ORDER) {
+            MarketOrderResponse marketOrder = response.getMarketOrder();
+            formattedOrderType = String.format(
+                "%s %f",
+                marketOrder.getSide(),
+                marketOrder.getBaseAmount()
             );
         }
         if (response.getDeadlineNs() != 0) {

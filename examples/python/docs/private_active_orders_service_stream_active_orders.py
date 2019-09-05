@@ -51,6 +51,7 @@ def parse_and_print(response):
             response.limit_order.price,
             response.limit_order.base_remaining,
         )
+    # Note that market orders do not show in active orderbook.
     else:
         order_type_detail = "was removed from orderbook"
     if response.deadline_ns:

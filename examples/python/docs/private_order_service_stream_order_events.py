@@ -66,6 +66,17 @@ def parse_and_print(event):
                 limit_order_event.price,
                 deadline,
             ))
+        if create_order_event.WhichOneof("order_type") == "create_market_order":
+            market_order_event = create_order_event.create_market_order
+            print("{}: Event {} order {} on market {} {} {} {}\n".format(
+                type(market_order_event).__name__,
+                event.event_id,
+                event.order_id,
+                orders_pb2.Market.Name(event.market),
+                orders_pb2.Side.Name(market_order_event.side),
+                market_order_event.base_amount,
+                deadline,
+            ))
     elif event.WhichOneof("event") == "fill_order_event":
         fill_order_event = event.fill_order_event
         print("{}: Event {} order {} on market {} {} {}@{}\n".format(

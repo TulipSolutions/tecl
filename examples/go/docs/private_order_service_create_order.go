@@ -64,6 +64,11 @@ func privateOrderServiceCreateOrder(conn *grpc.ClientConn, parentContext context
 			order.LimitOrder.Price,
 			order.LimitOrder.BaseAmount,
 		)
+	case *order.CreateOrderResponse_MarketOrder:
+		orderTypeDetail = fmt.Sprintf("%s %f",
+			order.MarketOrder.Side.String(),
+			order.MarketOrder.BaseAmount,
+		)
 	default:
 		orderTypeDetail = "This should not be empty!"
 	}

@@ -71,6 +71,7 @@ public class PrivateActiveOrdersServiceGetActiveOrders {
                         limitOrder.getBaseRemaining()
                     );
             } else {
+                // Note that market orders do not show in active orderbook.
                 formattedOrderType = "removed from orderbook";
             }
             if (order.getDeadlineNs() != 0) {

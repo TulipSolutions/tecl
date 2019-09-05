@@ -23,6 +23,7 @@ import nl.tulipsolutions.api.common.SearchDirection;
 import nl.tulipsolutions.api.common.Market;
 import nl.tulipsolutions.api.priv.CancelOrderEvent;
 import nl.tulipsolutions.api.priv.CreateLimitOrderEvent;
+import nl.tulipsolutions.api.priv.CreateMarketOrderEvent;
 import nl.tulipsolutions.api.priv.CreateOrderEvent;
 import nl.tulipsolutions.api.priv.FillOrderEvent;
 import nl.tulipsolutions.api.priv.OrderEvent;
@@ -90,6 +91,19 @@ public class PrivateOrderServiceStreamOrderEvents {
                             createLimitOrderEvent.getSide(),
                             createLimitOrderEvent.getBaseAmount(),
                             createLimitOrderEvent.getPrice(),
+                            formattedDeadline
+                        );
+                        break;
+                    case CREATE_MARKET_ORDER:
+                        CreateMarketOrderEvent createMarketOrderEvent = createOrderEvent.getCreateMarketOrder();
+                        formattedEvent = String.format(
+                            "%s: Event %d order %d on market %s market %s %f %s\n",
+                            createMarketOrderEvent.getClass().getSimpleName(),
+                            event.getEventId(),
+                            event.getOrderId(),
+                            event.getMarket(),
+                            createMarketOrderEvent.getSide(),
+                            createMarketOrderEvent.getBaseAmount(),
                             formattedDeadline
                         );
                         break;

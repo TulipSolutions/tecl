@@ -7,9 +7,13 @@ Create order
 
 :protobuf:include:`tulipsolutions.api.priv.LimitOrderRequest`
 
+:protobuf:include:`tulipsolutions.api.priv.MarketOrderRequest`
+
 :protobuf:include:`tulipsolutions.api.priv.CreateOrderResponse`
 
 :protobuf:include:`tulipsolutions.api.priv.LimitOrderResponse`
+
+:protobuf:include:`tulipsolutions.api.priv.MarketOrderResponse`
 
 .. content-tabs::
    :class: code-example-responsive

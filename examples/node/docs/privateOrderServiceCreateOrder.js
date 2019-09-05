@@ -67,6 +67,15 @@ function parseAndPrint(response) {
       );
       break;
     }
+    case order_pb.CreateOrderResponse.OrderTypeCase.MARKET_ORDER: {
+      const order = response.getMarketOrder();
+      orderTypeDetail = util.format(
+        '%s %f',
+        Object.keys(orders_pb.Side).find(key => orders_pb.Side[key] === order.getSide()),
+        order.getBaseAmount()
+      );
+      break;
+    }
     default:
       orderTypeDetail = 'Should not be empty!';
   }

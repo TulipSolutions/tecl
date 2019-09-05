@@ -74,6 +74,18 @@ func privateOrderServiceGetOrderEvents(conn *grpc.ClientConn, parentContext cont
 					limitOrderEvent.GetPrice(),
 					deadline,
 				)
+			case *order.CreateOrderEvent_CreateMarketOrder:
+				marketOrderEvent := orderEvent.GetCreateMarketOrder()
+				resultString += fmt.Sprintf(
+					"\t%T: Event %d order %d on market %s market %s %f %s\n",
+					marketOrderEvent,
+					event.GetEventId(),
+					event.GetOrderId(),
+					event.GetMarket(),
+					marketOrderEvent.GetSide(),
+					marketOrderEvent.GetBaseAmount(),
+					deadline,
+				)
 			}
 		case *order.OrderEvent_FillOrderEvent:
 			fillOrderEvent := event.GetFillOrderEvent()

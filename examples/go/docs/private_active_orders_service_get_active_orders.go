@@ -54,6 +54,7 @@ func privateActiveOrdersServiceGetActiveOrders(conn *grpc.ClientConn, parentCont
 				activeOrder.LimitOrder.Price,
 				activeOrder.LimitOrder.BaseRemaining,
 			)
+		// Note that market orders do not show in active orderbook.
 		default:
 			orderTypeDetail = "was removed from orderbook"
 		}

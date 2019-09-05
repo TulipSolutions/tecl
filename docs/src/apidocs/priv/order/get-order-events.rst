@@ -17,6 +17,8 @@ Get order events
 
 :protobuf:include:`tulipsolutions.api.priv.CreateLimitOrderEvent`
 
+:protobuf:include:`tulipsolutions.api.priv.CreateMarketOrderEvent`
+
 .. content-tabs::
    :class: code-example-responsive
 

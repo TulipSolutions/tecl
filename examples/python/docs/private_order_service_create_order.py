@@ -58,6 +58,11 @@ def private_order_service_create_order(channel):
             response.limit_order.base_amount,
             response.limit_order.price,
         )
+    elif response.WhichOneof("order_type") == "market_order":
+        order_type_detail = "{} {} ".format(
+            orders_pb2.Side.Name(response.market_order.side),
+            response.market_order.base_amount,
+        )
     if response.deadline_ns:
         deadline = "deadline @ {}".format(response.deadline_ns)
     else:

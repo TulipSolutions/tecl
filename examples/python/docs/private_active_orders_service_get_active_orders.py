@@ -48,6 +48,7 @@ def private_active_orders_service_get_active_orders(channel):
                 activeOrder.limit_order.price,
                 activeOrder.limit_order.base_remaining,
             )
+        # Note that market orders do not show in active orderbook.
         else:
             order_type_detail = "was removed from orderbook"
         if activeOrder.deadline_ns:

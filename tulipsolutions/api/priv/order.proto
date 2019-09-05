@@ -56,11 +56,17 @@ message LimitOrderRequest {
     double price = 3 [(validate.rules).double.gt = 0];
 }
 
+message MarketOrderRequest {
+    common.Side side = 1 [(validate.rules).enum = { not_in: [ 0 ], defined_only: true }];
+    double base_amount = 2 [(validate.rules).double.gt = 0];
+}
+
 message CreateOrderRequest {
     common.Market market = 1 [(validate.rules).enum = { not_in: [ 0 ], defined_only: true }];
     oneof order_type {
         option (validate.required) = true;
         LimitOrderRequest limit_order = 2;
+        MarketOrderRequest market_order = 3;
     }
     fixed64 tonce = 4 [jstype = JS_STRING, (validate.rules).fixed64.gt = 0];
     // Value is set by the message interceptor of the Tulip Exchange client library. Do not set it manually. See also
@@ -77,11 +83,17 @@ message LimitOrderResponse {
     double price = 3;
 }
 
+message MarketOrderResponse {
+    common.Side side = 1;
+    double base_amount = 2;
+}
+
 message CreateOrderResponse {
     fixed64 order_id = 1 [jstype = JS_STRING];
     common.Market market = 2;
     oneof order_type {
         LimitOrderResponse limit_order = 3;
+        MarketOrderResponse market_order = 4;
     }
     fixed64 deadline_ns = 5;
 }
@@ -106,9 +118,15 @@ message CreateLimitOrderEvent {
     double price = 3;
 }
 
+message CreateMarketOrderEvent {
+    common.Side side = 1;
+    double base_amount = 2;
+}
+
 message CreateOrderEvent {
     oneof order_type {
         CreateLimitOrderEvent create_limit_order = 2;
+        CreateMarketOrderEvent create_market_order = 3;
     }
     fixed64 deadline_ns = 6;
 }

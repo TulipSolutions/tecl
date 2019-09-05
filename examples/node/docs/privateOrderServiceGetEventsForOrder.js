@@ -74,6 +74,20 @@ function parseAndPrint(response) {
             );
             break;
           }
+          case order_pb.CreateOrderEvent.OrderTypeCase.CREATE_MARKET_ORDER: {
+            const marketOrderEvent = createOrderEvent.getCreateMarketOrder();
+            result += util.format(
+              '\t%s: Event %d order %d on market %s %s %f %s\n',
+              'CreateMarketOrderEvent',
+              event.getEventId(),
+              event.getOrderId(),
+              Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === event.getMarket()),
+              Object.keys(orders_pb.Side).find(key => orders_pb.Side[key] === marketOrderEvent.getSide()),
+              marketOrderEvent.getBaseAmount(),
+              deadline
+            );
+            break;
+          }
         }
         break;
       }

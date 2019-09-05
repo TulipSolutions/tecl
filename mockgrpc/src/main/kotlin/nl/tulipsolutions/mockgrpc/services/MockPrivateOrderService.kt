@@ -27,6 +27,7 @@ import nl.tulipsolutions.api.priv.CancelOrderEvent
 import nl.tulipsolutions.api.priv.CancelOrderRequest
 import nl.tulipsolutions.api.priv.CancelOrderResponse
 import nl.tulipsolutions.api.priv.CreateLimitOrderEvent
+import nl.tulipsolutions.api.priv.CreateMarketOrderEvent
 import nl.tulipsolutions.api.priv.CreateOrderEvent
 import nl.tulipsolutions.api.priv.CreateOrderRequest
 import nl.tulipsolutions.api.priv.CreateOrderResponse
@@ -109,12 +110,21 @@ class MockPrivateOrderService : ReactorPrivateOrderServiceGrpc.PrivateOrderServi
                     .setTimestampNs(timestamp)
 
                 when (random.nextInt(10)) {
-                    in 0..4 -> orderEvent.setCreateOrderEvent(
+                    in 0..2 -> orderEvent.setCreateOrderEvent(
                         CreateOrderEvent.newBuilder()
                             .setCreateLimitOrder(
                                 CreateLimitOrderEvent.newBuilder()
                                     .setSide(getRandomSide())
                                     .setPrice(price)
+                                    .setBaseAmount(baseAmount)
+                            )
+                            .setDeadlineNs(getRandomDeadline())
+                    )
+                    in 3..4 -> orderEvent.setCreateOrderEvent(
+                        CreateOrderEvent.newBuilder()
+                            .setCreateMarketOrder(
+                                CreateMarketOrderEvent.newBuilder()
+                                    .setSide(getRandomSide())
                                     .setBaseAmount(baseAmount)
                             )
                             .setDeadlineNs(getRandomDeadline())

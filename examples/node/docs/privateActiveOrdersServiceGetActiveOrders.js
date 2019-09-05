@@ -61,6 +61,7 @@ function parseAndPrint(response) {
         );
         break;
       }
+      // Note that market orders do not show in active orderbook.
       default:
         orderTypeDetail = 'was removed from orderbook';
     }
