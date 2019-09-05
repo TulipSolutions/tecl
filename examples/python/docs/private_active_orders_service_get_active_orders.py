@@ -49,12 +49,17 @@ def private_active_orders_service_get_active_orders(channel):
                 activeOrder.limit_order.base_remaining,
             )
         else:
-            order_type_detail = " "
-        result_string += "\t{}: {} for market {} {}\n".format(
+            order_type_detail = "was removed from orderbook"
+        if activeOrder.deadline_ns:
+            deadline = "deadline @ {}".format(activeOrder.deadline_ns)
+        else:
+            deadline = "(no deadline)"
+        result_string += "\t{}: {} for market {} {} {}\n".format(
             type(activeOrder).__name__,
             activeOrder.order_id,
             orders_pb2.Market.Name(activeOrder.market),
             order_type_detail,
+            deadline,
         )
     print(result_string)
     # CODEINCLUDE-END-MARKER: ref-code-example-response

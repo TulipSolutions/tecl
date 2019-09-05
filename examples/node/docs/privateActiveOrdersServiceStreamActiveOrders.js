@@ -62,13 +62,18 @@ function parseAndPrint(response) {
     default:
       orderTypeDetail = 'was removed from orderbook';
   }
+  let deadline = '(no deadline)';
+  if (response.getDeadlineNs() != 0) {
+    deadline = util.format('deadline @ %d', response.getDeadlineNs());
+  }
   console.log(
     util.format(
-      '%s: %s for market %s %s',
+      '%s: %s for market %s %s %s',
       'ActiveOrderStatus',
       response.getOrderId(),
       Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === response.getMarket()),
-      orderTypeDetail
+      orderTypeDetail,
+      deadline
     )
   );
   // CODEINCLUDE-END-MARKER: ref-code-example-response

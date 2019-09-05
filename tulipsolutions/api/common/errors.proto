@@ -93,6 +93,9 @@ message TonceTooOld {
     fixed64 max_difference = 3 [jstype = JS_STRING];
 }
 
+// Order was not accepted, due to an expired deadline. This may occur when an order is created with
+// a deadline (time to live) timestamp in the past. Please also check if the time on the client is
+// set correctly. Units returned are absolute timestamp since Unix epoch, in nanoseconds.
 message DeadlineExceeded {
     fixed64 deadline_ns = 1 [jstype = JS_STRING];
     fixed64 received_at_ns = 2 [jstype = JS_STRING];

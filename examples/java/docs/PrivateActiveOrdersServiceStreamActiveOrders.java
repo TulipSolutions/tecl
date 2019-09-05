@@ -54,7 +54,7 @@ public class PrivateActiveOrdersServiceStreamActiveOrders {
 
     public static void parseAndPrint(ActiveOrderStatus response) {
         // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
-        String formattedOrderType;
+        String formattedOrderType, formattedDeadline;
         if (response.getOrderCase() == ActiveOrderStatus.OrderCase.LIMIT_ORDER) {
             LimitOrderStatus limitOrder = response.getLimitOrder();
             formattedOrderType =
@@ -68,12 +68,18 @@ public class PrivateActiveOrdersServiceStreamActiveOrders {
         } else {
             formattedOrderType = "removed from orderbook";
         }
+        if (response.getDeadlineNs() != 0) {
+            formattedDeadline = String.format("deadline @ %d", response.getDeadlineNs());
+        } else {
+            formattedDeadline = "(no deadline)";
+        }
         System.out.printf(
-            "%s: %d for market %s %s\n",
+            "%s: %d for market %s %s %s\n",
             response.getClass().getSimpleName(),
             response.getOrderId(),
             response.getMarket(),
-            formattedOrderType
+            formattedOrderType,
+            formattedDeadline
         );
         // CODEINCLUDE-END-MARKER: ref-code-example-response
     }

@@ -22,6 +22,8 @@ import nl.tulipsolutions.api.common.Market
 import nl.tulipsolutions.api.common.allCurrencies
 import nl.tulipsolutions.api.common.allMarkets
 import nl.tulipsolutions.api.common.allSides
+import nl.tulipsolutions.api.common.toEpochNanos
+import java.time.Instant
 import java.util.Random
 
 private val random = Random()
@@ -35,3 +37,9 @@ private const val DEFAULT_MAX_PRICE = 60.0
 
 fun getRandomPrice(min: Double = DEFAULT_MIN_PRICE, max: Double = DEFAULT_MAX_PRICE) =
     (random.nextDouble() * (max - min)) + min
+
+fun getRandomBoolean(p: Double) = random.nextFloat() < p
+fun getRandomDeadline() = when (getRandomBoolean(0.10)) {
+    true -> Instant.now().toEpochNanos() + (random.nextFloat() * 1e9 * 60).toLong() // 60 seconds
+    false -> 0L
+}

@@ -59,7 +59,7 @@ public class PrivateActiveOrdersServiceGetActiveOrders {
         // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
         StringBuilder formattedResponse = new StringBuilder(String.format("%s\n", response.getClass().getSimpleName()));
         for (ActiveOrderStatus order : response.getOrdersList()) {
-            String formattedOrderType;
+            String formattedOrderType, formattedDeadline;
             if (order.getOrderCase() == ActiveOrderStatus.OrderCase.LIMIT_ORDER) {
                 LimitOrderStatus limitOrder = order.getLimitOrder();
                 formattedOrderType =
@@ -73,13 +73,19 @@ public class PrivateActiveOrdersServiceGetActiveOrders {
             } else {
                 formattedOrderType = "removed from orderbook";
             }
+            if (order.getDeadlineNs() != 0) {
+                formattedDeadline = String.format("deadline @ %d", order.getDeadlineNs());
+            } else {
+                formattedDeadline = "(no deadline)";
+            }
             formattedResponse.append(
                 String.format(
-                    "\t%s: %d for market %s %s\n",
+                    "\t%s: %d for market %s %s %s\n",
                     order.getClass().getSimpleName(),
                     order.getOrderId(),
                     order.getMarket(),
-                    formattedOrderType
+                    formattedOrderType,
+                    formattedDeadline
                 )
             );
         }

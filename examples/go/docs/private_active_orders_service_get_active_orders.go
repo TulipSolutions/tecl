@@ -45,6 +45,7 @@ func privateActiveOrdersServiceGetActiveOrders(conn *grpc.ClientConn, parentCont
 	resultString := fmt.Sprintf("%T\n", response)
 	for _, activeOrder := range response.Orders {
 		var orderTypeDetail string
+		var deadline string
 		switch activeOrder := activeOrder.Order.(type) {
 		case *order.ActiveOrderStatus_LimitOrder:
 			orderTypeDetail = fmt.Sprintf("%s %f@%f remaining %f",
@@ -56,11 +57,17 @@ func privateActiveOrdersServiceGetActiveOrders(conn *grpc.ClientConn, parentCont
 		default:
 			orderTypeDetail = "was removed from orderbook"
 		}
-		resultString += fmt.Sprintf("\t%T: %d for market %s %s\n",
+		if activeOrder.DeadlineNs != 0 {
+			deadline = fmt.Sprintf("deadline @ %d", activeOrder.DeadlineNs)
+		} else {
+			deadline = "(no deadline)"
+		}
+		resultString += fmt.Sprintf("\t%T: %d for market %s %s %s\n",
 			activeOrder,
 			activeOrder.OrderId,
 			activeOrder.Market.String(),
 			orderTypeDetail,
+			deadline,
 		)
 	}
 	fmt.Println(resultString)

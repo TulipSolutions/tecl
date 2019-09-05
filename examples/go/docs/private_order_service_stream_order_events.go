@@ -74,11 +74,17 @@ func parseAndPrintOrderEvent(event *order.OrderEvent) {
 	switch event.GetEvent().(type) {
 	case *order.OrderEvent_CreateOrderEvent:
 		orderEvent := event.GetCreateOrderEvent()
+		var deadline string
+		if orderEvent.DeadlineNs != 0 {
+			deadline = fmt.Sprintf("deadline @ %d", orderEvent.DeadlineNs)
+		} else {
+			deadline = "(no deadline)"
+		}
 		switch orderEvent.GetOrderType().(type) {
 		case *order.CreateOrderEvent_CreateLimitOrder:
 			limitOrderEvent := orderEvent.GetCreateLimitOrder()
 			fmt.Printf(
-				"\t%T: Event %d order %d on market %s limit %s %f@%f\n",
+				"\t%T: Event %d order %d on market %s limit %s %f@%f %s\n",
 				limitOrderEvent,
 				event.GetEventId(),
 				event.GetOrderId(),
@@ -86,6 +92,7 @@ func parseAndPrintOrderEvent(event *order.OrderEvent) {
 				limitOrderEvent.GetSide(),
 				limitOrderEvent.GetBaseAmount(),
 				limitOrderEvent.GetPrice(),
+				deadline,
 			)
 		}
 	case *order.OrderEvent_FillOrderEvent:

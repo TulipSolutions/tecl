@@ -50,9 +50,13 @@ def parse_and_print(event):
     # CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
     if event.WhichOneof("event") == "create_order_event":
         create_order_event = event.create_order_event
+        if create_order_event.deadline_ns:
+            deadline = "deadline @ {}".format(create_order_event.deadline_ns)
+        else:
+            deadline = "(no deadline)"
         if create_order_event.WhichOneof("order_type") == "create_limit_order":
             limit_order_event = create_order_event.create_limit_order
-            print("{}: Event {} order {} on market {} {} {}@{}\n".format(
+            print("{}: Event {} order {} on market {} {} {}@{} {}\n".format(
                 type(limit_order_event).__name__,
                 event.event_id,
                 event.order_id,
@@ -60,6 +64,7 @@ def parse_and_print(event):
                 orders_pb2.Side.Name(limit_order_event.side),
                 limit_order_event.base_amount,
                 limit_order_event.price,
+                deadline,
             ))
     elif event.WhichOneof("event") == "fill_order_event":
         fill_order_event = event.fill_order_event

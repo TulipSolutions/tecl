@@ -53,12 +53,17 @@ def parse_and_print(response):
         )
     else:
         order_type_detail = "was removed from orderbook"
+    if response.deadline_ns:
+        deadline = "deadline @ {}".format(response.deadline_ns)
+    else:
+        deadline = "(no deadline)"
     print(
-        "{}: {} for market {} {}".format(
+        "{}: {} for market {} {} {}".format(
             type(response).__name__,
             response.order_id,
             orders_pb2.Market.Name(response.market),
             order_type_detail,
+            deadline,
         )
     )
     # CODEINCLUDE-END-MARKER: ref-code-example-response

@@ -71,7 +71,7 @@ public class PrivateOrderServiceCreateOrder {
 
     public static void parseAndPrint(CreateOrderResponse response) {
         // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
-        String formattedOrderType = "";
+        String formattedOrderType = "", formattedDeadline;
         if (response.getOrderTypeCase() == CreateOrderResponse.OrderTypeCase.LIMIT_ORDER) {
             LimitOrderResponse limitOrder = response.getLimitOrder();
             formattedOrderType = String.format(
@@ -81,12 +81,18 @@ public class PrivateOrderServiceCreateOrder {
                 limitOrder.getPrice()
             );
         }
+        if (response.getDeadlineNs() != 0) {
+            formattedDeadline = String.format("deadline @ %d", response.getDeadlineNs());
+        } else {
+            formattedDeadline = "(no deadline)";
+        }
         System.out.printf(
-            "%s: %d for %s %s\n",
+            "%s: %d for %s %s %s\n",
             response.getClass().getSimpleName(),
             response.getOrderId(),
             response.getMarket(),
-            formattedOrderType
+            formattedOrderType,
+            formattedDeadline
         );
         // CODEINCLUDE-END-MARKER: ref-code-example-response
     }

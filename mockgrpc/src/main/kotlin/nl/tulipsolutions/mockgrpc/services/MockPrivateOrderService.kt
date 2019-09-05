@@ -63,6 +63,7 @@ class MockPrivateOrderService : ReactorPrivateOrderServiceGrpc.PrivateOrderServi
                             .setPrice(createOrderRequest.limitOrder.price)
                             .build()
                     )
+                    .setDeadlineNs(createOrderRequest.deadlineNs)
                     .setOrderId(createOrderRequest.tonce)
                     .build()
             }
@@ -116,6 +117,7 @@ class MockPrivateOrderService : ReactorPrivateOrderServiceGrpc.PrivateOrderServi
                                     .setPrice(price)
                                     .setBaseAmount(baseAmount)
                             )
+                            .setDeadlineNs(getRandomDeadline())
                     )
                     in 5..7 -> orderEvent.setCancelOrderEvent(CancelOrderEvent.newBuilder())
                     in 8..9 -> orderEvent.setFillOrderEvent(

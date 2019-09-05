@@ -61,6 +61,7 @@ func privateActiveOrdersServiceStreamActiveOrders(conn *grpc.ClientConn, parentC
 func parseAndPrintPrivateOrder(response *order.ActiveOrderStatus) {
 	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
 	var orderTypeDetail string
+	var deadline string
 	switch activeOrder := response.Order.(type) {
 	case *order.ActiveOrderStatus_LimitOrder:
 		orderTypeDetail = fmt.Sprintf("%s %f@%f remaining %f",
@@ -72,11 +73,17 @@ func parseAndPrintPrivateOrder(response *order.ActiveOrderStatus) {
 	default:
 		orderTypeDetail = "was removed from orderbook"
 	}
-	fmt.Printf("%T: %d for market %s %s\n",
+	if response.DeadlineNs != 0 {
+		deadline = fmt.Sprintf("deadline @ %d", response.DeadlineNs)
+	} else {
+		deadline = "(no deadline)"
+	}
+	fmt.Printf("%T: %d for market %s %s %s\n",
 		response,
 		response.OrderId,
 		response.Market.String(),
 		orderTypeDetail,
+		deadline,
 	)
 	// CODEINCLUDE-END-MARKER: ref-code-example-response
 }

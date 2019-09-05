@@ -54,18 +54,23 @@ function parseAndPrint(event) {
   switch (event.getEventCase()) {
     case order_pb.OrderEvent.EventCase.CREATE_ORDER_EVENT: {
       const createOrderEvent = event.getCreateOrderEvent();
+      let deadline = '(no deadline)';
+      if (createOrderEvent.getDeadlineNs() != 0) {
+        deadline = util.format('deadline @ %d', createOrderEvent.getDeadlineNs());
+      }
       switch (createOrderEvent.getOrderTypeCase()) {
         case order_pb.CreateOrderEvent.OrderTypeCase.CREATE_LIMIT_ORDER: {
           const limitOrderEvent = createOrderEvent.getCreateLimitOrder();
           result = util.format(
-            '%s: Event %d order %d on market %s %s %f@%f\n',
+            '%s: Event %d order %d on market %s %s %f@%f %s\n',
             'CreateLimitOrderEvent',
             event.getEventId(),
             event.getOrderId(),
             Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === event.getMarket()),
             Object.keys(orders_pb.Side).find(key => orders_pb.Side[key] === limitOrderEvent.getSide()),
             limitOrderEvent.getBaseAmount(),
-            limitOrderEvent.getPrice()
+            limitOrderEvent.getPrice(),
+            deadline
           );
           break;
         }

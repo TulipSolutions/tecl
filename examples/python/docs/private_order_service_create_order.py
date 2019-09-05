@@ -58,12 +58,17 @@ def private_order_service_create_order(channel):
             response.limit_order.base_amount,
             response.limit_order.price,
         )
+    if response.deadline_ns:
+        deadline = "deadline @ {}".format(response.deadline_ns)
+    else:
+        deadline = "(no deadline)"
     print(
-        "{}: {} for {} {}".format(
+        "{}: {} for {} {} {}".format(
             type(response).__name__,
             response.order_id,
             orders_pb2.Market.Name(response.market),
             order_type_detail,
+            deadline,
         )
     )
     # CODEINCLUDE-END-MARKER: ref-code-example-response

@@ -56,6 +56,7 @@ func privateOrderServiceCreateOrder(conn *grpc.ClientConn, parentContext context
 	// CODEINCLUDE-END-MARKER: ref-code-example-request
 	// CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
 	var orderTypeDetail string
+	var deadline string
 	switch order := response.OrderType.(type) {
 	case *order.CreateOrderResponse_LimitOrder:
 		orderTypeDetail = fmt.Sprintf("%s %f@%f",
@@ -66,11 +67,17 @@ func privateOrderServiceCreateOrder(conn *grpc.ClientConn, parentContext context
 	default:
 		orderTypeDetail = "This should not be empty!"
 	}
-	fmt.Printf("%T: orderId: %d for %s %s\n",
+	if response.DeadlineNs != 0 {
+		deadline = fmt.Sprintf("deadline @ %d", response.DeadlineNs)
+	} else {
+		deadline = "(no deadline)"
+	}
+	fmt.Printf("%T: orderId: %d for %s %s %s\n",
 		response,
 		response.OrderId,
 		response.Market.String(),
 		orderTypeDetail,
+		deadline,
 	)
 	// CODEINCLUDE-END-MARKER: ref-code-example-response
 }

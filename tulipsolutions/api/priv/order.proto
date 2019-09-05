@@ -47,6 +47,7 @@ message ActiveOrderStatus {
     oneof order {
         LimitOrderStatus limit_order = 4;
     }
+    fixed64 deadline_ns = 5;
 }
 
 message LimitOrderRequest {
@@ -65,6 +66,9 @@ message CreateOrderRequest {
     // Value is set by the message interceptor of the Tulip Exchange client library. Do not set it manually. See also
     // :ref:`authentication_request_authentication`.
     Signed signed = 5;
+    // The timestamp until the order is active, after which it is automatically canceled. Unit is absolute timestamp
+    // in nanoseconds since unix epoch. The default of ``0`` means infinite lifetime ("Good-Til-Cancelled").
+    fixed64 deadline_ns = 6;
 }
 
 message LimitOrderResponse {
@@ -79,6 +83,7 @@ message CreateOrderResponse {
     oneof order_type {
         LimitOrderResponse limit_order = 3;
     }
+    fixed64 deadline_ns = 5;
 }
 
 message CancelOrderRequest {
@@ -105,6 +110,7 @@ message CreateOrderEvent {
     oneof order_type {
         CreateLimitOrderEvent create_limit_order = 2;
     }
+    fixed64 deadline_ns = 6;
 }
 
 message CancelOrderEvent {}

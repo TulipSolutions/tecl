@@ -36,10 +36,6 @@ class ActiveOrdersStore {
 
     private val activeOrders = MutableList(DESIRED_NUM_ACTIVE_ORDERS) { generateNew() }
 
-    private fun getRandomBoolean(p: Double): Boolean {
-        return random.nextFloat() < p
-    }
-
     private fun getRandomMarket(): Market {
         return when (random.nextInt(10)) {
             in 0..7 -> Market.BTC_EUR
@@ -64,6 +60,7 @@ class ActiveOrdersStore {
         val activeOrderStatus = ActiveOrderStatus.newBuilder()
             .setMarket(getRandomMarket())
             .setOrderId(orderId)
+            .setDeadlineNs(getRandomDeadline())
         val baseAmount = random.nextDouble() * 1000.0
         val remaining = random.nextDouble() * baseAmount
         activeOrderStatus.limitOrderBuilder

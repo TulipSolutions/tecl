@@ -72,18 +72,25 @@ public class PrivateOrderServiceStreamOrderEvents {
         switch (event.getEventCase()) {
             case CREATE_ORDER_EVENT:
                 CreateOrderEvent createOrderEvent = event.getCreateOrderEvent();
+                String formattedDeadline;
+                if (createOrderEvent.getDeadlineNs() != 0) {
+                    formattedDeadline = String.format("deadline @ %d", createOrderEvent.getDeadlineNs());
+                } else {
+                    formattedDeadline = "(no deadline)";
+                }
                 switch (createOrderEvent.getOrderTypeCase()) {
                     case CREATE_LIMIT_ORDER:
                         CreateLimitOrderEvent createLimitOrderEvent = createOrderEvent.getCreateLimitOrder();
                         formattedEvent = String.format(
-                            "%s: Event %d order %d on market %s limit %s %f@%f\n",
+                            "%s: Event %d order %d on market %s limit %s %f@%f %s\n",
                             createLimitOrderEvent.getClass().getSimpleName(),
                             event.getEventId(),
                             event.getOrderId(),
                             event.getMarket(),
                             createLimitOrderEvent.getSide(),
                             createLimitOrderEvent.getBaseAmount(),
-                            createLimitOrderEvent.getPrice()
+                            createLimitOrderEvent.getPrice(),
+                            formattedDeadline
                         );
                         break;
                     default:
