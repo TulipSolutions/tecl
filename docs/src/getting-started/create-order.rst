@@ -85,7 +85,7 @@ order ID with which the order can be cancelled.
         .. codeinclude:: /examples/go/hello_exchange/main.go
             :marker-id: getting-started-create-order-request
 
-        Run the example with :code:`$ bazel run //examples/go/hello_exchange`
+        Run the example with :code:`$ bazelisk run //examples/go/hello_exchange`
 
         This concludes the getting started tutorial, the example code can be found
         `on GitHub <https://github.com/tulipsolutions/tecl/tree/master/examples/go/hello_exchange>`__.
@@ -95,7 +95,7 @@ order ID with which the order can be cancelled.
         .. codeinclude:: /examples/java/hello_exchange/HelloExchange.java
             :marker-id: getting-started-create-order-request
 
-        Run the example with :code:`$ bazel run //examples/java/hello_exchange`
+        Run the example with :code:`$ bazelisk run //examples/java/hello_exchange`
 
         This concludes the getting started tutorial, the example code can be found
         `on GitHub <https://github.com/tulipsolutions/tecl/tree/master/examples/java/hello_exchange>`__.
@@ -105,7 +105,7 @@ order ID with which the order can be cancelled.
         .. codeinclude:: /examples/node/hello_exchange/index.js
             :marker-id: getting-started-create-order-request
 
-        Run the example with :code:`$ bazel run //examples/node/hello_exchange`
+        Run the example with :code:`$ bazelisk run //examples/node/hello_exchange`
 
         This concludes the getting started tutorial, the example code can be found
         `on GitHub <https://github.com/tulipsolutions/tecl/tree/master/examples/node/hello_exchange>`__.
@@ -115,7 +115,7 @@ order ID with which the order can be cancelled.
         .. codeinclude:: /examples/python/hello_exchange/hello_exchange.py
             :marker-id: getting-started-create-order-request
 
-        Run the example with :code:`$ bazel run //examples/python/hello_exchange`
+        Run the example with :code:`$ bazelisk run //examples/python/hello_exchange`
 
         This concludes the getting started tutorial, the example code can be found
         `on GitHub <https://github.com/tulipsolutions/tecl/tree/master/examples/python/hello_exchange>`__.

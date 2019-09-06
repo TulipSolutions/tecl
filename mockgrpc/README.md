@@ -6,4 +6,4 @@ It generates dummy data and requires no additional services to be run (aside fro
 
 Run the server with the following command:
 
-    $ bazel run //mockgrpc
+    $ bazelisk run //mockgrpc

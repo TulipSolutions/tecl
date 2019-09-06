@@ -62,25 +62,25 @@ client stub with it, and print the responses.
         .. codeinclude:: /examples/go/hello_exchange/main.go
             :marker-id: getting-started-orderbook-service-request
 
-        Run the example with :code:`$ bazel run //examples/go/hello_exchange`
+        Run the example with :code:`$ bazelisk run //examples/go/hello_exchange`
 
     .. tab-container:: Java
 
         .. codeinclude:: /examples/java/hello_exchange/HelloExchange.java
             :marker-id: getting-started-orderbook-service-request
 
-        Run the example with :code:`$ bazel run //examples/java/hello_exchange`
+        Run the example with :code:`$ bazelisk run //examples/java/hello_exchange`
 
     .. tab-container:: Node
 
         .. codeinclude:: /examples/node/hello_exchange/index.js
             :marker-id: getting-started-orderbook-service-request
 
-        Run the example with :code:`$ bazel run //examples/node/hello_exchange`
+        Run the example with :code:`$ bazelisk run //examples/node/hello_exchange`
 
     .. tab-container:: Python
 
         .. codeinclude:: /examples/python/hello_exchange/hello_exchange.py
             :marker-id: getting-started-orderbook-service-request
 
-        Run the example with :code:`$ bazel run //examples/python/hello_exchange`
+        Run the example with :code:`$ bazelisk run //examples/python/hello_exchange`

@@ -9,8 +9,32 @@ The code for this example can be found here: https://github.com/tulipsolutions/t
 
 In this section of the tutorial we compile the tulip client API from the protobuf sources using :term:`Bazel`.
 
+Installing Bazel (Bazelisk)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Please see the `Bazel project page on installation <https://docs.bazel.build/versions/master/install.html>`_ for the
+Bazel prerequisites.
+Note that you do not have to install Bazel itself.
+For e.g. on Debian/Ubuntu Linux this would mean:
+
+.. code-block:: bash
+
+   $ sudo apt install pkg-config zip g++ zlib1g-dev unzip python3
+
+`Bazelisk <https://github.com/bazelbuild/bazelisk>`_ is a simple wrapper to always download and invoke the right
+version of Bazel for the project, determined by the ``.bazelversion`` file in the workspace root.
+The steps following in this guide assume an installation of Bazelisk somewhere in your PATH, e.g. ``/usr/local/bin``:
+
+.. code-block:: bash
+
+   $ sudo curl -Lo /usr/local/bin/bazelisk \
+      https://github.com/bazelbuild/bazelisk/releases/download/v1.0/bazelisk-linux-amd64
+   $ sudo chmod +x /usr/local/bin/bazelisk
+
+Now verify that you can run Bazel and see the expected latest version printed by running ``$ bazelisk version``.
+
 Create a new project
-~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
 Set up a new project by creating a new Bazel workspace.
 A workspace is a directory that contains source files, as well as symbolic links to directories that contain the build
 outputs.
@@ -40,7 +64,7 @@ Copy the following content into a file named WORKSPACE in the root of your proje
 
         .. code-block:: bash
 
-             $ bazel run @nodejs//:bin/yarn -- install
+             $ bazelisk run @nodejs//:bin/yarn -- install
 
     .. tab-container:: Python
 
@@ -52,8 +76,8 @@ Create the hello_exchange package
 For the hello exchange example, first create a new Bazel package.
 A package is a collection of related files and a specification of the dependencies among them
 (more information `here <https://docs.bazel.build/versions/master/build-ref.html#packages>`__).
-The relations are declared through *rules* in the BUILD.bazel file: they state the exact relationship between a set of
-input and a set of output files.
+The relations are declared through *rules* in the ``BUILD.bazel`` file: they state the exact relationship between a set
+of input and a set of output files.
 
 In the project root directory create a new directory called "hello_exchange".
 In this directory create a BUILD.bazel file with the following content.

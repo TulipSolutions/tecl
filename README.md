@@ -18,7 +18,8 @@ In addition to these stubs, the Tulip Exchange Client Library also contains some
 
 ## Usage with Bazel
 
-* [Install Bazel](https://docs.bazel.build/install.html)
+* [Install Bazel's dependencies](https://docs.bazel.build/install.html)
+* [Install Bazelisk](https://github.com/bazelbuild/bazelisk/releases)
 * [Install JDK 8 or higher](https://openjdk.java.net/install/index.html) (required for running the Java examples)
 * [Install Python 2](https://www.python.org/downloads/) (required for running the Python examples)
 * Run an example with `bazel run examples/<lang>/<example>`.

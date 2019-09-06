@@ -8,6 +8,9 @@ Glossary
         It was initially developed developed internally at Google and open sourced in 2015 [#f1]_.
         Bazel supports projects in multiple languages and builds outputs for multiple platforms.
 
+    Bazelisk
+        A user-friendly launcher for Bazel.
+
     gRPC
         High performance RPC framework initially developed at Google and open sourced in 2015 [#f2]_.
         It uses Protocol Buffers as the interface description language and provides features such as authentication,

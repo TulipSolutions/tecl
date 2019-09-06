@@ -9,6 +9,20 @@ load("@nl_tulipsolutions_tecl//bazel:repositories.bzl", nl_tulipsolutions_tecl_r
 
 nl_tulipsolutions_tecl_repositories()
 
+# Check Bazel version when invoked by Bazel directly instead of Bazelisk; verify it's at minimum the version Bazelisk
+# would choose to use via .bazelversion file.
+load("@nl_tulipsolutions_tecl//bazel/rules_bazel_version:deps.bzl", "bazel_version_dependencies")
+
+bazel_version_dependencies()
+
+load("@nl_tulipsolutions_tecl//bazel/rules_bazel_version:def.bzl", "bazel_version")
+
+bazel_version(name = "bazel_version")
+
+load("@bazel_version//:check.bzl", "check_bazel_version")
+
+check_bazel_version()
+
 load("@io_grpc_grpc_java//:repositories.bzl", "grpc_java_repositories")
 
 grpc_java_repositories(

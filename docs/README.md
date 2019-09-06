@@ -28,7 +28,7 @@ upgrade to Sphinx 2.x, as that version is Python 3.5+ only.
 
 ## How to generate documentation
 
-    $ bazel build //docs
+    $ bazelisk build //docs
 
 The above takes care of generating reStructuredText from the `.proto` files
 using protodoc, merging the output with the documentation pages in `docs/src/`
@@ -37,7 +37,7 @@ and invoking `sphinx-build` to build HTML output.
 You can then open the `index.html` with your browser on the `bazel-bin`
 directory printed by Bazel. E.g.:
 
-    $ firefox $(bazel info bazel-bin)/docs/html/index.html
+    $ firefox $(bazelisk info bazel-bin)/docs/html/index.html
 
 ---
 **Note**
