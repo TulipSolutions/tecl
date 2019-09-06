@@ -18,10 +18,10 @@
     esutils "^2.0.2"
     js-tokens "^4.0.0"
 
-"@tulipsolutions/tecl@0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@tulipsolutions/tecl/-/tecl-0.0.7.tgz#09d98bdd86ecf76328bea1b915752352ec818757"
-  integrity sha512-gkO4IcUzzdZadlCHMs0yfczcdbCETrxLe1dRjlNno86+dD1ojnZkd/JoJsg3hBM94xtdPGoVNRZWEeacucLYIA==
+"@tulipsolutions/tecl@0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@tulipsolutions/tecl/-/tecl-0.0.8.tgz#880ef6827d4c008d94435c8de90cffe8a1ef675c"
+  integrity sha512-xTgLc9REWiTtW5ZM+XAndZV0eoF4/McOWDA0Ofa0lPZpWltugORGR6PMoCHaUgV7F21uSRdcQqQkoGizMflCSQ==
 
 "@types/bytebuffer@^5.0.40":
   version "5.0.40"
