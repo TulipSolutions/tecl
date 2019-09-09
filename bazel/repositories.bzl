@@ -223,11 +223,11 @@ sh_binary(
         )
 
     if not omit_com_github_bazelbuild_buildtools:
-        build_tools_version = "0.28.0"
+        build_tools_version = "0.29.0"
 
         http_archive(
             name = "com_github_bazelbuild_buildtools",
-            sha256 = "d8440da64ac15eca922ca0e8c6772bbb04eaaf3d2f4de387e5bfdb87cecbe9d2",
+            sha256 = "05eb52437fb250c7591dd6cbcfd1f9b5b61d85d6b20f04b041e0830dd1ab39b3",
             strip_prefix = "buildtools-%s" % build_tools_version,
             url = "https://github.com/bazelbuild/buildtools/archive/%s.zip" % build_tools_version,
         )
