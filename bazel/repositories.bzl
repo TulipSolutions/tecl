@@ -26,6 +26,9 @@ def repositories(
         omit_com_github_bazelbuild_buildtools = False,
         omit_build_bazel_rules_nodejs = False,
         omit_zlib = False,
+        omit_rules_proto = False,
+        omit_rules_cc = False,
+        omit_rules_java = False,
         omit_com_google_errorprone_error_prone_annotations = False,
         omit_com_envoyproxy_protoc_gen_validate = False,
         omit_io_bazel_rules_kotlin = False,
@@ -64,11 +67,11 @@ def repositories(
         )
 
     if not omit_com_google_protobuf:
-        protobuf_version = "v3.9.0"
+        protobuf_version = "v3.9.1"
 
         http_archive(
             name = "com_google_protobuf",
-            sha256 = "8eb5ca331ab8ca0da2baea7fc0607d86c46c80845deca57109a5d637ccb93bb4",
+            sha256 = "c90d9e13564c0af85fd2912545ee47b57deded6e5a97de80395b6d2d9be64854",
             strip_prefix = "protobuf-%s" % protobuf_version[1:],
             urls = ["https://github.com/google/protobuf/archive/%s.zip" % protobuf_version],
         )
@@ -258,14 +261,41 @@ sh_binary(
             actual = "@com_google_errorprone_error_prone_annotations",
         )
 
-    if not omit_zlib:
-        # Mirrors https://github.com/protocolbuffers/protobuf/blob/6a59a2ad1f61d9696092f79b6d74368b4d7970a3/protobuf_deps.bzl
+    if not omit_zlib and not native.existing_rule("zlib"):
+        # Mirrors https://github.com/protocolbuffers/protobuf/blob/3.9.x/protobuf_deps.bzl
         http_archive(
             name = "zlib",
             build_file = "@com_google_protobuf//:third_party/zlib.BUILD",
             sha256 = "c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1",
             strip_prefix = "zlib-1.2.11",
             urls = ["https://zlib.net/zlib-1.2.11.tar.gz"],
+        )
+
+    if not omit_rules_proto and not native.existing_rule("rules_proto"):
+        # Mirrors https://github.com/protocolbuffers/protobuf/blob/3.9.x/protobuf_deps.bzl
+        http_archive(
+            name = "rules_proto",
+            sha256 = "88b0a90433866b44bb4450d4c30bc5738b8c4f9c9ba14e9661deb123f56a833d",
+            strip_prefix = "rules_proto-b0cc14be5da05168b01db282fe93bdf17aa2b9f4",
+            urls = ["https://github.com/bazelbuild/rules_proto/archive/b0cc14be5da05168b01db282fe93bdf17aa2b9f4.tar.gz"],
+        )
+
+    if not omit_rules_cc and not native.existing_rule("rules_cc"):
+        # Mirrors https://github.com/protocolbuffers/protobuf/blob/3.9.x/protobuf_deps.bzl
+        http_archive(
+            name = "rules_cc",
+            sha256 = "29daf0159f0cf552fcff60b49d8bcd4f08f08506d2da6e41b07058ec50cfeaec",
+            strip_prefix = "rules_cc-b7fe9697c0c76ab2fd431a891dbb9a6a32ed7c3e",
+            urls = ["https://github.com/bazelbuild/rules_cc/archive/b7fe9697c0c76ab2fd431a891dbb9a6a32ed7c3e.tar.gz"],
+        )
+
+    if not omit_rules_java and not native.existing_rule("rules_java"):
+        # Mirrors https://github.com/protocolbuffers/protobuf/blob/3.9.x/protobuf_deps.bzl
+        http_archive(
+            name = "rules_java",
+            sha256 = "f5a3e477e579231fca27bf202bb0e8fbe4fc6339d63b38ccb87c2760b533d1c3",
+            strip_prefix = "rules_java-981f06c3d2bd10225e85209904090eb7b5fb26bd",
+            urls = ["https://github.com/bazelbuild/rules_java/archive/981f06c3d2bd10225e85209904090eb7b5fb26bd.tar.gz"],
         )
 
     if not omit_com_envoyproxy_protoc_gen_validate:
