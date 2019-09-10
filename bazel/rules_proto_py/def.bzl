@@ -21,8 +21,8 @@ def _protoc_output_path(proto_src, suffix):
     return _proto_path(proto_src).replace("-", "_").replace(".proto", suffix)
 
 def _py_proto_library_gen_impl(ctx):
-    srcs = [f for dep in ctx.attr.deps for f in dep.proto.transitive_sources.to_list()]
-    includes = [f for dep in ctx.attr.deps for f in dep.proto.transitive_imports.to_list()]
+    srcs = [f for dep in ctx.attr.deps for f in dep[ProtoInfo].transitive_sources.to_list()]
+    includes = [f for dep in ctx.attr.deps for f in dep[ProtoInfo].transitive_imports.to_list()]
 
     proto_include_args = ["--proto_path={0}={1}".format(_proto_path(include), include.path) for include in includes]
     options = ",".join([])  # Empty, for now.
@@ -49,6 +49,7 @@ _py_proto_library_gen = rule(
     attrs = {
         "deps": attr.label_list(
             mandatory = True,
+            providers = [ProtoInfo],
         ),
         "_protoc": attr.label(
             default = Label("@com_google_protobuf//:protoc"),
@@ -79,8 +80,8 @@ def py_proto_library(name, deps, **kwargs):
     )
 
 def _py_grpc_library_gen_impl(ctx):
-    srcs = [f for dep in ctx.attr.deps for f in dep.proto.transitive_sources.to_list()]
-    includes = [f for dep in ctx.attr.deps for f in dep.proto.transitive_imports.to_list()]
+    srcs = [f for dep in ctx.attr.deps for f in dep[ProtoInfo].transitive_sources.to_list()]
+    includes = [f for dep in ctx.attr.deps for f in dep[ProtoInfo].transitive_imports.to_list()]
 
     proto_include_args = ["--proto_path={0}={1}".format(_proto_path(include), include.path) for include in includes]
     options = ",".join([])  # Empty, for now.
@@ -134,6 +135,7 @@ _py_grpc_library_gen = rule(
     attrs = {
         "deps": attr.label_list(
             mandatory = True,
+            providers = [ProtoInfo],
         ),
         "includes": attr.label_list(),
         "_protoc": attr.label(
