@@ -203,11 +203,11 @@ sh_binary(
         )
 
     if not omit_build_stack_rules_proto:
-        build_stack_rules_proto_version = "76e30bc0ad6c2f4150f40e593db83eedeb069f1e"
+        build_stack_rules_proto_version = "d9a123032f8436dbc34069cfc3207f2810a494ee"
 
         http_archive(
             name = "build_stack_rules_proto",
-            sha256 = "9877e832f73746024063f993dae33b403228e11c438ae628430ccb532a6a1aac",
+            sha256 = "ff20827de390a86857cf921f757437cf407db4e5acb39b660467bd8c4d294a8b",
             strip_prefix = "rules_proto-%s" % build_stack_rules_proto_version,
             url = "https://github.com/stackb/rules_proto/archive/%s.zip" % build_stack_rules_proto_version,
         )
