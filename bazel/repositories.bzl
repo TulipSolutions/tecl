@@ -280,11 +280,11 @@ sh_binary(
         )
 
     if not omit_io_bazel_rules_kotlin:
-        rules_kotlin_version = "da1232eda2ef90d4375e2d1677b32c7ddf09e8a1"
+        rules_kotlin_version = "40efd46789a06f06655e867dcaec2a84815461df"
 
         http_archive(
             name = "io_bazel_rules_kotlin",
-            sha256 = "f5d8148d965476cb4d968be5350085d6f4872569829c239f21fcee62ce487f7d",
+            sha256 = "686d4dfb0f555a6b5cd587f11f34e464320065aafd052dfee4157105b8f91870",
             strip_prefix = "rules_kotlin-%s" % rules_kotlin_version,
             url = "https://github.com/bazelbuild/rules_kotlin/archive/%s.zip" % rules_kotlin_version,
         )
