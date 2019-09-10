@@ -88,6 +88,9 @@ function parseAndPrint(event) {
           );
           break;
         }
+        default: {
+          throw 'Unknown order type';
+        }
       }
       break;
     }
@@ -105,7 +108,7 @@ function parseAndPrint(event) {
       );
       break;
     }
-    case order_pb.OrderEvent.EventCase.CANCEL_ORDER_EVENT:
+    case order_pb.OrderEvent.EventCase.CANCEL_ORDER_EVENT: {
       result = util.format(
         '%s: Event %d order %d on market %s\n',
         'CancelOrderEvent',
@@ -114,6 +117,10 @@ function parseAndPrint(event) {
         Object.keys(orders_pb.Market).find(key => orders_pb.Market[key] === event.getMarket())
       );
       break;
+    }
+    default: {
+      throw 'Unknown OrderEvent type';
+    }
   }
   console.log(result);
   // CODEINCLUDE-END-MARKER: ref-code-example-response
