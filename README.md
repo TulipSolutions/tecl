@@ -22,7 +22,7 @@ In addition to these stubs, the Tulip Exchange Client Library also contains some
 * [Install Bazelisk](https://github.com/bazelbuild/bazelisk/releases)
 * [Install JDK 8 or higher](https://openjdk.java.net/install/index.html) (required for running the Java examples)
 * [Install Python 2](https://www.python.org/downloads/) (required for running the Python examples)
-* Run an example with `bazel run examples/<lang>/<example>`.
+* Run an example with `bazelisk run examples/<lang>/<example>`.
 
 Your language not supported? [Submit a feature request](https://github.com/tulipsolutions/tecl/issues) 
 or [compile](#compile-from-source) the bindings for your language by yourself.
