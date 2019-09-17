@@ -17,7 +17,6 @@
 
 package nl.tulipsolutions.mockgrpc.services
 
-import nl.tulipsolutions.api.common.Market
 import nl.tulipsolutions.api.common.toCurrencyPair
 import nl.tulipsolutions.api.pub.GetMarketDetailsRequest
 import nl.tulipsolutions.api.pub.MarketDetail
@@ -28,40 +27,26 @@ import nl.tulipsolutions.api.pub.StreamMarketDetailsRequest
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
-const val MIN_AMOUNT = 0.0
-const val MAX_AMOUNT = 1.7014118346046922E16
+class MockPublicMarketDetailService() : ReactorPublicMarketDetailServiceGrpc.PublicMarketDetailServiceImplBase() {
+    private fun getConstantBasedDetails() =
+        (MarketDetailConstants.ENABLED_MARKETS + MarketDetailConstants.CLOSED_MARKETS).map {
+            MarketDetail.newBuilder()
+                .setMarket(it)
+                .setMarketStatus(if (it in MarketDetailConstants.ENABLED_MARKETS) MarketStatus.OPEN else MarketStatus.CLOSED)
+                .setPriceResolution(MarketDetailConstants.PRICE_PRECISION)
+                .setAmountResolution(MarketDetailConstants.AMOUNT_PRECISION)
+                .setMinimumBaseOrderAmount(MarketDetailConstants.MIN_BASE_ORDER_AMOUNT)
+                .setMaximumBaseOrderAmount(MarketDetailConstants.MAX_BASE_ORDER_AMOUNT)
+                .setMinimumQuoteOrderAmount(MarketDetailConstants.MIN_QUOTE_ORDER_AMOUNT)
+                .setMaximumQuoteOrderAmount(MarketDetailConstants.MAX_QUOTE_ORDER_AMOUNT)
+                .setBase(it.toCurrencyPair().first)
+                .setQuote(it.toCurrencyPair().second)
+                .build()
+        }.toList()
 
-val marketDetails = listOf(
-    MarketDetail.newBuilder()
-        .setMarket(Market.BTC_EUR)
-        .setMarketStatus(MarketStatus.OPEN)
-        .setPriceResolution(0.01)
-        .setAmountResolution(0.00000001)
-        .setMinimumBaseOrderAmount(MIN_AMOUNT)
-        .setMaximumBaseOrderAmount(MAX_AMOUNT)
-        .setMinimumQuoteOrderAmount(MIN_AMOUNT)
-        .setMaximumQuoteOrderAmount(MAX_AMOUNT)
-        .setBase(Market.BTC_EUR.toCurrencyPair().first)
-        .setQuote(Market.BTC_EUR.toCurrencyPair().second)
-        .build(),
-    MarketDetail.newBuilder()
-        .setMarket(Market.BTC_USD)
-        .setMarketStatus(MarketStatus.OPEN)
-        .setPriceResolution(0.01)
-        .setAmountResolution(0.00000001)
-        .setMinimumBaseOrderAmount(MIN_AMOUNT)
-        .setMaximumBaseOrderAmount(MAX_AMOUNT)
-        .setMinimumQuoteOrderAmount(MIN_AMOUNT)
-        .setMaximumQuoteOrderAmount(MAX_AMOUNT)
-        .setBase(Market.BTC_USD.toCurrencyPair().first)
-        .setQuote(Market.BTC_USD.toCurrencyPair().second)
-        .build()
-)
-
-class MockPublicMarketDetailService : ReactorPublicMarketDetailServiceGrpc.PublicMarketDetailServiceImplBase() {
     override fun getMarketDetails(request: Mono<GetMarketDetailsRequest>): Mono<MarketDetails> =
-        Mono.just(MarketDetails.newBuilder().addAllMarketDetails(marketDetails).build())
+        Mono.just(MarketDetails.newBuilder().addAllMarketDetails(getConstantBasedDetails()).build())
 
     override fun streamMarketDetails(request: Mono<StreamMarketDetailsRequest>): Flux<MarketDetail> =
-        Flux.concat(Flux.fromIterable(marketDetails), Flux.never())
+        Flux.concat(Flux.fromIterable(getConstantBasedDetails()), Flux.never())
 }
