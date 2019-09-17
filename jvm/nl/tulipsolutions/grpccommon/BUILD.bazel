@@ -1,0 +1,17 @@
+package(default_visibility = ["//visibility:public"])
+
+load("@io_bazel_rules_kotlin//kotlin:kotlin.bzl", "kt_jvm_library")
+
+kotlin_grpc_deps = [
+    "@com_google_api_grpc_proto_google_common_protos//jar",
+    "@com_google_protobuf//:protobuf_java",
+    "@io_grpc_grpc_java//core",
+    "@io_grpc_grpc_java//protobuf",
+]
+
+kt_jvm_library(
+    name = "common_build_grpc_status_runtime_exception",
+    srcs = ["BuildGrpcStatusRuntimeException.kt"],
+    visibility = ["//visibility:public"],
+    deps = kotlin_grpc_deps,
+)
