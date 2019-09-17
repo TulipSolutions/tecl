@@ -47,7 +47,8 @@ function parseAndPrint(response) {
   // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
   console.log(
     util.format(
-      '%s %s %s base currency: %s, quote currency: %s price resolution: %f amount resolution: %f ' +
+      '%s %s %s base currency: %s, quote currency: %s price resolution: %f price digits: %d ' +
+        'amount resolution: %f amount digits: %d ' +
         'minimum base order amount: %f maximum base order amount: %f, minimum quote order amount: %f ' +
         'maximum quote order amount: %f',
       'MarketDetail',
@@ -58,7 +59,9 @@ function parseAndPrint(response) {
       Object.keys(orders_pb.Currency).find(key => orders_pb.Currency[key] === response.getBase()),
       Object.keys(orders_pb.Currency).find(key => orders_pb.Currency[key] === response.getQuote()),
       response.getPriceResolution(),
+      response.getPriceResolutionDigits(),
       response.getAmountResolution(),
+      response.getAmountResolutionDigits(),
       response.getMinimumBaseOrderAmount(),
       response.getMaximumBaseOrderAmount(),
       response.getMinimumQuoteOrderAmount(),

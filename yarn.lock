@@ -23,10 +23,10 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@tulipsolutions/tecl@0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@tulipsolutions/tecl/-/tecl-0.0.9.tgz#1f03b4660a61f3f17fe5531f242cb7b874ff96de"
-  integrity sha512-JoWx01NyLtnd1qYjHekbtEsGlGMO0FaYdRLsEpzXW3fdMpdH3rGYpOsEflXPf65n72s5KZERvKfIkvji2AVrhw==
+"@tulipsolutions/tecl@0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@tulipsolutions/tecl/-/tecl-0.0.10.tgz#d0bc3c3116634df9a1efeccdc0ea48c46790a2d7"
+  integrity sha512-wDbc3dt2fc8sVx0xmIFDNilCrhtaeSLwSGEbj3HGY9ovPBqROBGp+VGIEDT7tx/5d6hjNLU9/l17OJ7Kk99liw==
 
 "@types/bytebuffer@^5.0.40":
   version "5.0.40"

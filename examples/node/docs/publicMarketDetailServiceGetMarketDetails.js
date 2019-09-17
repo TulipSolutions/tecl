@@ -48,7 +48,8 @@ function parseAndPrint(response) {
   let resultString = util.format('%s\n', 'MarketDetails');
   response.getMarketDetailsList().forEach(detail => {
     resultString += util.format(
-      '\t%s %s %s base currency: %s, quote currency: %s price resolution: %f amount resolution: %f ' +
+      '\t%s %s %s base currency: %s, quote currency: %s price resolution: %f price digits: %d ' +
+        'amount resolution: %f amount digits: %d ' +
         'minimum base order amount: %f maximum base order amount: %f, minimum quote order amount: %f ' +
         'maximum quote order amount: %f\n',
       'MarketDetail',
@@ -59,7 +60,9 @@ function parseAndPrint(response) {
       Object.keys(orders_pb.Currency).find(key => orders_pb.Currency[key] === detail.getBase()),
       Object.keys(orders_pb.Currency).find(key => orders_pb.Currency[key] === detail.getQuote()),
       detail.getPriceResolution(),
+      detail.getPriceResolutionDigits(),
       detail.getAmountResolution(),
+      detail.getAmountResolutionDigits(),
       detail.getMinimumBaseOrderAmount(),
       detail.getMaximumBaseOrderAmount(),
       detail.getMinimumQuoteOrderAmount(),
