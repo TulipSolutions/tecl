@@ -13,6 +13,8 @@ kt_jvm_library(
         "@io_projectreactor_reactor_core//jar",
         "@nl_tulipsolutions_tecl//java/nl/tulipsolutions/api/common:orders_extensions",
         "@nl_tulipsolutions_tecl//java/nl/tulipsolutions/api/pub:ohlc_extensions",
+        "@nl_tulipsolutions_tecl//jvm/nl/tulipsolutions/grpccommon:common_build_grpc_status_runtime_exception",
+        "@nl_tulipsolutions_tecl//tulipsolutions/api/common:errors_jvm_proto",
         "@nl_tulipsolutions_tecl//tulipsolutions/api/common:options_jvm_proto",
         "@nl_tulipsolutions_tecl//tulipsolutions/api/common:orders_jvm_proto",
         "@nl_tulipsolutions_tecl//tulipsolutions/api/priv:order_jvm_proto",

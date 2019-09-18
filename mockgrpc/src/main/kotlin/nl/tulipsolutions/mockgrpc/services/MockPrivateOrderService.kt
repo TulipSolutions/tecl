@@ -17,9 +17,10 @@
 
 package nl.tulipsolutions.mockgrpc.services
 
-import nl.tulipsolutions.api.common.SearchDirection
+import com.google.rpc.Code
 import nl.tulipsolutions.api.common.Market
-import nl.tulipsolutions.api.common.Options
+import nl.tulipsolutions.api.common.Errors
+import nl.tulipsolutions.api.common.SearchDirection
 import nl.tulipsolutions.api.common.allMarkets
 import nl.tulipsolutions.api.common.toCurrencyPair
 import nl.tulipsolutions.api.common.toEpochNanos
@@ -39,9 +40,24 @@ import nl.tulipsolutions.api.priv.LimitOrderResponse
 import nl.tulipsolutions.api.priv.OrderEvent
 import nl.tulipsolutions.api.priv.ReactorPrivateOrderServiceGrpc
 import nl.tulipsolutions.api.priv.StreamOrderEventsRequest
+import nl.tulipsolutions.api.common.BaseOrderAmountTooLarge
+import nl.tulipsolutions.api.common.BaseOrderAmountTooSmall
+import nl.tulipsolutions.api.common.Currency
+import nl.tulipsolutions.api.common.InsufficientBalance
+import nl.tulipsolutions.api.common.InvalidAmountPrecision
+import nl.tulipsolutions.api.common.InvalidPricePrecision
+import nl.tulipsolutions.api.common.MarketDisabled
+import nl.tulipsolutions.api.common.Options
+import nl.tulipsolutions.api.common.OrderIdNotExist
+import nl.tulipsolutions.api.common.QuoteOrderAmountTooLarge
+import nl.tulipsolutions.api.common.QuoteOrderAmountTooSmall
+import nl.tulipsolutions.api.common.Side
+import nl.tulipsolutions.api.priv.MarketOrderResponse
+import nl.tulipsolutions.grpccommon.buildGrpcStatusRuntimeException
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.core.publisher.SynchronousSink
+import java.math.BigDecimal
 import java.time.Duration
 import java.time.Instant
 import java.util.Random
@@ -51,22 +67,216 @@ private val GET_ORDER_EVENTS_REQUEST_DEFAULT_LIMIT = GetOrderEventsRequest.getDe
     .options
     .getExtension(Options.defaultLimit)
 
+fun Market.checkMarketEnabled(): Market {
+    if (this in MarketDetailConstants.ENABLED_MARKETS)
+        return this
+    else throw buildGrpcStatusRuntimeException(
+        Code.FAILED_PRECONDITION,
+        MarketDisabled.getDescriptor().options.getExtension(Errors.errorMessageFmtStr)
+            .format(this),
+        MarketDisabled.newBuilder()
+            .setMarket(this)
+            .build()!!
+    )
+}
+
+fun Double.checkAmountResolution(): Double {
+    val amountDigits = BigDecimal.valueOf(this).scale()
+    val amountDigitsAllowed = BigDecimal.valueOf(MarketDetailConstants.AMOUNT_PRECISION).scale()
+    if (amountDigits > amountDigitsAllowed) {
+        throw buildGrpcStatusRuntimeException(
+            Code.INVALID_ARGUMENT,
+            InvalidAmountPrecision.getDescriptor().options.getExtension(Errors.errorMessageFmtStr)
+                .format(
+                    amountDigits,
+                    amountDigitsAllowed
+                ),
+            InvalidAmountPrecision.newBuilder()
+                .setDigitsGiven(amountDigits)
+                .setDigitsMax(amountDigitsAllowed)
+                .build()!!
+        )
+    } else {
+        return this
+    }
+}
+
+fun Double.checkPriceResolution(): Double {
+    val priceDigits = BigDecimal.valueOf(this).scale()
+    val priceDigitsAllowed = BigDecimal.valueOf(MarketDetailConstants.PRICE_PRECISION).scale()
+    if (priceDigits > priceDigitsAllowed) {
+        throw buildGrpcStatusRuntimeException(
+            Code.INVALID_ARGUMENT,
+            InvalidPricePrecision.getDescriptor().options.getExtension(Errors.errorMessageFmtStr)
+                .format(
+                    priceDigits,
+                    priceDigitsAllowed
+                ),
+            InvalidPricePrecision.newBuilder()
+                .setDigitsGiven(priceDigits)
+                .setDigitsMax(priceDigitsAllowed)
+                .build()!!
+        )
+    } else {
+        return this
+    }
+}
+
+fun Double.checkBaseAmount(): Double {
+    when {
+        this > MarketDetailConstants.MAX_BASE_ORDER_AMOUNT -> throw buildGrpcStatusRuntimeException(
+            Code.INVALID_ARGUMENT,
+            BaseOrderAmountTooLarge.getDescriptor().options.getExtension(Errors.errorMessageFmtStr)
+                .format(
+                    this,
+                    MarketDetailConstants.MAX_BASE_ORDER_AMOUNT
+                ),
+            BaseOrderAmountTooLarge.newBuilder()
+                .setBaseAmount(this)
+                .setMaxBaseAmount(MarketDetailConstants.MAX_BASE_ORDER_AMOUNT)
+                .build()!!
+
+        )
+        this < MarketDetailConstants.MIN_BASE_ORDER_AMOUNT -> throw buildGrpcStatusRuntimeException(
+            Code.INVALID_ARGUMENT,
+            BaseOrderAmountTooSmall.getDescriptor().options.getExtension(Errors.errorMessageFmtStr)
+                .format(
+                    this,
+                    MarketDetailConstants.MIN_BASE_ORDER_AMOUNT
+                ),
+            BaseOrderAmountTooSmall.newBuilder()
+                .setBaseAmount(this)
+                .setMinBaseAmount(MarketDetailConstants.MIN_BASE_ORDER_AMOUNT)
+                .build()!!
+
+        )
+        else -> return this
+    }
+}
+
+fun Double.checkQuoteAmount(price: Double): Double {
+    val quoteAmount = this * price
+    when {
+        quoteAmount > MarketDetailConstants.MAX_QUOTE_ORDER_AMOUNT -> throw buildGrpcStatusRuntimeException(
+            Code.INVALID_ARGUMENT,
+            QuoteOrderAmountTooLarge.getDescriptor().options.getExtension(Errors.errorMessageFmtStr)
+                .format(
+                    quoteAmount,
+                    MarketDetailConstants.MAX_QUOTE_ORDER_AMOUNT
+                ),
+            QuoteOrderAmountTooLarge.newBuilder()
+                .setQuoteAmount(quoteAmount)
+                .setMaxQuoteAmount(MarketDetailConstants.MAX_QUOTE_ORDER_AMOUNT)
+                .build()!!
+        )
+        this < MarketDetailConstants.MIN_QUOTE_ORDER_AMOUNT -> throw buildGrpcStatusRuntimeException(
+            Code.INVALID_ARGUMENT,
+            QuoteOrderAmountTooSmall.getDescriptor().options.getExtension(Errors.errorMessageFmtStr)
+                .format(
+                    this,
+                    MarketDetailConstants.MIN_QUOTE_ORDER_AMOUNT
+                ),
+            QuoteOrderAmountTooSmall.newBuilder()
+                .setQuoteAmount(quoteAmount)
+                .setMinQuoteAmount(MarketDetailConstants.MIN_QUOTE_ORDER_AMOUNT)
+                .build()!!
+
+        )
+        else -> return this
+    }
+}
+
+fun Double.throwInsuficientErrorOn1337Amount(price: Double, currency: Currency): Double {
+    if (this == 1337.0) {
+        val orderSize = this * price
+        val available = 1336.0
+        throw buildGrpcStatusRuntimeException(
+            Code.FAILED_PRECONDITION,
+            InsufficientBalance.getDescriptor().options.getExtension(Errors.errorMessageFmtStr)
+                .format(
+                    orderSize,
+                    available,
+                    currency
+                ),
+            InsufficientBalance.newBuilder()
+                .setCurrency(currency)
+                .setFundsAvailable(available)
+                .setOrderSize(orderSize)
+                .build()!!
+        )
+    } else {
+        return this
+    }
+}
+
+fun Long.throwErrorOnUnevenTonce(market: Market): Long {
+    if (this % 2L == 1L) {
+        throw buildGrpcStatusRuntimeException(
+            Code.NOT_FOUND,
+            OrderIdNotExist.getDescriptor().options.getExtension(Errors.errorMessageFmtStr)
+                .format(
+                    this,
+                    market
+                ),
+            OrderIdNotExist.newBuilder()
+                .setOrderId(this)
+                .setMarket(market)
+                .build()!!
+        )
+    } else {
+        return this
+    }
+}
+
+fun CreateOrderRequest.getSideCurrency(): Currency {
+    return if (this.limitOrder.side == Side.BUY) this.market.toCurrencyPair().second else this.market.toCurrencyPair().first
+}
+
 class MockPrivateOrderService : ReactorPrivateOrderServiceGrpc.PrivateOrderServiceImplBase() {
     override fun createOrder(request: Mono<CreateOrderRequest>): Mono<CreateOrderResponse> {
         return request
             .map { createOrderRequest ->
-                CreateOrderResponse.newBuilder()
-                    .setMarket(createOrderRequest.market)
-                    .setLimitOrder(
-                        LimitOrderResponse.newBuilder()
-                            .setSide(createOrderRequest.limitOrder.side)
-                            .setBaseAmount(createOrderRequest.limitOrder.baseAmount)
-                            .setPrice(createOrderRequest.limitOrder.price)
-                            .build()
-                    )
+                val createOrderResponse = CreateOrderResponse.newBuilder()
                     .setDeadlineNs(createOrderRequest.deadlineNs)
-                    .setOrderId(createOrderRequest.tonce)
-                    .build()
+                    .setMarket(createOrderRequest.market.checkMarketEnabled())
+                    .setOrderId(createOrderRequest.tonce.throwErrorOnUnevenTonce(createOrderRequest.market))
+                when (createOrderRequest.orderTypeCase) {
+                    CreateOrderRequest.OrderTypeCase.LIMIT_ORDER ->
+                        createOrderResponse
+                            .setLimitOrder(
+                                LimitOrderResponse.newBuilder()
+                                    .setSide(createOrderRequest.limitOrder.side)
+                                    .setBaseAmount(
+                                        createOrderRequest.limitOrder.baseAmount
+                                            .throwInsuficientErrorOn1337Amount(
+                                                createOrderRequest.limitOrder.price,
+                                                createOrderRequest.getSideCurrency()
+                                            )
+                                            .checkAmountResolution()
+                                            .checkBaseAmount()
+                                            .checkQuoteAmount(createOrderRequest.limitOrder.price)
+                                    )
+                                    .setPrice(createOrderRequest.limitOrder.price.checkPriceResolution())
+                            )
+                            .build()
+                    CreateOrderRequest.OrderTypeCase.MARKET_ORDER ->
+                        createOrderResponse
+                            .setMarketOrder(
+                                MarketOrderResponse.newBuilder()
+                                    .setSide(createOrderRequest.marketOrder.side)
+                                    .setBaseAmount(
+                                        createOrderRequest.marketOrder.baseAmount
+                                            .throwInsuficientErrorOn1337Amount(
+                                                1.0,
+                                                createOrderRequest.getSideCurrency()
+                                            )
+                                            .checkAmountResolution()
+                                            .checkBaseAmount()
+                                    )
+                            )
+                            .build()
+                    else -> throw NotImplementedError("Unknown order type")
+                }
             }
     }
 
@@ -74,8 +284,8 @@ class MockPrivateOrderService : ReactorPrivateOrderServiceGrpc.PrivateOrderServi
         return request
             .map { cancelOrderRequest ->
                 CancelOrderResponse.newBuilder()
-                    .setMarket(cancelOrderRequest.market)
-                    .setOrderId(cancelOrderRequest.orderId)
+                    .setMarket(cancelOrderRequest.market.checkMarketEnabled())
+                    .setOrderId(cancelOrderRequest.orderId.throwErrorOnUnevenTonce(cancelOrderRequest.market))
                     .build()
             }
     }

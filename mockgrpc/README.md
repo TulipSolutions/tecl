@@ -24,3 +24,22 @@ installed and on your PATH. For e.g. Debian/Ubuntu this involves:
     $ sudo update-alternatives --config java  # select java-11
     $ java -version  # should print version 11
     $ javac -version  # should print version 11
+
+## Error testing
+
+For testing purposes the `PrivateOrder.createOrder` and `PrivateOrder.cancelOrder` mock services will throw errors
+if one of the following preconditions are met:
+
+| Precondition                          | Error                    |
+| ---                                   | ---                      |
+| Market == BTC_USD                     | MarketDisabled           |
+| baseAmount digits after delimiter > 8 | InvalidAmountPrecision   |
+| price digits after delimiter > 2      | InvalidPricePrecision    |
+| baseAmount > 1000.0                   | BaseOrderAmountTooLarge  |
+| baseAmount < 1.0                      | BaseOrderAmountTooSmall  |
+| price * amount > 1000000.0            | QuoteOrderAmountTooLarge |
+| price * amount < 1.0                  | QuoteOrderAmountTooSmall |
+| baseAmount == 1337.0                  | InsufficientBalance      |
+| tonce % 2 == 1 or orderId % 2 == 1    | OrderIdNotExist          |
+
+See example code how these errors can be parsed.
