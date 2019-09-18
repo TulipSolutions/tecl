@@ -22,40 +22,53 @@ option java_multiple_files = true;
 option java_package = "nl.tulipsolutions.api.common";
 option go_package = "github.com/tulipsolutions/tecl/tulipsolutions/api/common/errors";
 
+import "google/protobuf/descriptor.proto";
+import "tulipsolutions/api/common/options.proto";
 import "tulipsolutions/api/common/orders.proto";
 
+extend google.protobuf.MessageOptions {
+    string error_message_fmt_str = 50201;
+}
+
 message BaseOrderAmountTooSmall {
+    option (error_message_fmt_str) = "Order base amount too small; given: %s, minimum amount: %s.";
     double base_amount = 1;
     double min_base_amount = 2;
 }
 
 message BaseOrderAmountTooLarge {
+    option (error_message_fmt_str) = "Order base amount too large; given: %s, maximum amount: %s.";
     double base_amount = 1;
     double max_base_amount = 2;
 }
 
 message QuoteOrderAmountTooSmall {
+    option (error_message_fmt_str) = "Order quote amount too small; given: %s, minimum amount: %s.";
     double quote_amount = 1;
     double min_quote_amount = 2;
 }
 
 message QuoteOrderAmountTooLarge {
+    option (error_message_fmt_str) = "Order quote amount too large; given: %s, maximum amount: %s.";
     double quote_amount = 1;
     double max_quote_amount = 2;
 }
 
 message InsufficientBalance {
+    option (error_message_fmt_str) = "Insufficient funds; size: %s, available: %s, currency: %s.";
     double order_size = 1;
     double funds_available = 2;
     Currency currency = 3;
 }
 
 message OrderIdNotExist {
+    option (error_message_fmt_str) = "Order ID: %d, for market: %s, does not exist";
     fixed64 order_id = 1;
     Market market = 2;
 }
 
 message MarketDisabled {
+    option (error_message_fmt_str) = "%s market is disabled";
     Market market = 1;
 }
 
@@ -64,6 +77,7 @@ message MarketDisabled {
 //
 // See also: :ref:`faq_supported_price_precision`
 message InvalidAmountPrecision {
+    option (error_message_fmt_str) = "Invalid amount precision; digits given: %d, digits max: %d.";
     int32 digits_given = 1;
     int32 digits_max = 2;
 }
@@ -73,21 +87,25 @@ message InvalidAmountPrecision {
 //
 // See also: :ref:`faq_supported_price_precision`
 message InvalidPricePrecision {
+    option (error_message_fmt_str) = "Invalid price precision; digits given: %d, digits max: %d.";
     int32 digits_given = 1;
     int32 digits_max = 2;
 }
 
 message TonceAlreadyUsed {
+    option (error_message_fmt_str) = "Tonce already used";
     fixed64 tonce = 1 [jstype = JS_STRING];
 }
 
 message TonceTooNew {
+    option (error_message_fmt_str) = "Tonce too new";
     fixed64 message_accepted_timestamp_ns = 1 [jstype = JS_STRING];
     fixed64 tonce = 2 [jstype = JS_STRING];
     fixed64 max_difference = 3 [jstype = JS_STRING];
 }
 
 message TonceTooOld {
+    option (error_message_fmt_str) = "Tonce too old";
     fixed64 message_accepted_timestamp_ns = 1 [jstype = JS_STRING];
     fixed64 tonce = 2 [jstype = JS_STRING];
     fixed64 max_difference = 3 [jstype = JS_STRING];
@@ -97,6 +115,7 @@ message TonceTooOld {
 // a deadline (time to live) timestamp in the past. Please also check if the time on the client is
 // set correctly. Units returned are absolute timestamp since Unix epoch, in nanoseconds.
 message DeadlineExceeded {
+    option (error_message_fmt_str) = "Deadline exceeded, received %s at timestamp %s";
     fixed64 deadline_ns = 1 [jstype = JS_STRING];
     fixed64 received_at_ns = 2 [jstype = JS_STRING];
 }
