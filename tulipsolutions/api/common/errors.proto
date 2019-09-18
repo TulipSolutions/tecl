@@ -91,9 +91,12 @@ message MarketClosed {
 //
 // See also: :ref:`faq_supported_price_precision`
 message InvalidAmountPrecision {
-    option (error_message_fmt_str) = "Invalid amount precision; digits given: %d, digits max: %d.";
+    option (error_message_fmt_str) =
+        "Invalid amount precision; digits given: %d, digits max: %d resolution: %s given: %s.";
     int32 digits_given = 1;
     int32 digits_max = 2;
+    double given_amount = 3;
+    double resolution = 4;
 }
 
 // price precision too high. For example, when attempting to place an order for 40.1 satoshi when the
@@ -101,9 +104,12 @@ message InvalidAmountPrecision {
 //
 // See also: :ref:`faq_supported_price_precision`
 message InvalidPricePrecision {
-    option (error_message_fmt_str) = "Invalid price precision; digits given: %d, digits max: %d.";
+    option (error_message_fmt_str) =
+        "Invalid price precision; digits given: %d, digits max: %d resolution: %s given: %s.";
     int32 digits_given = 1;
     int32 digits_max = 2;
+    double given_price = 3;
+    double resolution = 4;
 }
 
 message TonceAlreadyUsed {

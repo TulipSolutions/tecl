@@ -41,6 +41,8 @@ class MockPublicMarketDetailService : ReactorPublicMarketDetailServiceGrpc.Publi
                 .setMaximumBaseOrderAmount(MarketDetailConstants.MAX_BASE_ORDER_AMOUNT)
                 .setMinimumQuoteOrderAmount(MarketDetailConstants.MIN_QUOTE_ORDER_AMOUNT)
                 .setMaximumQuoteOrderAmount(MarketDetailConstants.MAX_QUOTE_ORDER_AMOUNT)
+                .setAmountResolutionDigits(MarketDetailConstants.AMOUNT_RESOLUTION_DIGITS)
+                .setPriceResolutionDigits(MarketDetailConstants.PRICE_RESOLUTION_DIGITS)
                 .setBase(it.toCurrencyPair().first)
                 .setQuote(it.toCurrencyPair().second)
                 .build()

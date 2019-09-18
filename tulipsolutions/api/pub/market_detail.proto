@@ -62,6 +62,10 @@ message MarketDetail {
     double minimum_quote_order_amount = 9;
     // Same as ``minimum_quote_order_amount``, but the maximum amount.
     double maximum_quote_order_amount = 10;
+    // The maximum amount of digits allowed after the decimal separator.
+    int32 price_resolution_digits = 11;
+    // Same as ``price_resolution_digits``, but the digits for the amount.
+    int32 amount_resolution_digits = 12;
 }
 
 message MarketDetails {

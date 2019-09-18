@@ -52,7 +52,8 @@ public class PublicMarketDetailServiceStreamMarketDetails {
     public static void parseAndPrint(MarketDetail response) {
         // CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
         System.out.printf(
-            "%s %s %s base currency: %s, quote currency: %s price resolution: %.8f amount resolution: %.8f " +
+            "%s %s %s base currency: %s, quote currency: %s price resolution: %.8f price digits %d " +
+                "amount resolution: %.8f amount digits %d " +
                 "minimum base order amount: %.8f maximum base order amount: %.8f, minimum quote order amount: %.8f " +
                 "maximum quote order amount: %.8f\n",
             response.getClass().getSimpleName(),
@@ -61,7 +62,9 @@ public class PublicMarketDetailServiceStreamMarketDetails {
             response.getBase(),
             response.getQuote(),
             response.getPriceResolution(),
+            response.getPriceResolutionDigits(),
             response.getAmountResolution(),
+            response.getAmountResolutionDigits(),
             response.getMinimumBaseOrderAmount(),
             response.getMaximumBaseOrderAmount(),
             response.getMinimumQuoteOrderAmount(),

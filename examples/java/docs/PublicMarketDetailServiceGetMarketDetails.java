@@ -57,7 +57,8 @@ public class PublicMarketDetailServiceGetMarketDetails {
         for (MarketDetail detail : response.getMarketDetailsList()) {
             formattedResponse.append(
                 String.format(
-                    "\t%s %s %s base currency: %s, quote currency: %s price resolution: %.8f amount resolution: %.8f " +
+                    "\t%s %s %s base currency: %s, quote currency: %s price resolution: %.8f price digits: %d " +
+                        "amount resolution: %.8f amount digits: %d " +
                         "minimum base order amount: %.8f maximum base order amount: %.8f, minimum quote order amount: %.8f " +
                         "maximum quote order amount: %.8f\n",
                     detail.getClass().getSimpleName(),
@@ -66,7 +67,9 @@ public class PublicMarketDetailServiceGetMarketDetails {
                     detail.getBase(),
                     detail.getQuote(),
                     detail.getPriceResolution(),
+                    detail.getPriceResolutionDigits(),
                     detail.getAmountResolution(),
+                    detail.getAmountResolutionDigits(),
                     detail.getMinimumBaseOrderAmount(),
                     detail.getMaximumBaseOrderAmount(),
                     detail.getMinimumQuoteOrderAmount(),

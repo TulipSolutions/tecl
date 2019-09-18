@@ -42,8 +42,8 @@ def public_market_detail_service_get_market_details(channel):
     for market_detail in response.market_details:
         print(market_detail)
         result_string += (
-            "\t{} {} {} base_currency: {}, quote_currency: {} price_reso: {} amount_reso: {} "
-            "minimum_base_order_amount: {} maximum_base_order_amount: {} "
+            "\t{} {} {} base_currency: {}, quote_currency: {} price_reso: {} price_digits: {} "
+            "amount_reso: {} amount_digits: {} minimum_base_order_amount: {} maximum_base_order_amount: {} "
             "minimum_quote_order_amount: {} maximum_quote_order_amount: {}\n"
         ).format(
             type(market_detail).__name__,
@@ -52,7 +52,9 @@ def public_market_detail_service_get_market_details(channel):
             orders_pb2.Currency.Name(market_detail.base),
             orders_pb2.Currency.Name(market_detail.quote),
             market_detail.price_resolution,
+            market_detail.price_resolution_digits,
             market_detail.amount_resolution,
+            market_detail.amount_resolution_digits,
             market_detail.minimum_base_order_amount,
             market_detail.maximum_base_order_amount,
             market_detail.minimum_quote_order_amount,

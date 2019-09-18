@@ -44,7 +44,8 @@ func publicMarketDetailServiceGetMarketDetails(conn *grpc.ClientConn, parentCont
 	resultString := fmt.Sprintf("%T\n", response)
 	for _, detail := range response.MarketDetails {
 		resultString += fmt.Sprintf(
-			"\t%T %s %s base currency: %s, quote currency: %s price resolution: %.8f amount resolution: %.8f "+
+			"\t%T %s %s base currency: %s, quote currency: %s price resolution: %.8f price digits: %d "+
+				"amount resolution: %.8f amount digits: %d "+
 				"minimum base order amount: %.8f maximum base order amount: %.8f, minimum quote order amount: %.8f "+
 				"maximum quote order amount: %.8f\n",
 			detail,
@@ -53,7 +54,9 @@ func publicMarketDetailServiceGetMarketDetails(conn *grpc.ClientConn, parentCont
 			detail.Base.String(),
 			detail.Quote.String(),
 			detail.PriceResolution,
+			detail.PriceResolutionDigits,
 			detail.AmountResolution,
+			detail.AmountResolutionDigits,
 			detail.GetMinimumBaseOrderAmount(),
 			detail.GetMaximumBaseOrderAmount(),
 			detail.GetMinimumQuoteOrderAmount(),

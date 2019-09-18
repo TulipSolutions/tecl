@@ -44,8 +44,8 @@ def public_market_detail_service_stream_market_details(channel):
 def parse_and_print(response):
     # CODEINCLUDE-BEGIN-MARKER: ref-code-example-response
     print(
-        "{} {} {} base_currency: {}, quote_currency: {} price_reso: {} amount_reso: {} "
-        "minimum_base_order_amount: {} maximum_base_order_amount: {} "
+        "{} {} {} base_currency: {}, quote_currency: {} price_reso: {} price_digits: {} "
+        "amount_reso: {} amount_digits: {} minimum_base_order_amount: {} maximum_base_order_amount: {} "
         "minimum_quote_order_amount: {} maximum_quote_order_amount: {}".format(
             type(response).__name__,
             orders_pb2.Market.Name(response.market),
@@ -53,7 +53,9 @@ def parse_and_print(response):
             orders_pb2.Currency.Name(response.base),
             orders_pb2.Currency.Name(response.quote),
             response.price_resolution,
+            response.price_resolution_digits,
             response.amount_resolution,
+            response.amount_resolution_digits,
             response.minimum_base_order_amount,
             response.maximum_base_order_amount,
             response.minimum_quote_order_amount,
