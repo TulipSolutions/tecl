@@ -30,7 +30,7 @@ import nl.tulipsolutions.api.common.InsufficientBalance
 import nl.tulipsolutions.api.common.InvalidAmountPrecision
 import nl.tulipsolutions.api.common.InvalidPricePrecision
 import nl.tulipsolutions.api.common.Market
-import nl.tulipsolutions.api.common.MarketDisabled
+import nl.tulipsolutions.api.common.MarketClosed
 import nl.tulipsolutions.api.common.Options
 import nl.tulipsolutions.api.common.OrderIdNotExist
 import nl.tulipsolutions.api.common.QuoteOrderAmountTooLarge
@@ -72,9 +72,9 @@ fun Market.checkMarketEnabled(): Market {
         return this
     else throw buildGrpcStatusRuntimeException(
         Code.FAILED_PRECONDITION,
-        MarketDisabled.getDescriptor().options.getExtension(Errors.errorMessageFmtStr)
+        MarketClosed.getDescriptor().options.getExtension(Errors.errorMessageFmtStr)
             .format(this),
-        MarketDisabled.newBuilder()
+        MarketClosed.newBuilder()
             .setMarket(this)
             .build()!!
     )

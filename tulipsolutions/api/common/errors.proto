@@ -66,8 +66,23 @@ message OrderIdNotExist {
     Market market = 2;
 }
 
-message MarketDisabled {
-    option (error_message_fmt_str) = "%s market is disabled";
+message MarketDoesNotExist {
+    option (error_message_fmt_str) = "Unknown market.";
+    Market market = 1;
+}
+
+message MarketInMaintenanceMode {
+    option (error_message_fmt_str) = "%s market is in maintenance mode.";
+    Market market = 1;
+}
+
+message MarketInMaintenanceModeCancelOnly {
+    option (error_message_fmt_str) = "%s market is in maintenance mode, cancels are possible.";
+    Market market = 1;
+}
+
+message MarketClosed {
+    option (error_message_fmt_str) = "%s market is closed.";
     Market market = 1;
 }
 
