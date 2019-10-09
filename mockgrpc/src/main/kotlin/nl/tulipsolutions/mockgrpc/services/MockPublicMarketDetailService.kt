@@ -27,12 +27,14 @@ import nl.tulipsolutions.api.pub.StreamMarketDetailsRequest
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
-class MockPublicMarketDetailService() : ReactorPublicMarketDetailServiceGrpc.PublicMarketDetailServiceImplBase() {
+class MockPublicMarketDetailService : ReactorPublicMarketDetailServiceGrpc.PublicMarketDetailServiceImplBase() {
     private fun getConstantBasedDetails() =
         (MarketDetailConstants.ENABLED_MARKETS + MarketDetailConstants.CLOSED_MARKETS).map {
             MarketDetail.newBuilder()
                 .setMarket(it)
-                .setMarketStatus(if (it in MarketDetailConstants.ENABLED_MARKETS) MarketStatus.OPEN else MarketStatus.CLOSED)
+                .setMarketStatus(
+                    if (it in MarketDetailConstants.ENABLED_MARKETS) MarketStatus.OPEN else MarketStatus.CLOSED
+                )
                 .setPriceResolution(MarketDetailConstants.PRICE_PRECISION)
                 .setAmountResolution(MarketDetailConstants.AMOUNT_PRECISION)
                 .setMinimumBaseOrderAmount(MarketDetailConstants.MIN_BASE_ORDER_AMOUNT)

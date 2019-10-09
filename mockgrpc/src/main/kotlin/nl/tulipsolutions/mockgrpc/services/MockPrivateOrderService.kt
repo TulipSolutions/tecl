@@ -228,9 +228,8 @@ fun Long.throwErrorOnUnevenTonce(market: Market): Long {
     }
 }
 
-fun CreateOrderRequest.getSideCurrency(): Currency {
-    return if (this.limitOrder.side == Side.BUY) this.market.toCurrencyPair().second else this.market.toCurrencyPair().first
-}
+fun CreateOrderRequest.getSideCurrency() =
+    if (this.limitOrder.side == Side.BUY) this.market.toCurrencyPair().second else this.market.toCurrencyPair().first
 
 class MockPrivateOrderService : ReactorPrivateOrderServiceGrpc.PrivateOrderServiceImplBase() {
     override fun createOrder(request: Mono<CreateOrderRequest>): Mono<CreateOrderResponse> {
