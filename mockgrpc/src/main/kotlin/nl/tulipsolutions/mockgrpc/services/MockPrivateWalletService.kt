@@ -17,6 +17,7 @@
 
 package nl.tulipsolutions.mockgrpc.services
 
+import java.time.Duration
 import nl.tulipsolutions.api.common.Currency
 import nl.tulipsolutions.api.common.allCurrencies
 import nl.tulipsolutions.api.priv.BalanceResponse
@@ -27,7 +28,6 @@ import nl.tulipsolutions.api.priv.StreamBalanceRequest
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.core.publisher.SynchronousSink
-import java.time.Duration
 
 // 1% chance that the returned balance is 0
 private fun generateBalance(currency: Currency) = if (Math.random() < 0.01) {

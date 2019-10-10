@@ -17,6 +17,10 @@
 
 package nl.tulipsolutions.mockgrpc.services
 
+import java.math.BigDecimal
+import java.math.RoundingMode
+import java.time.Duration
+import java.util.Random
 import nl.tulipsolutions.api.common.Market
 import nl.tulipsolutions.api.common.Options
 import nl.tulipsolutions.api.common.Side
@@ -29,10 +33,6 @@ import nl.tulipsolutions.api.pub.ReactorPublicOrderbookServiceGrpc
 import nl.tulipsolutions.api.pub.StreamOrderbookRequest
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import java.math.BigDecimal
-import java.math.RoundingMode
-import java.time.Duration
-import java.util.Random
 
 class OrderbookStore(
     private val length: Int,

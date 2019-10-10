@@ -17,6 +17,8 @@
 
 package nl.tulipsolutions.mockgrpc.services
 
+import java.time.Duration
+import java.time.Instant
 import nl.tulipsolutions.api.common.Market
 import nl.tulipsolutions.api.common.Options
 import nl.tulipsolutions.api.common.toEpochNanos
@@ -28,8 +30,6 @@ import nl.tulipsolutions.api.pub.StreamPublicTradesRequest
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.core.publisher.SynchronousSink
-import java.time.Duration
-import java.time.Instant
 
 private val PUBLIC_TRADES_REQUEST_LIMIT_DEFAULT = GetPublicTradesRequest.getDescriptor()
     .findFieldByNumber(GetPublicTradesRequest.LIMIT_FIELD_NUMBER)

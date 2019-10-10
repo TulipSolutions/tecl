@@ -17,6 +17,7 @@
 
 package nl.tulipsolutions.mockgrpc.services
 
+import java.time.Duration
 import nl.tulipsolutions.api.common.Market
 import nl.tulipsolutions.api.common.allMarkets
 import nl.tulipsolutions.api.pub.GetTickersRequest
@@ -26,7 +27,6 @@ import nl.tulipsolutions.api.pub.Tick
 import nl.tulipsolutions.api.pub.Tickers
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import java.time.Duration
 
 private fun getMarketsDefaultIfEmpty(markets: List<Market>) = if (markets.isEmpty()) allMarkets else markets
 

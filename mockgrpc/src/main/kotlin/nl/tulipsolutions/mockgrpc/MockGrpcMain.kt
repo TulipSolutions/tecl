@@ -24,6 +24,11 @@ import io.grpc.netty.GrpcSslContexts
 import io.grpc.netty.NettyServerBuilder
 import io.netty.handler.ssl.SslContext
 import io.netty.handler.ssl.SslContextBuilder
+import java.io.FileInputStream
+import java.util.Base64
+import java.util.logging.Logger
+import javax.crypto.spec.SecretKeySpec
+import kotlin.system.exitProcess
 import nl.tulipsolutions.mockgrpc.interceptors.JwtServerInterceptor
 import nl.tulipsolutions.mockgrpc.interceptors.MessageAuthServerInterceptor
 import nl.tulipsolutions.mockgrpc.interceptors.ValidatingServerInterceptor
@@ -36,11 +41,6 @@ import nl.tulipsolutions.mockgrpc.services.MockPublicOhlcService
 import nl.tulipsolutions.mockgrpc.services.MockPublicOrderbookService
 import nl.tulipsolutions.mockgrpc.services.MockPublicTickerService
 import nl.tulipsolutions.mockgrpc.services.MockPublicTradeService
-import java.io.FileInputStream
-import java.util.Base64
-import java.util.logging.Logger
-import javax.crypto.spec.SecretKeySpec
-import kotlin.system.exitProcess
 
 private val LOGGER = Logger.getLogger(MockGrpcMain::class.java.name)!!
 private const val MOCK_JWT =

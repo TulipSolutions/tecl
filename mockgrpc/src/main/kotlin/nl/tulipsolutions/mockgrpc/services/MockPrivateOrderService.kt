@@ -18,9 +18,25 @@
 package nl.tulipsolutions.mockgrpc.services
 
 import com.google.rpc.Code
-import nl.tulipsolutions.api.common.Market
+import java.math.BigDecimal
+import java.time.Duration
+import java.time.Instant
+import java.util.Random
+import nl.tulipsolutions.api.common.BaseOrderAmountTooLarge
+import nl.tulipsolutions.api.common.BaseOrderAmountTooSmall
+import nl.tulipsolutions.api.common.Currency
 import nl.tulipsolutions.api.common.Errors
+import nl.tulipsolutions.api.common.InsufficientBalance
+import nl.tulipsolutions.api.common.InvalidAmountPrecision
+import nl.tulipsolutions.api.common.InvalidPricePrecision
+import nl.tulipsolutions.api.common.Market
+import nl.tulipsolutions.api.common.MarketDisabled
+import nl.tulipsolutions.api.common.Options
+import nl.tulipsolutions.api.common.OrderIdNotExist
+import nl.tulipsolutions.api.common.QuoteOrderAmountTooLarge
+import nl.tulipsolutions.api.common.QuoteOrderAmountTooSmall
 import nl.tulipsolutions.api.common.SearchDirection
+import nl.tulipsolutions.api.common.Side
 import nl.tulipsolutions.api.common.allMarkets
 import nl.tulipsolutions.api.common.toCurrencyPair
 import nl.tulipsolutions.api.common.toEpochNanos
@@ -37,30 +53,14 @@ import nl.tulipsolutions.api.priv.GetEventsForOrderRequest
 import nl.tulipsolutions.api.priv.GetOrderEventsRequest
 import nl.tulipsolutions.api.priv.GetOrderEventsResponse
 import nl.tulipsolutions.api.priv.LimitOrderResponse
+import nl.tulipsolutions.api.priv.MarketOrderResponse
 import nl.tulipsolutions.api.priv.OrderEvent
 import nl.tulipsolutions.api.priv.ReactorPrivateOrderServiceGrpc
 import nl.tulipsolutions.api.priv.StreamOrderEventsRequest
-import nl.tulipsolutions.api.common.BaseOrderAmountTooLarge
-import nl.tulipsolutions.api.common.BaseOrderAmountTooSmall
-import nl.tulipsolutions.api.common.Currency
-import nl.tulipsolutions.api.common.InsufficientBalance
-import nl.tulipsolutions.api.common.InvalidAmountPrecision
-import nl.tulipsolutions.api.common.InvalidPricePrecision
-import nl.tulipsolutions.api.common.MarketDisabled
-import nl.tulipsolutions.api.common.Options
-import nl.tulipsolutions.api.common.OrderIdNotExist
-import nl.tulipsolutions.api.common.QuoteOrderAmountTooLarge
-import nl.tulipsolutions.api.common.QuoteOrderAmountTooSmall
-import nl.tulipsolutions.api.common.Side
-import nl.tulipsolutions.api.priv.MarketOrderResponse
 import nl.tulipsolutions.grpccommon.buildGrpcStatusRuntimeException
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.core.publisher.SynchronousSink
-import java.math.BigDecimal
-import java.time.Duration
-import java.time.Instant
-import java.util.Random
 
 private val GET_ORDER_EVENTS_REQUEST_DEFAULT_LIMIT = GetOrderEventsRequest.getDescriptor()
     .findFieldByNumber(GetOrderEventsRequest.LIMIT_FIELD_NUMBER)

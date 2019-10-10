@@ -17,14 +17,14 @@
 
 package nl.tulipsolutions.mockgrpc.services
 
+import java.time.Instant
+import java.util.Random
 import nl.tulipsolutions.api.common.Currency
 import nl.tulipsolutions.api.common.Market
 import nl.tulipsolutions.api.common.allCurrencies
 import nl.tulipsolutions.api.common.allMarkets
 import nl.tulipsolutions.api.common.allSides
 import nl.tulipsolutions.api.common.toEpochNanos
-import java.time.Instant
-import java.util.Random
 
 private val random = Random()
 

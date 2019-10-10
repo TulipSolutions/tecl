@@ -17,6 +17,8 @@
 
 package nl.tulipsolutions.mockgrpc.services
 
+import java.time.Duration
+import java.time.Instant
 import nl.tulipsolutions.api.common.Options
 import nl.tulipsolutions.api.common.toEpochNanos
 import nl.tulipsolutions.api.pub.GetOhlcRequest
@@ -29,8 +31,6 @@ import nl.tulipsolutions.api.pub.allIntervals
 import nl.tulipsolutions.api.pub.toDuration
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import java.time.Duration
-import java.time.Instant
 
 private val GET_OHLC_REQUEST_LIMIT_DEFAULT = GetOhlcRequest.getDescriptor()
     .findFieldByNumber(GetOhlcRequest.LIMIT_FIELD_NUMBER)

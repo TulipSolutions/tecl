@@ -17,6 +17,8 @@
 
 package nl.tulipsolutions.mockgrpc.services
 
+import java.time.Duration
+import java.util.Random
 import nl.tulipsolutions.api.common.Market
 import nl.tulipsolutions.api.common.Side
 import nl.tulipsolutions.api.priv.ActiveOrderStatus
@@ -26,8 +28,6 @@ import nl.tulipsolutions.api.priv.ReactorPrivateActiveOrdersServiceGrpc
 import nl.tulipsolutions.api.priv.StreamActiveOrdersRequest
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import java.time.Duration
-import java.util.Random
 
 class ActiveOrdersStore {
     private val random = Random()

@@ -17,9 +17,9 @@
 
 package nl.tulipsolutions.api.pub
 
-import nl.tulipsolutions.api.common.Options
 import java.time.Duration
 import java.time.temporal.ChronoUnit
+import nl.tulipsolutions.api.common.Options
 
 public val allIntervals: List<Interval> = Interval.values()
     .filter { m -> m != Interval.UNRECOGNIZED && m != Interval.INVALID_INTERVAL }
