@@ -301,7 +301,7 @@ sh_binary(
     if not omit_com_envoyproxy_protoc_gen_validate:
         http_archive(
             name = "com_envoyproxy_protoc_gen_validate",
-            sha256 = "6e99561d01f758489a3ebdf68f049bda9fb47d6bdf99da31513851b4aa15c4e8",
+            sha256 = "62c89ce3556e6f9b1ecc1b9deed7024798d2519e631316f7f4c3bca37b295bb5",
             strip_prefix = "protoc-gen-validate-%s" % com_envoyproxy_protoc_gen_validate_version,
             url = "https://github.com/envoyproxy/protoc-gen-validate/archive/%s.zip" % com_envoyproxy_protoc_gen_validate_version,
             patches = [
