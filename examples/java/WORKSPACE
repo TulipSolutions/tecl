@@ -17,9 +17,9 @@ bazel_version_dependencies()
 
 load("@nl_tulipsolutions_tecl//bazel/rules_bazel_version:def.bzl", "bazel_version")
 
-bazel_version(name = "bazel_version")
+bazel_version(name = "tulip_bazel_version")
 
-load("@bazel_version//:check.bzl", "check_bazel_version")
+load("@tulip_bazel_version//:check.bzl", "check_bazel_version")
 
 check_bazel_version()
 
