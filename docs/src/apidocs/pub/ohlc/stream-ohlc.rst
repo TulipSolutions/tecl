@@ -1,5 +1,5 @@
-Stream Ohlc
-==============
+Stream OHLC
+===========
 
 :protobuf:include:`tulipsolutions.api.pub.StreamOhlcData`
 

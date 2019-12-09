@@ -1,5 +1,5 @@
 Get OHLC
-===========
+========
 
 :protobuf:include:`tulipsolutions.api.pub.GetOhlcData`
 
