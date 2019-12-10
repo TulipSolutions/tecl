@@ -23,7 +23,6 @@ option java_package = "nl.tulipsolutions.api.common";
 option go_package = "github.com/tulipsolutions/tecl/tulipsolutions/api/common/errors";
 
 import "google/protobuf/descriptor.proto";
-import "tulipsolutions/api/common/options.proto";
 import "tulipsolutions/api/common/orders.proto";
 
 extend google.protobuf.MessageOptions {
