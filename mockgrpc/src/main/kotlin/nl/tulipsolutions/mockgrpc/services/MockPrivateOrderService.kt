@@ -67,6 +67,9 @@ private val GET_ORDER_EVENTS_REQUEST_DEFAULT_LIMIT = GetOrderEventsRequest.getDe
     .options
     .getExtension(Options.defaultLimit)
 
+private const val HIGH_START_EVENTID = 1_000_000_000L
+private const val LOW_START_EVENTID = 1_000_000L
+
 fun Market.checkMarketEnabled(): Market {
     if (this in MarketDetailConstants.ENABLED_MARKETS)
         return this
@@ -239,7 +242,7 @@ class MockPrivateOrderService : ReactorPrivateOrderServiceGrpc.PrivateOrderServi
                     .setDeadlineNs(createOrderRequest.deadlineNs)
                     .setMarket(createOrderRequest.market.checkMarketEnabled())
                     .setOrderId(createOrderRequest.tonce.throwErrorOnUnevenTonce(createOrderRequest.market))
-                when (createOrderRequest.orderTypeCase) {
+                when (createOrderRequest.orderTypeCase!!) {
                     CreateOrderRequest.OrderTypeCase.LIMIT_ORDER ->
                         createOrderResponse
                             .setLimitOrder(
@@ -274,7 +277,8 @@ class MockPrivateOrderService : ReactorPrivateOrderServiceGrpc.PrivateOrderServi
                                     )
                             )
                             .build()
-                    else -> throw NotImplementedError("Unknown order type")
+                    CreateOrderRequest.OrderTypeCase.ORDERTYPE_NOT_SET ->
+                        throw NotImplementedError("Unknown order type")
                 }
             }
     }
@@ -308,7 +312,7 @@ class MockPrivateOrderService : ReactorPrivateOrderServiceGrpc.PrivateOrderServi
                     stepOperation(prevTimestamp, random.nextInt(100)),
                     Instant.now().toEpochNanos()
                 )
-                val eventId = stepOperation(prevEventId, random.nextInt(100))
+                val eventId = stepOperation(prevEventId, 1)
                 val price = getRandomPrice(25.0, 75.0)
                 val baseAmount = random.nextDouble() * 1000.0
                 val quoteAmount = price * baseAmount
@@ -357,9 +361,6 @@ class MockPrivateOrderService : ReactorPrivateOrderServiceGrpc.PrivateOrderServi
             .limitRate(1)
     }
 
-    private val highStartEventId = 1_000_000_000L
-    private val lowStartEventId = 1_000_000L
-
     private val maxTonceShiftNs = Duration.ofSeconds(5).toNanos()
 
     // Random timestamp between (orderId - maxTonceShiftNs, orderId + maxTonceShiftNs)
@@ -368,15 +369,16 @@ class MockPrivateOrderService : ReactorPrivateOrderServiceGrpc.PrivateOrderServi
 
     private fun getStartFromOrderId(orderId: Long, searchDirection: SearchDirection): Triple<Long, Long, Long> =
         when (searchDirection) {
-            SearchDirection.FORWARD -> Triple(orderId, orderIdFromTimestamp(orderId), lowStartEventId)
-            SearchDirection.BACKWARD -> Triple(orderId, orderIdFromTimestamp(orderId), highStartEventId)
-            else -> throw RuntimeException("Unable to create start from SearchDirection $searchDirection")
+            SearchDirection.FORWARD -> Triple(orderId, orderIdFromTimestamp(orderId), LOW_START_EVENTID)
+            SearchDirection.BACKWARD -> Triple(orderId, orderIdFromTimestamp(orderId), HIGH_START_EVENTID)
+            SearchDirection.UNRECOGNIZED, SearchDirection.INVALID_SEARCH_DIRECTION ->
+                throw RuntimeException("Unable to create start from SearchDirection $searchDirection")
         }
 
     private fun getStartFromTimestamp(timestamp: Long, searchDirection: SearchDirection): Triple<Long, Long, Long> =
         when (searchDirection) {
-            SearchDirection.FORWARD -> Triple(orderIdFromTimestamp(timestamp), timestamp, lowStartEventId)
-            SearchDirection.BACKWARD -> Triple(orderIdFromTimestamp(timestamp), timestamp, highStartEventId)
+            SearchDirection.FORWARD -> Triple(orderIdFromTimestamp(timestamp), timestamp, LOW_START_EVENTID)
+            SearchDirection.BACKWARD -> Triple(orderIdFromTimestamp(timestamp), timestamp, HIGH_START_EVENTID)
             SearchDirection.UNRECOGNIZED, SearchDirection.INVALID_SEARCH_DIRECTION ->
                 throw RuntimeException("Unable to create start from SearchDirection $searchDirection")
         }
@@ -386,16 +388,23 @@ class MockPrivateOrderService : ReactorPrivateOrderServiceGrpc.PrivateOrderServi
         return when (searchDirection) {
             SearchDirection.FORWARD -> Triple(nowNs, nowNs, eventId)
             SearchDirection.BACKWARD -> Triple(nowNs, nowNs, eventId)
-            else -> throw RuntimeException("Unable to create start from SearchDirection $searchDirection")
+            SearchDirection.UNRECOGNIZED, SearchDirection.INVALID_SEARCH_DIRECTION ->
+                throw RuntimeException("Unable to create start from SearchDirection $searchDirection")
         }
     }
 
     private fun getStartFromStartNotSet(searchDirection: SearchDirection): Triple<Long, Long, Long> =
         when (searchDirection) {
-            SearchDirection.FORWARD -> Triple(btcGenesisEpochNanos, btcGenesisEpochNanos, lowStartEventId)
-            SearchDirection.BACKWARD -> Triple(btcGenesisEpochNanos, btcGenesisEpochNanos, highStartEventId)
-            else -> throw RuntimeException("Unable to create start from SearchDirection $searchDirection")
+            SearchDirection.FORWARD -> Triple(btcGenesisEpochNanos, btcGenesisEpochNanos, 0)
+            SearchDirection.BACKWARD -> getStartFromStartNow()
+            SearchDirection.UNRECOGNIZED, SearchDirection.INVALID_SEARCH_DIRECTION ->
+                throw RuntimeException("Unable to create start from SearchDirection $searchDirection")
         }
+
+    private fun getStartFromStartNow(): Triple<Long, Long, Long> {
+        val nowNs = Instant.now().toEpochNanos()
+        return Triple(nowNs, nowNs, HIGH_START_EVENTID)
+    }
 
     override fun streamOrderEvents(requestMono: Mono<StreamOrderEventsRequest>): Flux<OrderEvent> {
         return requestMono
@@ -410,7 +419,7 @@ class MockPrivateOrderService : ReactorPrivateOrderServiceGrpc.PrivateOrderServi
                     StreamOrderEventsRequest.StartCase.EVENT_ID, null ->
                         getStartFromEventId(request.eventId, request.searchDirection)
                     StreamOrderEventsRequest.StartCase.START_NOT_SET ->
-                        getStartFromStartNotSet(request.searchDirection)
+                        getStartFromStartNow()
                 }
 
                 createOrderEventsGenerator(

@@ -43,6 +43,9 @@ private val GET_PRIVATE_TRADES_REQUEST_DEFAULT_LIMIT = GetPrivateTradesRequest.g
     .options
     .getExtension(Options.defaultLimit)
 
+private const val HIGH_START_EVENTID = 1_000_000_000L
+private const val LOW_START_EVENTID = 1_000_000L
+
 internal val btcGenesisEpochNanos = LocalDateTime.of(2009, Month.JANUARY, 3, 18, 15, 5)
     .toInstant(ZoneOffset.UTC)
     .toEpochNanos()
@@ -69,7 +72,7 @@ class MockPrivateTradeService : ReactorPrivateTradeServiceGrpc.PrivateTradeServi
             { Triple(startEventId, startTimestampNs, startEventId) },
             { (prevEventId, prevTimestamp, prevOrderId), synchronousSink: SynchronousSink<PrivateTrade> ->
                 val market = getRandomMarket(markets)
-                val eventId = stepOperation(prevEventId, random.nextInt(100))
+                val eventId = stepOperation(prevEventId, 1)
                 val timestamp = Math.min(
                     stepOperation(prevTimestamp, random.nextInt(100)),
                     Instant.now().toEpochNanos()
@@ -101,24 +104,26 @@ class MockPrivateTradeService : ReactorPrivateTradeServiceGrpc.PrivateTradeServi
 
     private fun getStartFromEventId(eventId: Long, searchDirection: SearchDirection): Pair<Long, Long> =
         when (searchDirection) {
-            SearchDirection.FORWARD -> Pair(eventId, btcGenesisEpochNanos + Math.min(eventId / 1_000, 1_000_000))
-            SearchDirection.BACKWARD -> Pair(btcGenesisEpochNanos, Instant.now().toEpochNanos())
-            else -> throw RuntimeException("Unable to create start from SearchDirection $searchDirection")
+            SearchDirection.FORWARD -> Pair(eventId, btcGenesisEpochNanos)
+            SearchDirection.BACKWARD -> Pair(eventId, Instant.now().toEpochNanos())
+            SearchDirection.UNRECOGNIZED, SearchDirection.INVALID_SEARCH_DIRECTION ->
+                throw RuntimeException("Unable to create start from SearchDirection $searchDirection")
         }
 
     private fun getStartFromTimestamp(timestamp: Long, searchDirection: SearchDirection): Pair<Long, Long> =
         when (searchDirection) {
-            SearchDirection.FORWARD -> Pair(timestamp / 1000, timestamp)
-            SearchDirection.BACKWARD -> Pair(timestamp, timestamp)
+            SearchDirection.FORWARD -> Pair(LOW_START_EVENTID, timestamp)
+            SearchDirection.BACKWARD -> Pair(HIGH_START_EVENTID, timestamp)
             SearchDirection.UNRECOGNIZED, SearchDirection.INVALID_SEARCH_DIRECTION ->
                 throw RuntimeException("Unable to create start from SearchDirection $searchDirection")
         }
 
     private fun getStartFromStartNotSet(searchDirection: SearchDirection): Pair<Long, Long> {
         return when (searchDirection) {
-            SearchDirection.FORWARD -> Pair(0, btcGenesisEpochNanos)
-            SearchDirection.BACKWARD -> Pair(1_000_000_000, Instant.now().toEpochNanos())
-            else -> throw RuntimeException("Unable to create start from SearchDirection $searchDirection")
+            SearchDirection.FORWARD -> Pair(0L, btcGenesisEpochNanos)
+            SearchDirection.BACKWARD -> Pair(HIGH_START_EVENTID, Instant.now().toEpochNanos())
+            SearchDirection.UNRECOGNIZED, SearchDirection.INVALID_SEARCH_DIRECTION ->
+                throw RuntimeException("Unable to create start from SearchDirection $searchDirection")
         }
     }
 
@@ -132,7 +137,7 @@ class MockPrivateTradeService : ReactorPrivateTradeServiceGrpc.PrivateTradeServi
                     StreamPrivateTradesRequest.StartCase.TIMESTAMP_NS ->
                         getStartFromTimestamp(request.timestampNs, request.searchDirection)
                     StreamPrivateTradesRequest.StartCase.START_NOT_SET, null ->
-                        getStartFromStartNotSet(request.searchDirection)
+                        Pair(HIGH_START_EVENTID, Instant.now().toEpochNanos())
                 }
 
                 createTradesGenerator(markets, request.searchDirection, startId, startTimestampNs)
@@ -146,7 +151,7 @@ class MockPrivateTradeService : ReactorPrivateTradeServiceGrpc.PrivateTradeServi
                 val markets = if (request.marketsCount > 0) request.marketsList else allMarkets
                 val (startId, startTimestampNs) = when (request.startCase) {
                     GetPrivateTradesRequest.StartCase.EVENT_ID ->
-                        getStartFromTimestamp(request.eventId, request.searchDirection)
+                        getStartFromEventId(request.eventId, request.searchDirection)
                     GetPrivateTradesRequest.StartCase.TIMESTAMP_NS ->
                         getStartFromTimestamp(request.timestampNs, request.searchDirection)
                     GetPrivateTradesRequest.StartCase.START_NOT_SET, null ->
