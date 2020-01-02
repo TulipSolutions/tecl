@@ -19,6 +19,7 @@ package nl.tulipsolutions.mockgrpc.services
 
 import java.time.Duration
 import java.time.Instant
+import nl.tulipsolutions.api.common.Market
 import nl.tulipsolutions.api.common.Options
 import nl.tulipsolutions.api.common.toEpochNanos
 import nl.tulipsolutions.api.pub.GetOhlcRequest
@@ -39,12 +40,16 @@ private val GET_OHLC_REQUEST_LIMIT_DEFAULT = GetOhlcRequest.getDescriptor()
 
 class MockPublicOhlcService : ReactorPublicOhlcServiceGrpc.PublicOhlcServiceImplBase() {
 
-    private fun generateBin(interval: Interval, timestampNs: Long): OhlcBin {
-        val high = getRandomPrice(50.0, 75.0)
-        val low = getRandomPrice(25.0, 50.0)
-        val avgPrice = getRandomPrice(low, high)
-        val volumeBase = getRandomPrice(10.0, 100.0)
-
+    private fun generateBin(interval: Interval, timestampNs: Long, market: Market): OhlcBin {
+        val marketValueOffset = when (market) {
+            Market.BTC_EUR -> 0.0
+            Market.BTC_USD -> 1000.0
+            Market.INVALID_MARKET, Market.UNRECOGNIZED -> TODO()
+        }
+        val high = getRandomPrice(50.0, 75.0) + marketValueOffset
+        val low = getRandomPrice(25.0, 50.0) + marketValueOffset
+        val avgPrice = getRandomPrice(low, high) + marketValueOffset
+        val volumeBase = getRandomPrice(10.0, 100.0) + marketValueOffset
         return OhlcBin.newBuilder()
             .setInterval(interval)
             .setTimestampNs(timestampNs)
@@ -54,17 +59,18 @@ class MockPublicOhlcService : ReactorPublicOhlcServiceGrpc.PublicOhlcServiceImpl
             .setClose(getRandomPrice(low, high))
             .setVolumeBase(volumeBase)
             .setVolumeQuote(volumeBase * avgPrice)
-            .setNumberOfTrades(getRandomPrice(0.0, 100.0).toInt())
+            .setNumberOfTrades(getRandomPrice(0.0, 100.0).toInt() + marketValueOffset.toInt())
             .build()
     }
 
-    private fun generateHistoricBinsForInterval(interval: Interval, numBins: Int): List<OhlcBin> {
+    private fun generateHistoricBinsForInterval(interval: Interval, numBins: Int, market: Market): List<OhlcBin> {
         val now = Instant.now().toEpochNanos()
-        return ((numBins + 1) downTo 1).map { i -> generateBin(interval, now - (i * interval.toDuration().toNanos())) }
+        return ((numBins + 1) downTo 1)
+            .map { i -> generateBin(interval, now - (i * interval.toDuration().toNanos()), market) }
     }
 
-    private fun generateHistoricBins(intervals: List<Interval>, numBins: Int): List<OhlcBin> =
-        intervals.flatMap { interval -> generateHistoricBinsForInterval(interval, numBins) }
+    private fun generateHistoricBins(intervals: List<Interval>, numBins: Int, market: Market): List<OhlcBin> =
+        intervals.flatMap { interval -> generateHistoricBinsForInterval(interval, numBins, market) }
 
     override fun getOhlcData(request: Mono<GetOhlcRequest>): Mono<GetOhlcResponse> =
         request.map { getOhlcRequest ->
@@ -72,11 +78,11 @@ class MockPublicOhlcService : ReactorPublicOhlcServiceGrpc.PublicOhlcServiceImpl
             val numBins = if (getOhlcRequest.limit == 0) GET_OHLC_REQUEST_LIMIT_DEFAULT else getOhlcRequest.limit
 
             GetOhlcResponse.newBuilder()
-                .addAllBins(generateHistoricBins(intervals, numBins))
+                .addAllBins(generateHistoricBins(intervals, numBins, getOhlcRequest.market))
                 .build()
         }
 
-    private fun generateFluxForInterval(interval: Interval): Flux<OhlcBin> {
+    private fun generateFluxForInterval(interval: Interval, market: Market): Flux<OhlcBin> {
         return Flux.generate<OhlcBin, Long>(
             { Instant.now().toEpochNanos() },
             { previousTs, sink ->
@@ -87,7 +93,7 @@ class MockPublicOhlcService : ReactorPublicOhlcServiceGrpc.PublicOhlcServiceImpl
                 } else {
                     previousTs
                 }
-                sink.next(generateBin(interval, ts))
+                sink.next(generateBin(interval, ts, market))
                 ts
             }
         )
@@ -107,9 +113,9 @@ class MockPublicOhlcService : ReactorPublicOhlcServiceGrpc.PublicOhlcServiceImpl
             val numHistoricBins = streamOhlcRequest.initialDepth
 
             Flux.concat(
-                Flux.fromIterable(generateHistoricBins(intervals, numHistoricBins)),
+                Flux.fromIterable(generateHistoricBins(intervals, numHistoricBins, streamOhlcRequest.market)),
                 Flux.merge(*intervals.map { interval ->
-                    generateFluxForInterval(interval)
+                    generateFluxForInterval(interval, streamOhlcRequest.market)
                 }.toTypedArray())
             )
         }
