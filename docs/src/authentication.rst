@@ -91,8 +91,8 @@ depending on the requests being made.
 Request authentication
 ----------------------
 
-A number of RPC calls, CreateOrder for instance, mutate account state in such a critical way that we find
-authentication using a JWT token is not enough.
+A number of RPC calls, :protobuf:servicemethod:`tulipsolutions.api.priv.CreateOrder` for instance, mutate account state
+in such a critical way that we find authentication using a JWT token is not enough.
 For these calls we require the creator of the particular request to be authenticated in order to:
 
 * Ensure the request was not tampered with during transit
@@ -171,13 +171,3 @@ What happens under water, is the following:
 
         The code for the Python interceptor can be found
         `on GitHub <https://github.com/tulipsolutions/tecl/blob/master/python/tulipsolutions/api/auth/message_authentication_interceptor.py>`__.
-
-Verifying your implementation
------------------------------
-
-For the purpose of verifying your client side code, we provide a mock gRPC service hosted at
-https://mockgrpc.test.tulipsolutions.nl.
-The service responds on all published RPC methods and verifies both user and request authentication if applicable.
-For user authentication simply use the dummy JWT token published above and in the examples.
-For request authentication, decode the base64 encoded string: ``secret==`` and use it to create an HMAC-SHA256 key.
-Use this key to sign the message in the manner explained in :ref:`authentication_request_authentication`.

@@ -10,11 +10,11 @@ In addition to these stubs, the Tulip Exchange Client Library also contains some
 
 ## Documentation
 
-* [Getting started](https://mockgrpc.test.tulipsolutions.nl/docs/getting-started/setup-project.html)
-* [Public API Reference documentation](https://mockgrpc.test.tulipsolutions.nl/docs/about-public-api.html)
-* [Private API Reference documentation](https://mockgrpc.test.tulipsolutions.nl/docs/about-private-api.html)
-* [Tulip Exchange API Authentication](https://mockgrpc.test.tulipsolutions.nl/docs/authentication.html)
-* [FAQ](https://mockgrpc.test.tulipsolutions.nl/docs/faq.html)
+* [Getting started](https://demo.tulipsolutions.nl/docs/getting-started/setup-project.html)
+* [Public API Reference documentation](https://demo.tulipsolutions.nl/docs/about-public-api.html)
+* [Private API Reference documentation](https://demo.tulipsolutions.nl/docs/about-private-api.html)
+* [Tulip Exchange API Authentication](https://demo.tulipsolutions.nl/docs/authentication.html)
+* [FAQ](https://demo.tulipsolutions.nl/docs/faq.html)
 
 ## Usage with Bazel
 
@@ -51,5 +51,14 @@ Depend on the API parts that you need in your build files, for example:
 
 An alternative to using Bazel is to compile stubs in your language direct from the protobuf definitions.
 [gRPC.io](https://grpc.io/docs/) contains a list of officially supported languages.
-Visit our [getting started from source](https://mockgrpc.test.tulipsolutions.nl/docs/getting-started/from-source.html) 
-page, select your preferred language and follow the tutorial.
+Visit our [getting started from source](https://demo.tulipsolutions.nl/docs/getting-started/from-source.html) page,
+select your preferred language and follow the tutorial.
+
+## Testing against the Exchange
+
+For the purpose of verifying your client side code, we provide a number of options:
+
+* Online demo; create an account and use your private JWT obtained there (see API access).
+* Online mocked gRPC; returning bogus stateless data with a shared dummy JWT that works out of the box from a clone
+  (this is the default).
+* Offline mocked gRPC; run a gRPC server locally with just one command. See [`mockgrpc/README.md`](mockgrpc/README.md).
