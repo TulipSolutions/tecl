@@ -47,9 +47,9 @@ def repositories(
     if not omit_com_github_spullara_mustache_java_compiler:
         java_import_external(
             name = "com_github_spullara_mustache_java_compiler",
-            jar_urls = ["http://central.maven.org/maven2/com/github/spullara/mustache/java/compiler/0.9.6/compiler-0.9.6.jar"],
+            jar_urls = ["https://repo.maven.apache.org/maven2/com/github/spullara/mustache/java/compiler/0.9.6/compiler-0.9.6.jar"],
             jar_sha256 = "c4d697fd3619cb616cc5e22e9530c8a4fd4a8e9a76953c0655ee627cb2d22318",
-            srcjar_urls = ["http://central.maven.org/maven2/com/github/spullara/mustache/java/compiler/0.9.6/compiler-0.9.6-sources.jar"],
+            srcjar_urls = ["https://repo.maven.apache.org/maven2/com/github/spullara/mustache/java/compiler/0.9.6/compiler-0.9.6-sources.jar"],
             srcjar_sha256 = "fb3cf89e4daa0aaa4e659aca12a8ddb0d7b605271285f3e108201e0a389b4c7a",
             licenses = ["notice"],  # Apache 2.0
         )
@@ -248,9 +248,9 @@ sh_binary(
     if not omit_com_google_errorprone_error_prone_annotations:
         java_import_external(
             name = "com_google_errorprone_error_prone_annotations",
-            jar_urls = ["http://central.maven.org/maven2/com/google/errorprone/error_prone_annotations/2.3.3/error_prone_annotations-2.3.3.jar"],
+            jar_urls = ["https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.3.3/error_prone_annotations-2.3.3.jar"],
             jar_sha256 = "ec59f1b702d9afc09e8c3929f5c42777dec623a6ea2731ac694332c7d7680f5a",
-            srcjar_urls = ["http://central.maven.org/maven2/com/google/errorprone/error_prone_annotations/2.3.3/error_prone_annotations-2.3.3-sources.jar"],
+            srcjar_urls = ["https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.3.3/error_prone_annotations-2.3.3-sources.jar"],
             srcjar_sha256 = "f58446b80b5f1e98bcb74dae5c0710ed8e52baafe5a4bb315f769f306d85634a",
             licenses = ["notice"],  # Apache 2.0
         )
@@ -322,9 +322,9 @@ sh_binary(
     if not omit_org_apache_commons_validator:
         java_import_external(
             name = "org_apache_commons_validator",
-            jar_urls = ["http://central.maven.org/maven2/commons-validator/commons-validator/1.6/commons-validator-1.6.jar"],
+            jar_urls = ["https://repo.maven.apache.org/maven2/commons-validator/commons-validator/1.6/commons-validator-1.6.jar"],
             jar_sha256 = "bd62795d7068a69cbea333f6dbf9c9c1a6ad7521443fb57202a44874f240ba25",
-            srcjar_urls = ["http://central.maven.org/maven2/commons-validator/commons-validator/1.6/commons-validator-1.6-sources.jar"],
+            srcjar_urls = ["https://repo.maven.apache.org/maven2/commons-validator/commons-validator/1.6/commons-validator-1.6-sources.jar"],
             srcjar_sha256 = "9d4d052237a3b010138b853d8603d996cc3f89a6b3f793c5a50b93481cd8dea2",
             licenses = ["notice"],  # Apache 2.0
         )
