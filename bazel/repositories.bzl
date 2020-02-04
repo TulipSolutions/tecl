@@ -29,6 +29,7 @@ def repositories(
         omit_rules_proto = False,
         omit_rules_cc = False,
         omit_rules_java = False,
+        omit_com_google_re2j_re2j = False,
         omit_com_google_errorprone_error_prone_annotations = False,
         omit_com_envoyproxy_protoc_gen_validate = False,
         omit_io_bazel_rules_kotlin = False,
@@ -298,6 +299,18 @@ sh_binary(
             urls = ["https://github.com/bazelbuild/rules_java/archive/981f06c3d2bd10225e85209904090eb7b5fb26bd.tar.gz"],
         )
 
+    if not omit_com_envoyproxy_protoc_gen_validate and not omit_com_google_re2j_re2j:
+        # gRPC used to provide RE2J as dependency, and protoc-gen-validate still uses this, but we don't want to call
+        # pgv_dependencies() in protoc-gen-validate's bazel/repositories.bzl as that pulls in a lot more.
+        java_import_external(
+            name = "com_google_re2j_re2j",
+            jar_urls = ["https://repo.maven.apache.org/maven2/com/google/re2j/re2j/1.2/re2j-1.2.jar"],
+            jar_sha256 = "e9dc705fd4c570344b54a7146b2e3a819cdc271a29793f4acc1a93b56a388e59",
+            srcjar_urls = ["https://repo.maven.apache.org/maven2/com/google/re2j/re2j/1.2/re2j-1.2-sources.jar"],
+            srcjar_sha256 = "43a81e5a7bf2b3119b592910098cca0835f012d2805bcfdade44cdc8f2bdfb48",
+            licenses = ["notice"],  # Apache 2.0
+        )
+
     if not omit_com_envoyproxy_protoc_gen_validate:
         http_archive(
             name = "com_envoyproxy_protoc_gen_validate",
@@ -307,6 +320,11 @@ sh_binary(
             patches = [
                 "@nl_tulipsolutions_tecl//third_party/patches/com_envoyproxy_protoc_gen_validate:0001-Add-description-fields-to-ValidationException.patch",
             ],
+            repo_mapping = {
+                # Unfortunately, protoc-gen-validate does not use the convention of <maven-repo>_<maven_artifact> in
+                # naming their dependencies.
+                "@com_google_re2j": "@com_google_re2j_re2j",
+            },
         )
 
     if not omit_io_bazel_rules_kotlin:
