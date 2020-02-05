@@ -15,7 +15,10 @@
 import grpc
 import collections
 
-from tulipsolutions.api.auth import generic_client_interceptor
+try:
+    from python.tulipsolutions.api.auth import generic_client_interceptor
+except ImportError:
+    from tulipsolutions.api.auth import generic_client_interceptor
 
 
 class _ClientCallDetails(

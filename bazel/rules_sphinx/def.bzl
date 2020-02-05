@@ -35,6 +35,9 @@ def _sphinx_docs_impl(ctx):
         if src.is_source:
             # rst_path becomes the rel path from the build file
             rst_path = src.path.split(src.owner.package)[-1].strip("/")
+
+            # This is declared as file, but actually a directory will be created at that path with the recursive copy
+            # action. If we would declare a directory, it would be created already by Bazel.
             copied_file = ctx.actions.declare_file("sphinx_input/" + rst_path)
             ctx.actions.run(
                 outputs = [copied_file],
@@ -47,14 +50,19 @@ def _sphinx_docs_impl(ctx):
             sphinx_input.append(copied_file)
 
         else:
-            # rst_path becomes protodoc/FQDN
-            rst_path = src.path.split(src.owner.name)[-1].strip("/")
+            rst_path = _rel_path_from_workspace_root(src)
+            if rst_path.endswith(src.owner.name):
+                rst_path = rst_path[:-len(src.owner.name)]
+
+            # This is declared as file, but actually a directory will be created at that path with the recursive copy
+            # action. If we would declare a directory, it would be created already by Bazel.
             copied_file = ctx.actions.declare_file("sphinx_input/protodoc/" + rst_path)
+            src_path_rst = "/".join([src.path, rst_path])
             ctx.actions.run(
                 outputs = [copied_file],
                 inputs = [src],
                 executable = "cp",
-                arguments = ["-r", src.path, copied_file.path],
+                arguments = ["-r", src_path_rst, copied_file.path],
                 progress_message = "Copying generated %s to %s in sphinx input directory" % (src.path, copied_file.path),
                 mnemonic = "CopyGenSrc",
             )

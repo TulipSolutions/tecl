@@ -1,0 +1,35 @@
+From 785bacfdd770526f11da441718702cd0d3cc3f7c Mon Sep 17 00:00:00 2001
+From: Jan Tattermusch <jtattermusch@google.com>
+Date: Tue, 28 Jan 2020 04:43:29 -0500
+Subject: [PATCH 2/2] use sha256 for boringssl bazel dependency
+
+Note by Gert: This is merged into grpc's master branch, patch can probably
+be dropped with 1.28+.
+
+(cherry picked from commit 93eb2bf62f4455e7c4d911e9cfd9976f2b6089ed)
+---
+ bazel/grpc_deps.bzl | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git bazel/grpc_deps.bzl bazel/grpc_deps.bzl
+index 7d165b1cbd..2867dd6fc9 100644
+--- bazel/grpc_deps.bzl
++++ bazel/grpc_deps.bzl
+@@ -129,9 +129,11 @@ def grpc_deps():
+     if "boringssl" not in native.existing_rules():
+         http_archive(
+             name = "boringssl",
+-            # NOTE: This URL generates a tarball containing dynamic date
+-            # information, so the sha256 is not consistent.
+-            url = "https://boringssl.googlesource.com/boringssl/+archive/83da28a68f32023fd3b95a8ae94991a07b1f6c62.tar.gz",
++            # Use github mirror instead of https://boringssl.googlesource.com/boringssl
++            # to obtain a boringssl archive with consistent sha256
++            sha256 = "781fa39693ec2984c71213cd633e9f6589eaaed75e3a9ac413237edec96fd3b9",
++            strip_prefix = "boringssl-83da28a68f32023fd3b95a8ae94991a07b1f6c62",
++            url = "https://github.com/google/boringssl/archive/83da28a68f32023fd3b95a8ae94991a07b1f6c62.tar.gz",
+         )
+ 
+     if "zlib" not in native.existing_rules():
+-- 
+2.25.0
+

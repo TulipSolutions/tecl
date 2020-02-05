@@ -15,8 +15,14 @@
 import hmac
 import hashlib
 
-from tulipsolutions.api.priv import message_authentication_pb2
-from tulipsolutions.api.auth import generic_client_interceptor
+try:
+    from python.tulipsolutions.api.priv import message_authentication_pb2
+except ImportError:
+    from tulipsolutions.api.priv import message_authentication_pb2
+try:
+    from python.tulipsolutions.api.auth import generic_client_interceptor
+except ImportError:
+    from tulipsolutions.api.auth import generic_client_interceptor
 
 
 def _create_signer(secret):

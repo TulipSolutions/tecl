@@ -9,15 +9,12 @@ def repositories(
         omit_com_salesforce_servicelibs_reactive_grpc = False,
         omit_com_github_spullara_mustache_java_compiler = False,
         omit_bazel_skylib = False,
+        omit_io_bazel_rules_closure = False,
         omit_com_google_protobuf = False,
         omit_com_github_grpc_grpc = False,
-        omit_cython = False,
         omit_io_grpc_grpc_java = False,
         omit_com_github_grpc_grpc_web = False,
-        omit_io_bazel_rules_closure = False,
-        omit_six_archive = False,
         omit_io_bazel_rules_python = False,
-        omit_six = False,
         omit_python_headers = False,
         omit_org_llvm_clang = False,
         omit_bazel_gazelle = False,
@@ -25,10 +22,6 @@ def repositories(
         omit_io_bazel_rules_go_version = False,
         omit_com_github_bazelbuild_buildtools = False,
         omit_build_bazel_rules_nodejs = False,
-        omit_zlib = False,
-        omit_rules_proto = False,
-        omit_rules_cc = False,
-        omit_rules_java = False,
         omit_com_google_re2j_re2j = False,
         omit_com_google_errorprone_error_prone_annotations = False,
         omit_com_envoyproxy_protoc_gen_validate = False,
@@ -67,50 +60,57 @@ def repositories(
             urls = ["https://github.com/bazelbuild/bazel-skylib/archive/%s.tar.gz" % bazel_skylib_version],
         )
 
+    if not omit_io_bazel_rules_closure:
+        io_bazel_rules_closure_version = "614e1ebc38249c6793eab2e078bceb0fb12a1a42"  # master HEAD on 2020-01-28
+
+        http_archive(
+            name = "io_bazel_rules_closure",
+            sha256 = "d214736912d20293395682d7142411a117f0a17fb4d7e205ccbd438bd4a3738d",
+            strip_prefix = "rules_closure-%s" % io_bazel_rules_closure_version,
+            urls = ["https://github.com/bazelbuild/rules_closure/archive/%s.zip" % io_bazel_rules_closure_version],
+        )
+
     if not omit_com_google_protobuf:
-        protobuf_version = "v3.9.1"
+        protobuf_version = "v3.11.3"
 
         http_archive(
             name = "com_google_protobuf",
-            sha256 = "c90d9e13564c0af85fd2912545ee47b57deded6e5a97de80395b6d2d9be64854",
+            patches = [
+                # Get rid of the annoying build warnings by opting out for Java 7 compatibility:
+                # warning: -parameters is not supported for target value 1.7. Use 1.8 or later.
+                "@io_bazel_rules_closure//closure:protobuf_drop_java_7_compatibility.patch",
+            ],
+            patch_args = ["-p1"],
+            sha256 = "832c476bb442ca98a59c2291b8a504648d1c139b74acc15ef667a0e8f5e984e7",
             strip_prefix = "protobuf-%s" % protobuf_version[1:],
             urls = ["https://github.com/google/protobuf/archive/%s.zip" % protobuf_version],
         )
 
     if not omit_com_github_grpc_grpc:
-        grpc_version = "1.20.0"
+        grpc_version = "1.27.0"
 
         http_archive(
             name = "com_github_grpc_grpc",
-            sha256 = "5c00f09f7b0517a9ccbd6f0de356b1be915bc7baad2d2189adf8ce803e00af12",
+            patches = [
+                "@nl_tulipsolutions_tecl//third_party/patches/com_github_grpc_grpc:0001-Allow-depending-on-the-Bazel-Python-rules-from-other.patch",
+                "@nl_tulipsolutions_tecl//third_party/patches/com_github_grpc_grpc:0002-use-sha256-for-boringssl-bazel-dependency.patch",
+            ],
+            sha256 = "038d61ff86c91f44131daef5755dc25ce5131cbc53f1789bd126e924272a6675",
             strip_prefix = "grpc-%s" % grpc_version,
             urls = ["https://github.com/grpc/grpc/archive/v%s.zip" % grpc_version],
         )
 
-    if not omit_cython:
-        # Mirrors https://github.com/grpc/grpc/blob/9aee1731c92c8e7c880703fc948557c70bb4fc47/WORKSPACE#L20
-        cython_version = "c2b80d87658a8525ce091cbe146cb7eaa29fed5c"
-
-        http_archive(
-            name = "cython",
-            build_file = "@com_github_grpc_grpc//third_party:cython.BUILD",
-            sha256 = "d68138a2381afbdd0876c3cb2a22389043fa01c4badede1228ee073032b07a27",
-            strip_prefix = "cython-%s" % cython_version,
-            urls = ["https://github.com/cython/cython/archive/%s.tar.gz" % cython_version],
-        )
-
     if not omit_io_grpc_grpc_java:
-        io_grpc_grpc_java_version = "v1.20.0"
+        io_grpc_grpc_java_version = "1.27.0"
 
         http_archive(
             name = "io_grpc_grpc_java",
             patches = [
                 "@nl_tulipsolutions_tecl//third_party/patches/io_grpc_grpc_java:0001-Set-core-internal-visibility-to-public.patch",
-                "@nl_tulipsolutions_tecl//third_party/patches/io_grpc_grpc_java:0002-Set-gRPC-method-name-in-OpenCensus-statistics.patch",
             ],
-            sha256 = "9d23d9fec84e24bd3962f5ef9d1fd61ce939d3f649a22bcab0f19e8167fae8ef",
-            strip_prefix = "grpc-java-%s" % io_grpc_grpc_java_version[1:],
-            urls = ["https://github.com/grpc/grpc-java/archive/%s.zip" % io_grpc_grpc_java_version],
+            sha256 = "49a723e1aef022567a5e2c8d6395b908b431329530c1b8024b43eb9ca360fa1e",
+            strip_prefix = "grpc-java-%s" % io_grpc_grpc_java_version,
+            urls = ["https://github.com/grpc/grpc-java/archive/v%s.zip" % io_grpc_grpc_java_version],
         )
 
     if not omit_com_github_grpc_grpc_web:
@@ -123,16 +123,6 @@ def repositories(
             urls = ["https://github.com/grpc/grpc-web/archive/%s.zip" % grpc_web_version],
         )
 
-    if not omit_io_bazel_rules_closure:
-        io_bazel_rules_closure_version = "29ec97e7c85d607ba9e41cab3993fbb13f812c4b"  # master HEAD on 2019-07-25
-
-        http_archive(
-            name = "io_bazel_rules_closure",
-            sha256 = "e15a2c8db4da16d8ae3d55b3e303bed944bc2303b92c92bd4769b84dd711d123",
-            strip_prefix = "rules_closure-%s" % io_bazel_rules_closure_version,
-            urls = ["https://github.com/bazelbuild/rules_closure/archive/%s.zip" % io_bazel_rules_closure_version],
-        )
-
     if not omit_io_bazel_rules_python:
         rules_python_version = "640e88a6ee6b949ef131a9d512e2f71c6e0e858c"
 
@@ -141,36 +131,6 @@ def repositories(
             sha256 = "e6d511fbbb71962823a58e8b06f5961ede02737879113acd5a50b0c2fe58d2be",
             strip_prefix = "rules_python-%s" % rules_python_version,
             url = "https://github.com/bazelbuild/rules_python/archive/%s.zip" % rules_python_version,
-        )
-
-    # Six is a dependency for the Python Protobuf rules
-    if not omit_six_archive:
-        six_archive_build_file_content = """
-genrule(
-  name = "copy_six",
-  srcs = ["six-1.12.0/six.py"],
-  outs = ["six.py"],
-  cmd = "cp $< $(@)",
-)
-
-py_library(
-  name = "six",
-  srcs = ["six.py"],
-  srcs_version = "PY2AND3",
-  visibility = ["//visibility:public"],
-)
-        """
-        http_archive(
-            name = "six_archive",
-            build_file_content = six_archive_build_file_content,
-            sha256 = "d16a0141ec1a18405cd4ce8b4613101da75da0e9a7aec5bdd4fa804d0e0eba73",
-            urls = ["https://pypi.python.org/packages/source/s/six/six-1.12.0.tar.gz"],
-        )
-
-    if not omit_six:
-        native.bind(
-            name = "six",
-            actual = "@six_archive//:six",
         )
 
     if not omit_python_headers:
@@ -197,21 +157,27 @@ sh_binary(
         )
 
     if not omit_bazel_gazelle:
-        bazel_gazelle_version = "0.18.1"
+        bazel_gazelle_version = "v0.19.1"
 
         http_archive(
             name = "bazel_gazelle",
-            sha256 = "40f6b81c163d190ce7e16ea734ee748ad45e371306a46653fcab93aecda5c0da",
-            strip_prefix = "bazel-gazelle-%s" % bazel_gazelle_version,
-            urls = ["https://github.com/bazelbuild/bazel-gazelle/archive/%s.tar.gz" % (bazel_gazelle_version)],
+            urls = [
+                "https://storage.googleapis.com/bazel-mirror/github.com/bazelbuild/bazel-gazelle/releases/download/{v}/bazel-gazelle-{v}.tar.gz".format(v = bazel_gazelle_version),
+                "https://github.com/bazelbuild/bazel-gazelle/releases/download/{v}/bazel-gazelle-{v}.tar.gz".format(v = bazel_gazelle_version),
+            ],
+            sha256 = "86c6d481b3f7aedc1d60c1c211c6f76da282ae197c3b3160f54bd3a8f847896f",
         )
 
     if not omit_build_stack_rules_proto:
-        build_stack_rules_proto_version = "d9a123032f8436dbc34069cfc3207f2810a494ee"
+        build_stack_rules_proto_version = "734b8d41d39a903c70132828616f26cb2c7f908c"
 
         http_archive(
             name = "build_stack_rules_proto",
-            sha256 = "ff20827de390a86857cf921f757437cf407db4e5acb39b660467bd8c4d294a8b",
+            patches = [
+                "@nl_tulipsolutions_tecl//third_party/patches/com_github_stackb_rules_proto:0001-Strip-virtual-imports-directory-from-proto-path.patch",
+                "@nl_tulipsolutions_tecl//third_party/patches/com_github_stackb_rules_proto:0002-Update-paths-to-grpc-plugins.patch",
+            ],
+            sha256 = "06c6b06dfa79b1fafdc887a1e1135b26aa239bba57aa71d55744da70767de444",
             strip_prefix = "rules_proto-%s" % build_stack_rules_proto_version,
             url = "https://github.com/stackb/rules_proto/archive/%s.zip" % build_stack_rules_proto_version,
         )
@@ -256,49 +222,6 @@ sh_binary(
             licenses = ["notice"],  # Apache 2.0
         )
 
-        native.bind(
-            # This exact name is required by com_google_protobuf
-            name = "error_prone_annotations",
-            actual = "@com_google_errorprone_error_prone_annotations",
-        )
-
-    if not omit_zlib and not native.existing_rule("zlib"):
-        # Mirrors https://github.com/protocolbuffers/protobuf/blob/3.9.x/protobuf_deps.bzl
-        http_archive(
-            name = "zlib",
-            build_file = "@com_google_protobuf//:third_party/zlib.BUILD",
-            sha256 = "c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1",
-            strip_prefix = "zlib-1.2.11",
-            urls = ["https://zlib.net/zlib-1.2.11.tar.gz"],
-        )
-
-    if not omit_rules_proto and not native.existing_rule("rules_proto"):
-        # Mirrors https://github.com/protocolbuffers/protobuf/blob/3.9.x/protobuf_deps.bzl
-        http_archive(
-            name = "rules_proto",
-            sha256 = "88b0a90433866b44bb4450d4c30bc5738b8c4f9c9ba14e9661deb123f56a833d",
-            strip_prefix = "rules_proto-b0cc14be5da05168b01db282fe93bdf17aa2b9f4",
-            urls = ["https://github.com/bazelbuild/rules_proto/archive/b0cc14be5da05168b01db282fe93bdf17aa2b9f4.tar.gz"],
-        )
-
-    if not omit_rules_cc and not native.existing_rule("rules_cc"):
-        # Mirrors https://github.com/protocolbuffers/protobuf/blob/3.9.x/protobuf_deps.bzl
-        http_archive(
-            name = "rules_cc",
-            sha256 = "29daf0159f0cf552fcff60b49d8bcd4f08f08506d2da6e41b07058ec50cfeaec",
-            strip_prefix = "rules_cc-b7fe9697c0c76ab2fd431a891dbb9a6a32ed7c3e",
-            urls = ["https://github.com/bazelbuild/rules_cc/archive/b7fe9697c0c76ab2fd431a891dbb9a6a32ed7c3e.tar.gz"],
-        )
-
-    if not omit_rules_java and not native.existing_rule("rules_java"):
-        # Mirrors https://github.com/protocolbuffers/protobuf/blob/3.9.x/protobuf_deps.bzl
-        http_archive(
-            name = "rules_java",
-            sha256 = "f5a3e477e579231fca27bf202bb0e8fbe4fc6339d63b38ccb87c2760b533d1c3",
-            strip_prefix = "rules_java-981f06c3d2bd10225e85209904090eb7b5fb26bd",
-            urls = ["https://github.com/bazelbuild/rules_java/archive/981f06c3d2bd10225e85209904090eb7b5fb26bd.tar.gz"],
-        )
-
     if not omit_com_envoyproxy_protoc_gen_validate and not omit_com_google_re2j_re2j:
         # gRPC used to provide RE2J as dependency, and protoc-gen-validate still uses this, but we don't want to call
         # pgv_dependencies() in protoc-gen-validate's bazel/repositories.bzl as that pulls in a lot more.
@@ -319,6 +242,7 @@ sh_binary(
             url = "https://github.com/envoyproxy/protoc-gen-validate/archive/%s.zip" % com_envoyproxy_protoc_gen_validate_version,
             patches = [
                 "@nl_tulipsolutions_tecl//third_party/patches/com_envoyproxy_protoc_gen_validate:0001-Add-description-fields-to-ValidationException.patch",
+                "@nl_tulipsolutions_tecl//third_party/patches/com_envoyproxy_protoc_gen_validate:0002-Strip-virtual-imports-directory-from-proto-path.patch",
             ],
             repo_mapping = {
                 # Unfortunately, protoc-gen-validate does not use the convention of <maven-repo>_<maven_artifact> in

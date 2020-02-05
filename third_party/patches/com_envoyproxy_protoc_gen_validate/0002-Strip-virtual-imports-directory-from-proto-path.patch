@@ -1,0 +1,62 @@
+From 8226d55fc1b3c76623124ae2dee8d0afe7301ea1 Mon Sep 17 00:00:00 2001
+From: Gert van Dijk <gert.vandijk@tulipsolutions.nl>
+Date: Fri, 31 Jan 2020 18:16:46 +0100
+Subject: [PATCH 2/2] Strip virtual imports directory from proto path
+
+Work around for issue:
+https://github.com/envoyproxy/protoc-gen-validate/issues/308
+---
+ bazel/protobuf.bzl | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
+
+diff --git bazel/protobuf.bzl bazel/protobuf.bzl
+index ad4e968..168f64c 100644
+--- bazel/protobuf.bzl
++++ bazel/protobuf.bzl
+@@ -5,6 +5,9 @@ def _proto_path(proto):
+     The proto path is not really a file path
+     It's the path to the proto that was seen when the descriptor file was generated.
+     """
++    if is_in_virtual_imports(proto):
++        return _strip_virtual_import(proto.path)
++
+     path = proto.path
+     root = proto.root.path
+     ws = proto.owner.workspace_root
+@@ -18,6 +21,11 @@ def _proto_path(proto):
+         path = path[1:]
+     return path
+ 
++def _strip_virtual_import(path):
++    pos = path.find(_VIRTUAL_IMPORTS)
++    path = path[pos + len(_VIRTUAL_IMPORTS):]
++    return path.split("/", 1)[-1]
++
+ def _protoc_cc_output_files(proto_file_sources):
+     cc_hdrs = []
+     cc_srcs = []
+@@ -298,3 +306,21 @@ python_proto_gen_validate = rule(
+     output_to_genfiles = True,
+     implementation = _protoc_gen_validate_python_impl,
+ )
++
++# From https://github.com/grpc/grpc/blob/2e7d6b94eaf6b0e11add27606b4fe3d0b7216154/bazel/protobuf.bzl:
++
++_VIRTUAL_IMPORTS = "/_virtual_imports/"
++
++def is_in_virtual_imports(source_file, virtual_folder = _VIRTUAL_IMPORTS):
++    """Determines if source_file is virtual (is placed in _virtual_imports
++    subdirectory). The output of all proto_library targets which use
++    import_prefix  and/or strip_import_prefix arguments is placed under
++    _virtual_imports directory.
++    Args:
++        source_file: A proto file.
++        virtual_folder: The virtual folder name (is set to "_virtual_imports"
++            by default)
++    Returns:
++        True if source_file is located under _virtual_imports, False otherwise.
++    """
++    return not source_file.is_source and virtual_folder in source_file.path
+-- 
+2.25.0
+

@@ -1,85 +1,120 @@
-# Borrowed from Rules Go, licensed under Apache 2.
-# https://github.com/bazelbuild/rules_go/blob/67f44035d84a352cffb9465159e199066ecb814c/proto/compiler.bzl#L72
-def _proto_path(proto):
-    path = proto.path
-    root = proto.root.path
-    ws = proto.owner.workspace_root
-    if path.startswith(root):
-        path = path[len(root):]
-    if path.startswith("/"):
-        path = path[1:]
-    if path.startswith(ws):
-        path = path[len(ws):]
-    if path.startswith("/"):
-        path = path[1:]
-    return path
+load(
+    "@com_github_grpc_grpc//bazel:protobuf.bzl",
+    "get_include_directory",
+    "get_plugin_args",
+    "get_proto_arguments",
+    "includes_from_deps",
+    "is_in_virtual_imports",
+    "protos_from_context",
+    _grpc_get_out_dir = "get_out_dir",
+)
 
-def _protoc_output_path(proto_src):
-    return _proto_path(proto_src).replace("-", "_").replace(".proto", "")
+def declare_rst_out_dirs(protos, context):
+    declared = []
+    for proto in protos:
+        if is_in_virtual_imports(proto):
+            fail("unsupported")
 
-def _rst_proto_gen_impl(ctx):
-    srcs = [f for dep in ctx.attr.deps for f in dep[ProtoInfo].direct_sources]
-    includes = [f for dep in ctx.attr.deps for f in dep[ProtoInfo].transitive_imports.to_list()]
+        proto_file_name = proto.basename[:proto.basename.find(".proto")]
+        rule_name = context.attr.name
+        declared.append(context.actions.declare_directory("/".join([proto_file_name, rule_name])))
 
-    proto_include_args = ["--proto_path={0}={1}".format(_proto_path(include), include.path) for include in includes]
-    options = ",".join([])  # Empty, for now.
-    plugin_arg = "--plugin=protoc-gen-protodoc=" + ctx.executable._plugin.path
+    return declared
 
-    outs = []
-    for src in srcs:
-        output_rst_path = _protoc_output_path(src)
+def proto_pkg_dir(source_file):
+    directory = source_file.dirname
+    prefix_len = 0
 
-        rst_out_file = ctx.actions.declare_directory("/".join([ctx.attr.name, output_rst_path]) + "/")
-        protoc_rst_output_dir = "".join(rst_out_file.path.rsplit(output_rst_path, 1)[:-1])
-        protoc_rst_out_arg = "--protodoc_out={options}:{path}".format(options = options, path = protoc_rst_output_dir)
-        outs.append(rst_out_file)
+    if not source_file.is_source and directory.startswith(source_file.root.path):
+        prefix_len = len(source_file.root.path) + 1
 
-        ctx.actions.run(
-            inputs = includes,
-            tools = [ctx.executable._plugin],
-            outputs = [rst_out_file],
-            executable = ctx.executable._protoc,
-            arguments = proto_include_args + [plugin_arg, protoc_rst_out_arg, src.path],
-            progress_message = "Generating %s" % output_rst_path,
+    if directory.startswith("external", prefix_len):
+        external_separator = directory.find("/", prefix_len)
+        repository_separator = directory.find("/", external_separator + 1)
+        return directory[repository_separator + 1:]
+    else:
+        return source_file.root.path + directory
+
+def _generate_rst_impl(context):
+    protos = protos_from_context(context)
+    includes = includes_from_deps(context.attr.deps)
+    out_files = declare_rst_out_dirs(protos, context)
+    tools = [context.executable._protoc]
+
+    rule_name = context.attr.name
+    proto_file_name = protos[0].basename[:protos[0].basename.find(".proto")]
+    out_dir_path = "/".join([
+        _grpc_get_out_dir(protos, context).path,
+        proto_pkg_dir(protos[0]),
+        proto_file_name,
+        rule_name,
+    ])
+
+    arguments = ([
+        "--proto_path={}".format(get_include_directory(i))
+        for i in includes
+    ] + [
+        "--proto_path={}".format(context.genfiles_dir.path),
+    ])
+    if context.attr.plugin:
+        plugin_args = get_plugin_args(
+            context.executable.plugin,
+            [],
+            out_dir_path,
+            False,
+            context.attr.plugin.label.name,
         )
+        arguments += plugin_args
+        tools.append(context.executable.plugin)
 
-    return [DefaultInfo(files = depset(outs))]
+    arguments += get_proto_arguments(protos, context.genfiles_dir.path)
 
-_rst_proto_gen = rule(
+    context.actions.run(
+        inputs = protos + includes,
+        tools = tools,
+        outputs = out_files,
+        executable = context.executable._protoc,
+        arguments = arguments,
+        mnemonic = "ProtocInvocation",
+    )
+
+    return [DefaultInfo(files = depset(direct = out_files))]
+
+_generate_rst = rule(
     attrs = {
         "deps": attr.label_list(
             mandatory = True,
+            allow_empty = False,
             providers = [ProtoInfo],
+        ),
+        "plugin": attr.label(
+            default = Label("//bazel/rules_protodoc:protodoc"),
+            mandatory = False,
+            executable = True,
+            providers = ["files_to_run"],
+            cfg = "host",
         ),
         "_protoc": attr.label(
             default = Label("@com_google_protobuf//:protoc"),
-            executable = True,
-            allow_single_file = True,
-            cfg = "host",
-        ),
-        "_plugin": attr.label(
-            default = Label("//bazel/rules_protodoc:protodoc"),
+            providers = ["files_to_run"],
             executable = True,
             cfg = "host",
         ),
     },
-    output_to_genfiles = True,
-    implementation = _rst_proto_gen_impl,
+    implementation = _generate_rst_impl,
 )
 
 def rst_proto(
         name,
-        deps = [],
-        visibility = None,
+        deps,
+        plugin = None,
         **kwargs):
-    if not name:
-        fail("name is required", "name")
     if len(deps) != 1:
-        fail("'deps' attribute must contain exactly one label", "deps")
+        fail("Can only compile a single proto at a time.")
 
-    _rst_proto_gen(
+    _generate_rst(
         name = name,
         deps = deps,
-        visibility = visibility,
+        plugin = plugin,
         **kwargs
     )

@@ -163,6 +163,7 @@ py_grpc_library(
     name = "market_detail_py_grpc_library",
     srcs = [":market_detail_proto"],
     visibility = ["//visibility:public"],
+    deps = [":market_detail_py_proto_library"],
 )
 
 py_proto_library(
@@ -175,6 +176,7 @@ py_grpc_library(
     name = "orderbook_py_grpc_library",
     srcs = [":orderbook_proto"],
     visibility = ["//visibility:public"],
+    deps = [":orderbook_py_proto_library"],
 )
 
 py_proto_library(
@@ -187,6 +189,7 @@ py_grpc_library(
     name = "ticker_py_grpc_library",
     srcs = [":ticker_proto"],
     visibility = ["//visibility:public"],
+    deps = [":ticker_py_proto_library"],
 )
 
 py_proto_library(
@@ -199,6 +202,7 @@ py_grpc_library(
     name = "trade_py_grpc_library",
     srcs = [":trade_proto"],
     visibility = ["//visibility:public"],
+    deps = [":trade_py_proto_library"],
 )
 
 rst_proto(
@@ -360,6 +364,7 @@ py_grpc_library(
     name = "ohlc_py_grpc_library",
     srcs = [":ohlc_proto"],
     visibility = ["//visibility:public"],
+    deps = [":ohlc_py_proto_library"],
 )
 
 rst_proto(

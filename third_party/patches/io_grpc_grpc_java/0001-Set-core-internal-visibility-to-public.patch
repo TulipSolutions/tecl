@@ -1,7 +1,7 @@
-From 8064523eb18be802079565fe5deeb72c9149f2eb Mon Sep 17 00:00:00 2001
-From: Maarten Duijn <maarten@tulipsolutions.nl>
-Date: Wed, 13 Mar 2019 11:48:57 +0100
-Subject: [PATCH 1/2] Set core:internal visibility to public
+From 7e3dea553102ec7222fbdf1c63d7eb58a9b158ab Mon Sep 17 00:00:00 2001
+From: Gert van Dijk <gert.vandijk@tulipsolutions.nl>
+Date: Thu, 6 Feb 2020 14:38:02 +0100
+Subject: [PATCH] Set core:internal visibility to public
 
 This is required because rules_kotlin's dependencies work different from Java's
 A Kotlin rule might need to explicitly name the dependency below.
@@ -11,20 +11,20 @@ See https://github.com/grpc/grpc-java/issues/4258
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git core/BUILD.bazel core/BUILD.bazel
-index 61fa3bbf8..60a2e9928 100644
+index c6e1ffbb6..3415dba6e 100644
 --- core/BUILD.bazel
 +++ core/BUILD.bazel
-@@ -37,7 +37,7 @@ java_library(
+@@ -28,7 +28,7 @@ java_library(
      resources = glob([
          "src/bazel-internal/resources/**",
      ]),
 -    visibility = ["//:__subpackages__"],
 +    visibility = ["//visibility:public"],
      deps = [
-         ":core",
+         "//api",
          "//context",
 
-base-commit: 206a2e39333e991963adc7da74cb05dd2410c1a5
+base-commit: 1e2f28da55a2c0424b8b8621413dea0afbaa467b
 -- 
-2.21.0
+2.25.0
 

@@ -157,6 +157,7 @@ py_grpc_library(
     name = "order_py_grpc_library",
     srcs = [":order_proto"],
     visibility = ["//visibility:public"],
+    deps = [":order_py_proto_library"],
 )
 
 py_proto_library(
@@ -169,6 +170,7 @@ py_grpc_library(
     name = "trade_py_grpc_library",
     srcs = [":trade_proto"],
     visibility = ["//visibility:public"],
+    deps = [":trade_py_proto_library"],
 )
 
 py_proto_library(
@@ -181,6 +183,7 @@ py_grpc_library(
     name = "wallet_py_grpc_library",
     srcs = [":wallet_proto"],
     visibility = ["//visibility:public"],
+    deps = [":wallet_py_proto_library"],
 )
 
 rst_proto(

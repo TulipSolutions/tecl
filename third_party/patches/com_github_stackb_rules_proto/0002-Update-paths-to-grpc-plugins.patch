@@ -1,0 +1,108 @@
+From f0344b8cbbc25d99d04115df03dffee3c1acc056 Mon Sep 17 00:00:00 2001
+From: Joel Williamson <joel.s.williamson@gmail.com>
+Date: Wed, 4 Dec 2019 00:00:28 -0500
+Subject: [PATCH 2/2] Update paths to grpc plugins
+
+gRPC changed the paths of the plugins from //:*_plugin to
+//src/compiler:*_plugin.
+
+(cherry picked from commit 7c985ecb4fe890840f0fb48e3bb1d8067d738bdd)
+---
+ cpp/BUILD.bazel    | 2 +-
+ csharp/BUILD.bazel | 2 +-
+ node/BUILD.bazel   | 2 +-
+ objc/BUILD.bazel   | 2 +-
+ php/BUILD.bazel    | 2 +-
+ python/BUILD.bazel | 2 +-
+ ruby/BUILD.bazel   | 2 +-
+ 7 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git cpp/BUILD.bazel cpp/BUILD.bazel
+index f1bfd36..33b214d 100644
+--- cpp/BUILD.bazel
++++ cpp/BUILD.bazel
+@@ -19,6 +19,6 @@ proto_plugin(
+         "{basename}.grpc.pb.cc",
+         "{basename}_mock.grpc.pb.h",
+     ],
+-    tool = "@com_github_grpc_grpc//:grpc_cpp_plugin",
++    tool = "@com_github_grpc_grpc//src/compiler:grpc_cpp_plugin",
+     visibility = ["//visibility:public"],
+ )
+diff --git csharp/BUILD.bazel csharp/BUILD.bazel
+index 0abd27a..29c2795 100644
+--- csharp/BUILD.bazel
++++ csharp/BUILD.bazel
+@@ -12,7 +12,7 @@ proto_plugin(
+ proto_plugin(
+     name = "grpc_csharp",
+     outputs = ["{package}/{basename|pascal}Grpc.cs"],
+-    tool = "@com_github_grpc_grpc//:grpc_csharp_plugin",
++    tool = "@com_github_grpc_grpc//src/compiler:grpc_csharp_plugin",
+     transitivity = {
+         "google/protobuf": "exclude",
+     },
+diff --git node/BUILD.bazel node/BUILD.bazel
+index 0d021e2..b30abbb 100644
+--- node/BUILD.bazel
++++ node/BUILD.bazel
+@@ -13,6 +13,6 @@ proto_plugin(
+ proto_plugin(
+     name = "grpc_js",
+     outputs = ["_grpc_pb.js"],
+-    tool = "@com_github_grpc_grpc//:grpc_node_plugin",
++    tool = "@com_github_grpc_grpc//src/compiler:grpc_node_plugin",
+     visibility = ["//visibility:public"],
+ )
+diff --git objc/BUILD.bazel objc/BUILD.bazel
+index 478ff9e..adc9e87 100644
+--- objc/BUILD.bazel
++++ objc/BUILD.bazel
+@@ -15,6 +15,6 @@ proto_plugin(
+         "{basename|pascal|objc}.pbrpc.h",
+         "{basename|pascal|objc}.pbrpc.m",
+     ],
+-    tool = "@com_github_grpc_grpc//:grpc_objective_c_plugin",
++    tool = "@com_github_grpc_grpc//src/compiler:grpc_objective_c_plugin",
+     visibility = ["//visibility:public"],
+ )
+diff --git php/BUILD.bazel php/BUILD.bazel
+index 2aa78c1..23cd0ab 100644
+--- php/BUILD.bazel
++++ php/BUILD.bazel
+@@ -13,6 +13,6 @@ proto_plugin(
+     # Even though this is php, aggregate into a jar so we don't have to predict
+     # the outputs
+     out = "{name}.jar",
+-    tool = "@com_github_grpc_grpc//:grpc_php_plugin",
++    tool = "@com_github_grpc_grpc//src/compiler:grpc_php_plugin",
+     visibility = ["//visibility:public"],
+ )
+diff --git python/BUILD.bazel python/BUILD.bazel
+index 67ab2cd..e6ea86f 100644
+--- python/BUILD.bazel
++++ python/BUILD.bazel
+@@ -9,7 +9,7 @@ proto_plugin(
+ proto_plugin(
+     name = "grpc_python",
+     outputs = ["_pb2_grpc.py"],
+-    tool = "@com_github_grpc_grpc//:grpc_python_plugin",
++    tool = "@com_github_grpc_grpc//src/compiler:grpc_python_plugin",
+     transitivity = {
+         "google/protobuf": "exclude",
+     },
+diff --git ruby/BUILD.bazel ruby/BUILD.bazel
+index c8b488c..3fd88f6 100644
+--- ruby/BUILD.bazel
++++ ruby/BUILD.bazel
+@@ -9,6 +9,6 @@ proto_plugin(
+ proto_plugin(
+     name = "grpc_ruby",
+     outputs = ["{basename}_services_pb.rb"],
+-    tool = "@com_github_grpc_grpc//:grpc_ruby_plugin",
++    tool = "@com_github_grpc_grpc//src/compiler:grpc_ruby_plugin",
+     visibility = ["//visibility:public"],
+ )
+-- 
+2.25.0
+

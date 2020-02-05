@@ -46,8 +46,8 @@ func (x *pyLang) Kinds() map[string]rule.KindInfo {
 		},
 		"py_grpc_library": {
 			MatchAny:       false,
-			NonEmptyAttrs:  map[string]bool{"srcs": true},
-			MergeableAttrs: map[string]bool{"srcs": true},
+			NonEmptyAttrs:  map[string]bool{"srcs": true, "deps": true},
+			MergeableAttrs: map[string]bool{"srcs": true, "deps": true},
 		},
 	}
 }
@@ -110,6 +110,7 @@ func (x *pyLang) GenerateRules(args language.GenerateArgs) language.GenerateResu
 			pyGrpcWebRuleName := GrpcWebRuleName(protoRuleName)
 			pyGrpcWebRule := rule.NewRule("py_grpc_library", pyGrpcWebRuleName)
 			pyGrpcWebRule.SetAttr("srcs", []string{":" + protoRuleName})
+			pyGrpcWebRule.SetAttr("deps", []string{":" + pyProtoRuleName})
 			pyGrpcWebRule.SetAttr("visibility", []string{"//visibility:public"})
 			rules = append(rules, pyGrpcWebRule)
 		}

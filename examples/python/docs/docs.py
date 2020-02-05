@@ -41,8 +41,14 @@ from public_ticker_service_get_tickers import public_ticker_service_get_tickers
 from public_ticker_service_stream_tickers import public_ticker_service_stream_tickers
 from public_trade_service_get_trades import public_trade_service_get_trades
 from public_trade_service_stream_trades import public_trade_service_stream_trades
-from tulipsolutions.api.auth import jwt_interceptor
-from tulipsolutions.api.auth import message_authentication_interceptor
+try:
+    from tecl.python.tulipsolutions.api.auth import jwt_interceptor
+except ImportError:
+    from tulipsolutions.api.auth import jwt_interceptor
+try:
+    from tecl.python.tulipsolutions.api.auth import message_authentication_interceptor
+except ImportError:
+    from tulipsolutions.api.auth import message_authentication_interceptor
 
 
 if __name__ == '__main__':

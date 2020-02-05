@@ -10,13 +10,11 @@ filegroup(
 py_binary(
     name = "hello_exchange",
     srcs = ["hello_exchange.py"],
-    python_version = "PY2",
+    python_version = "PY3",
     deps = [
-        requirement("enum34"),
         requirement("protobuf"),
         requirement("six"),
         requirement("grpcio"),
-        requirement("futures"),
         "@nl_tulipsolutions_tecl//python",
     ],
 )

@@ -19,8 +19,14 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 
 import grpc
-from tulipsolutions.api.auth import jwt_interceptor
-from tulipsolutions.api.auth import message_authentication_interceptor
+try:
+    from tecl.python.tulipsolutions.api.auth import jwt_interceptor
+except ImportError:
+    from tulipsolutions.api.auth import jwt_interceptor
+try:
+    from tecl.python.tulipsolutions.api.auth import message_authentication_interceptor
+except ImportError:
+    from tulipsolutions.api.auth import message_authentication_interceptor
 
 from tulipsolutions.api.common import orders_pb2
 from tulipsolutions.api.priv import order_pb2
