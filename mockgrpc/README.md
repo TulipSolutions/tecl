@@ -14,10 +14,10 @@ Also existing code examples can then be run against this server using parameters
 
     $ bazelisk run //examples/go/docs:docs -- localhost 10011
 
-## JDK 9+ required
+## JDK 11+ required
 
-Unlike the Java code examples for TECL that will work with JDK 8 and higher, to run mockgrpc you will need JDK 9+ to be
-installed and on your PATH. For e.g. Debian/Ubuntu this involves:
+Unlike the Java code examples for TECL that will work with JDK 8 and higher, to run mockgrpc you will need at least JDK
+11 to be installed and on your PATH. For e.g. Debian/Ubuntu this involves:
 
     $ sudo apt install openjdk-11-jdk-headless
     $ sudo update-alternatives --config javac  # select java-11

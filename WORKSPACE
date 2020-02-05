@@ -22,11 +22,11 @@ load("@tulip_bazel_version//:check.bzl", "check_bazel_version")
 
 check_bazel_version()
 
-load("@io_bazel_rules_kotlin//kotlin:kotlin.bzl", "kotlin_repositories", "kt_register_toolchains")
+load("@io_bazel_rules_kotlin//kotlin:kotlin.bzl", "kotlin_repositories")
 
 kotlin_repositories()
 
-kt_register_toolchains()
+register_toolchains("//:kotlin_toolchain")
 
 load("@io_bazel_rules_python//python:pip.bzl", "pip_import", "pip_repositories")
 
