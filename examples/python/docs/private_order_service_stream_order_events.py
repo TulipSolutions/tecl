@@ -26,7 +26,7 @@ def private_order_service_stream_order_events(channel):
     # CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
     stub = order_pb2_grpc.PrivateOrderServiceStub(channel)
 
-    start = long(time.time() * 1E9)
+    start = int(time.time() * 1E9)
     # Create a request for streaming all your order events in the BTC_EUR market that occur after start
     request = order_pb2.StreamOrderEventsRequest(
         search_direction=orders_pb2.FORWARD,

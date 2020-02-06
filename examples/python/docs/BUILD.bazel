@@ -10,13 +10,11 @@ py_binary(
     name = "docs",
     srcs = glob(["*.py"]),
     data = ["@nl_tulipsolutions_tecl//mockgrpc/src/main/resources"],
-    python_version = "PY2",
+    python_version = "PY3",
     deps = [
-        requirement("enum34"),
         requirement("protobuf"),
         requirement("six"),
         requirement("grpcio"),
-        requirement("futures"),
         "@nl_tulipsolutions_tecl//python",
     ],
 )

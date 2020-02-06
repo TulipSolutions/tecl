@@ -39,11 +39,11 @@ load("@com_github_grpc_grpc//bazel:grpc_python_deps.bzl", "grpc_python_deps")
 
 grpc_python_deps()
 
-load("@rules_python//python:pip.bzl", "pip_import", "pip_repositories")
+load("@rules_python//python:pip.bzl", "pip3_import", "pip_repositories")
 
 pip_repositories()
 
-pip_import(
+pip3_import(
     name = "grpc_python_dependencies",
     requirements = "@nl_tulipsolutions_tecl//python:requirements.txt",
 )

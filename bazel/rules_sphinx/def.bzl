@@ -123,7 +123,7 @@ def sphinx_docs(name, extensions, **kwargs):
         srcs = ["//bazel/rules_sphinx:sphinx_main.py"],
         visibility = ["//visibility:public"],
         main = "sphinx_main.py",
-        python_version = "PY2",
+        python_version = "PY3",
         # This is a list of all packages in the ./requirements.txt file, without the version pinned.
         deps = [
             requirement("Sphinx"),
@@ -146,7 +146,6 @@ def sphinx_docs(name, extensions, **kwargs):
             requirement("six"),
             requirement("snowballstemmer"),
             requirement("sphinxcontrib-websupport"),
-            requirement("typing"),
             requirement("urllib3"),
         ] + extensions,
     )

@@ -19,9 +19,6 @@
 Additionally, some glue logic is self-developed to *Bazelify* all of it in
 `rules_protodoc` and `rules_sphinx`.
 
-At this time, we're limited to the use of Python 2.x with Bazel, and blocks an
-upgrade to Sphinx 2.x, as that version is Python 3.5+ only.
-
 [sphinx-website]: https://www.sphinx-doc.org/
 [sphinx-domains]: https://www.sphinx-doc.org/en/1.8/usage/restructuredtext/domains.html
 

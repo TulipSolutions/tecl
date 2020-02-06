@@ -38,7 +38,7 @@ logger = logging.getLogger(__name__)
 
 
 def caption_wrapper(literal_node, caption):
-    # type: (nodes.Node, unicode) -> nodes.container
+    # type: (nodes.Node, str) -> nodes.container
     container_node = nodes.container('', literal_block=True,
                                      classes=['literal-block-wrapper'])
     container_node += nodes.strong(caption, caption)
@@ -66,14 +66,14 @@ class CodeIncludeReader(LiteralIncludeReader):
     end_marker_prefix = " CODEINCLUDE-END-MARKER: "
 
     def __init__(self, filename, options, config):
-        # type: (unicode, Dict, Config) -> None
+        # type: (str, Dict, Config) -> None
         self.filename = filename
         self.options = options
         self.encoding = options.get('encoding', config.source_encoding)
         # Not calling superclass __init__ on purpose.
 
     def read(self, location=None):
-        # type: (Any) -> Tuple[unicode, int]
+        # type: (Any) -> Tuple[str, int]
         filters = [self.markerid_filter,
                    self.autodedent_filter]
         lines = self.read_file(self.filename, location=location)
@@ -83,7 +83,7 @@ class CodeIncludeReader(LiteralIncludeReader):
         return ''.join(lines), len(lines)
 
     def autodedent_filter(self, lines, location=None):
-        # type: (List[unicode], Any) -> List[unicode]
+        # type: (List[str], Any) -> List[str]
         if 'no-auto-dedent' in self.options:
             return lines
         else:
@@ -92,7 +92,7 @@ class CodeIncludeReader(LiteralIncludeReader):
             return dedent_lines(lines, dedent_level, location=location)
 
     def markerid_filter(self, lines, location=None):
-        # type: (List[unicode], Any) -> List[unicode]
+        # type: (List[str], Any) -> List[str]
         if 'marker-id' in self.options:
             marker_str = self.options['marker-id'].strip()
             begin_str = self.begin_marker_prefix + marker_str
@@ -203,7 +203,7 @@ class CodeInclude(LiteralInclude):
 
 
 def setup(app):
-    # type: (Sphinx) -> Dict[unicode, Any]
+    # type: (Sphinx) -> Dict[str, Any]
     directives.register_directive('codeinclude', CodeInclude)
 
     return {

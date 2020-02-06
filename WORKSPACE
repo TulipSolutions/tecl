@@ -36,9 +36,9 @@ load("@rules_python//python:pip.bzl", "pip_repositories")
 
 pip_repositories()
 
-load("@rules_python//python:pip.bzl", "pip_import")
+load("@rules_python//python:pip.bzl", "pip3_import")
 
-pip_import(
+pip3_import(
     name = "docs_deps",
     requirements = "//bazel/rules_sphinx:requirements.txt",
 )
@@ -47,7 +47,7 @@ load("@docs_deps//:requirements.bzl", docs_pip_install = "pip_install")
 
 docs_pip_install()
 
-pip_import(
+pip3_import(
     name = "grpc_python_dependencies",
     requirements = "//python:requirements.txt",
 )
@@ -56,7 +56,7 @@ load("@grpc_python_dependencies//:requirements.bzl", grpc_python_pip_install = "
 
 grpc_python_pip_install()
 
-pip_import(
+pip3_import(
     name = "flake8_deps",
     requirements = "//bazel/rules_flake8:requirements.txt",
 )

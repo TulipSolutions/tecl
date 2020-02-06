@@ -723,10 +723,13 @@ def main():
     # Uncomment to enable to debug logging.
     # logger.setLevel(logging.DEBUG)
 
-    logger.debug("Python version info: %r" % sys.version_info)
+    logger.debug("Python version info: %r" % str(sys.version_info))
+
+    # Compatibility with both Python 2 and 3 (https://stackoverflow.com/a/23932488/1254292)
+    stdout, stdin = (getattr(sys.stdout, 'buffer', sys.stdout), getattr(sys.stdin, 'buffer', sys.stdin))
 
     request = plugin_pb2.CodeGeneratorRequest()
-    request.ParseFromString(sys.stdin.read())
+    request.ParseFromString(stdin.read())
     response = plugin_pb2.CodeGeneratorResponse()
 
     # Dependent proto files are included in the plugin_pb2.CodeGeneratorRequest(). Only process the proto file which the
@@ -735,7 +738,7 @@ def main():
 
     Protodoc(proto_file, response).generate_rsts()
 
-    sys.stdout.write(response.SerializeToString())
+    stdout.write(response.SerializeToString())
 
 
 if __name__ == '__main__':

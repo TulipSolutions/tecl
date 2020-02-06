@@ -3,11 +3,12 @@ Sphinx==1.8.5
 # The theme
 sphinx-rtd-theme==0.4.3
 
-# Only required for Python 2 and < 3.5 only. No-op for Python 3.5+.
-typing==3.7.4
-
 # Required on minimal environments
 setuptools==41.0.1
+
+# Sphinx version compatible with docutils 0.16 is unreleased at the time of writing
+# See https://github.com/sphinx-doc/sphinx/commit/faedcc48ccb942b9a7b758b699b30f0d026c0771
+docutils==0.15
 
 # Sphinx's transitive dependencies listed below explicitly with their versions frozen. In order to update those on a new
 # version of Sphinx:
@@ -19,28 +20,27 @@ setuptools==41.0.1
 #    $ pip install \
 #      Sphinx==<version> \
 #      sphinx_rtd_theme==<version> \
-#      typing==<version> \
-#      setuptools==<version>
+#      setuptools==<version> \
+#      docutils==<version>
 # 3. Run
-#    $ pip freeze --local | grep -vE '^(pkg-resources|Sphinx|sphinx-rtd-theme|sphinx-tabs|typing)=='
+#    $ pip freeze --local | grep -vE '^(pkg-resources|Sphinx|sphinx-rtd-theme|sphinx-tabs|docutils)=='
 #    to list all installed packages along with their versions in a requirement.txt-like format.
 # 4. If any packages are added/removed, update the ./BUILD file accordingly.
 
 alabaster==0.7.12
-Babel==2.7.0
-certifi==2019.6.16
+Babel==2.8.0
+certifi==2019.11.28
 chardet==3.0.4
-docutils==0.14
 idna==2.8
-imagesize==1.1.0
-Jinja2==2.10.1
+imagesize==1.2.0
+Jinja2==2.11.1
 MarkupSafe==1.1.1
-packaging==19.0
-Pygments==2.4.2
-pyparsing==2.4.0
-pytz==2019.1
+packaging==20.1
+Pygments==2.5.2
+pyparsing==2.4.6
+pytz==2019.3
 requests==2.22.0
-six==1.12.0
-snowballstemmer==1.2.1
+six==1.14.0
+snowballstemmer==2.0.0
 sphinxcontrib-websupport==1.1.2
-urllib3==1.25.3
+urllib3==1.25.8

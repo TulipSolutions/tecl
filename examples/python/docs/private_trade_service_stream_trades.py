@@ -28,7 +28,7 @@ def private_trade_service_stream_trades(channel):
     # CODEINCLUDE-BEGIN-MARKER: ref-code-example-request
     stub = trade_pb2_grpc.PrivateTradeServiceStub(channel)
 
-    start = long(time.time() * 1E9)
+    start = int(time.time() * 1E9)
     # Create a request for streaming all your trades in the BTC_EUR that occur after initiation of the request
     request = trade_pb2.StreamPrivateTradesRequest(
         search_direction=orders_pb2.BACKWARD,

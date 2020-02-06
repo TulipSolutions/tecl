@@ -12,7 +12,7 @@ py_binary(
     name = "flake8",
     srcs = ["flake8_main.py"],
     main = "flake8_main.py",
-    python_version = "PY2",
+    python_version = "PY3",
     visibility = ["//visibility:public"],
     deps = [
         requirement("pycodestyle"),
@@ -21,8 +21,5 @@ py_binary(
         requirement("flake8"),
         requirement("entrypoints"),
         requirement("configparser"),
-        requirement("typing"),
-        requirement("enum"),
-        requirement("functools32"),
     ],
 )
