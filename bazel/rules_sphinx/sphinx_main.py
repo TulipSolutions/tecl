@@ -20,6 +20,10 @@ import sys
 """
 
 if __name__ == "__main__":
+    # Seemingly unused imports; but is to overcome error with namespaced Python packages (in sphinxcontrib.*) that would
+    # otherwise not be importable.
+    import sphinxcontrib  # noqa F401
+
     os.environ['BAZEL_STABLE_STATUS_FILE'] = os.path.abspath(sys.argv[1])
     # 'Sniff' the sources input directory as a way to know what it would be a configuration-time in conf.py.
     # Needed for pointing to custom CSS/JS.

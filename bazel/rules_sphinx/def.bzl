@@ -145,7 +145,12 @@ def sphinx_docs(name, extensions, **kwargs):
             requirement("setuptools"),
             requirement("six"),
             requirement("snowballstemmer"),
-            requirement("sphinxcontrib-websupport"),
+            requirement("sphinxcontrib-applehelp"),
+            requirement("sphinxcontrib-devhelp"),
+            requirement("sphinxcontrib-htmlhelp"),
+            requirement("sphinxcontrib-jsmath"),
+            requirement("sphinxcontrib-qthelp"),
+            requirement("sphinxcontrib-serializinghtml"),
             requirement("urllib3"),
         ] + extensions,
     )
