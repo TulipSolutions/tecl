@@ -49,15 +49,15 @@ def repositories(
         )
 
     if not omit_bazel_skylib:
-        # 0.9.0 is incompatible with rules_go 0.19.1
-        # https://github.com/bazelbuild/rules_go/issues/2157
-        bazel_skylib_version = "0.8.0"
+        bazel_skylib_version = "1.0.2"
 
         http_archive(
             name = "bazel_skylib",
-            strip_prefix = "bazel-skylib-%s" % bazel_skylib_version,
-            sha256 = "2ea8a5ed2b448baf4a6855d3ce049c4c452a6470b1efd1504fdb7c1c134d220a",
-            urls = ["https://github.com/bazelbuild/bazel-skylib/archive/%s.tar.gz" % bazel_skylib_version],
+            urls = [
+                "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/{v}/bazel-skylib-{v}.tar.gz".format(v = bazel_skylib_version),
+                "https://github.com/bazelbuild/bazel-skylib/releases/download/{v}/bazel-skylib-{v}.tar.gz".format(v = bazel_skylib_version),
+            ],
+            sha256 = "97e70364e9249702246c0e9444bccdc4b847bed1eb03c5a3ece4f83dfe6abc44",
         )
 
     if not omit_io_bazel_rules_closure:
