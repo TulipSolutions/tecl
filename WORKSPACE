@@ -32,7 +32,11 @@ kotlin_repositories()
 
 register_toolchains("//:kotlin_toolchain")
 
-load("@io_bazel_rules_python//python:pip.bzl", "pip_import", "pip_repositories")
+load("@rules_python//python:pip.bzl", "pip_repositories")
+
+pip_repositories()
+
+load("@rules_python//python:pip.bzl", "pip_import")
 
 pip_import(
     name = "docs_deps",

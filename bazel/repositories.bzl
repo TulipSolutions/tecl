@@ -14,7 +14,7 @@ def repositories(
         omit_com_github_grpc_grpc = False,
         omit_io_grpc_grpc_java = False,
         omit_com_github_grpc_grpc_web = False,
-        omit_io_bazel_rules_python = False,
+        omit_rules_python = False,
         omit_python_headers = False,
         omit_org_llvm_clang = False,
         omit_bazel_gazelle = False,
@@ -123,12 +123,12 @@ def repositories(
             urls = ["https://github.com/grpc/grpc-web/archive/%s.zip" % grpc_web_version],
         )
 
-    if not omit_io_bazel_rules_python:
-        rules_python_version = "640e88a6ee6b949ef131a9d512e2f71c6e0e858c"
+    if not omit_rules_python:
+        rules_python_version = "38f86fb55b698c51e8510c807489c9f4e047480e"
 
         http_archive(
-            name = "io_bazel_rules_python",
-            sha256 = "e6d511fbbb71962823a58e8b06f5961ede02737879113acd5a50b0c2fe58d2be",
+            name = "rules_python",
+            sha256 = "7d64815f4b22400bed0f1b9da663037e1578573446b7bc78f20f24b2b5459bb9",
             strip_prefix = "rules_python-%s" % rules_python_version,
             url = "https://github.com/bazelbuild/rules_python/archive/%s.zip" % rules_python_version,
         )
