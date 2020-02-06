@@ -28,13 +28,13 @@ def repositories(
         omit_io_bazel_rules_kotlin = False,
         omit_org_apache_commons_validator = False):
     if not omit_com_salesforce_servicelibs_reactive_grpc:
-        # Latest on master on 2019-06-25
-        version = "e7aa649e9a7d4af87fa17ccd6100c53758ee717d"
+        # Latest on master on 2020-01-28
+        version = "eb450821f3eae49e755cc9ed8ee46327ba864854"
 
         http_archive(
             name = "com_salesforce_servicelibs_reactive_grpc",
             strip_prefix = "reactive-grpc-%s" % version,
-            sha256 = "89ce5f010e517437a997107621cba355009d8397c76864e8ee1714f063482875",
+            sha256 = "402a4288d7ea9c576bcf5ea81a6b3a69e435758b8509140c9e1f4c691980c6e0",
             url = "https://github.com/salesforce/reactive-grpc/archive/%s.zip" % version,
         )
 
