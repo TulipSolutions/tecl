@@ -23,7 +23,7 @@ docutils==0.15
 #      setuptools==<version> \
 #      docutils==<version>
 # 3. Run
-#    $ pip freeze --local | grep -vE '^(pkg-resources|Sphinx|sphinx-rtd-theme|sphinx-tabs|docutils)=='
+#    $ pip freeze --local | grep -vE '^(pkg-resources|Sphinx|sphinx-rtd-theme|docutils)=='
 #    to list all installed packages along with their versions in a requirement.txt-like format.
 # 4. If any packages are added/removed, update the ./BUILD file accordingly.
 
