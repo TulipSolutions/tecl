@@ -2,6 +2,7 @@ workspace(
     name = "nl_tulipsolutions_tecl",
     managed_directories = {"@npm": ["node_modules"]},
 )
+# gazelle:repo bazel_gazelle
 
 load("//bazel:repositories.bzl", "repositories")
 
