@@ -8,9 +8,19 @@ load("//bazel:repositories.bzl", "repositories")
 
 repositories()
 
-load("@bazel_skylib//lib:versions.bzl", "versions")
+# Check Bazel version when invoked by Bazel directly instead of Bazelisk; verify it's at minimum the version Bazelisk
+# would choose to use via .bazelversion file.
+load("//bazel/rules_bazel_version:deps.bzl", "bazel_version_dependencies")
 
-versions.check(minimum_bazel_version = "0.27.0")
+bazel_version_dependencies()
+
+load("//bazel/rules_bazel_version:def.bzl", "bazel_version")
+
+bazel_version(name = "bazel_version")
+
+load("@bazel_version//:check.bzl", "check_bazel_version")
+
+check_bazel_version()
 
 load("@io_bazel_rules_kotlin//kotlin:kotlin.bzl", "kotlin_repositories", "kt_register_toolchains")
 
