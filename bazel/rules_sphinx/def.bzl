@@ -1,3 +1,4 @@
+load("@rules_python//python:defs.bzl", "py_binary")
 load("@docs_deps//:requirements.bzl", "requirement")
 
 # Borrowed from Rules Go, licensed under Apache 2.
@@ -118,7 +119,7 @@ _sphinx_docs = rule(
 
 def sphinx_docs(name, extensions, **kwargs):
     sphinx_main_name = name + "_sphinx_main"
-    native.py_binary(
+    py_binary(
         name = sphinx_main_name,
         srcs = ["//bazel/rules_sphinx:sphinx_main.py"],
         visibility = ["//visibility:public"],
