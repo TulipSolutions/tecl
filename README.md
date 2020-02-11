@@ -18,11 +18,37 @@ In addition to these stubs, the Tulip Exchange Client Library also contains some
 
 ## Usage with Bazel
 
+To install Bazel itself:
+
 * [Install Bazel's dependencies](https://docs.bazel.build/install.html)
-* [Install Bazelisk](https://github.com/bazelbuild/bazelisk/releases)
-* [Install JDK 8 or higher](https://openjdk.java.net/install/index.html) (required for running the Java examples)
-* [Install Python 3](https://www.python.org/downloads/) (required for running the Python examples)
-* Run an example with `bazelisk run examples/<lang>/<example>`.
+* [Install Bazelisk](https://github.com/bazelbuild/bazelisk/releases) (optional, but recommended)
+
+### Java specifics
+
+For Java examples, *either*:
+
+* [Install JDK 8 or higher locally](https://adoptopenjdk.net/); or
+* Let Bazel download a JDK for you by passing the following command line arguments when invoking Bazel(isk).
+
+Please see the [Getting started section](https://demo.tulipsolutions.nl/docs/getting-started/setup-project.html) for
+more details steps.
+
+### Python specifics
+
+For the Python examples: [Install Python 2 and 3](https://www.python.org/downloads/). If you're using your operating
+system's package manager, also install the development packages.
+<sub>Python 2 is still required unfortunately, due to an issue with the gRPC-Bazel rules
+([#21963](https://github.com/grpc/grpc/issues/21963)).</sub>
+
+### Go and Node
+
+To run Go (Golang) or Node (Javascript) examples, all other dependencies are managed by Bazel.
+
+### Running the examples
+
+Run an example with `bazelisk run examples/<lang>/<example>`, e.g.:
+
+    bazelisk run //examples/go/hello_exchange
 
 Your language not supported? [Submit a feature request](https://github.com/tulipsolutions/tecl/issues) 
 or [compile](#compile-from-source) the bindings for your language by yourself.

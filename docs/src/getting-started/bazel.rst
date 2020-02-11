@@ -28,20 +28,67 @@ The steps following in this guide assume an installation of Bazelisk somewhere i
 .. code-block:: bash
 
    $ sudo curl -Lo /usr/local/bin/bazelisk \
-      https://github.com/bazelbuild/bazelisk/releases/download/v1.0/bazelisk-linux-amd64
+      https://github.com/bazelbuild/bazelisk/releases/download/v1.3.0/bazelisk-linux-amd64
    $ sudo chmod +x /usr/local/bin/bazelisk
 
 Now verify that you can run Bazel and see the expected latest version printed by running ``$ bazelisk version``.
 
+Install dependencies
+~~~~~~~~~~~~~~~~~~~~
+
+.. content-tabs::
+
+    .. tab-container:: Go
+
+        For using Go in this example, no additional dependencies are required.
+
+    .. tab-container:: Java
+
+        For using Java in this example, you can choose between installing a JDK locally or let Bazel download and use
+        that. TECL was tested with the OpenJDK JDK LTS versions 8 and 11.
+
+        The quickest way is to let Bazel download a Java JDK 11 for you; skip over to the next steps in
+        "Create a new project".
+
+        If you choose to install a local JDK, several options exist. For Debian/Ubuntu Linux this would mean:
+
+        .. code-block:: bash
+
+           $ sudo apt install openjdk-11-jdk-headless
+           $ sudo update-alternatives --config java  # select OpenJDK 11 path
+           $ sudo update-alternatives --config javac  # select OpenJDK 11 path
+
+        For other operating systems or more options, you could have a look at the
+        [AdoptOpenJDK project](https://adoptopenjdk.net/).
+
+    .. tab-container:: Node
+
+        For using Node in this example, no additional dependencies are required.
+
+    .. tab-container:: Python
+
+        For using Python in this example, you will need to install both Python 2, Python 3, the development
+        headers of both versions and Python 3 distutils. For e.g. on Debian/Ubuntu Linux this would mean:
+
+        .. code-block:: bash
+
+           $ sudo apt install python python-dev python3 python3-dev python3-distutils
+
+        .. tip::
+           The reason for a Python 2 requirement is an issue with the gRPC-Python rules for Bazel
+           (`#21963 <https://github.com/grpc/grpc/issues/21963>`_). Despite this requirement, the example code and your
+           application can be written in pure Python 3.
+
 Create a new project
 ~~~~~~~~~~~~~~~~~~~~
+
 Set up a new project by creating a new Bazel workspace.
 A workspace is a directory that contains source files, as well as symbolic links to directories that contain the build
 outputs.
 More information about workspaces can be found
 `here <https://docs.bazel.build/versions/master/build-ref.html#workspace>`__
 
-Copy the following content into a file named WORKSPACE in the root of your project.
+Copy the following content into a file named ``WORKSPACE`` in the root of your project.
 
 .. content-tabs::
 
@@ -71,6 +118,21 @@ Copy the following content into a file named WORKSPACE in the root of your proje
         .. literalinclude:: /examples/python/WORKSPACE.doc
             :language: python
 
+.. content-tabs::
+
+    .. tab-container:: Java
+
+        To let Bazel manage a Java JDK 11 for you, create a file ``.bazelrc`` in the root of your project with the
+        following content.
+
+        .. code-block::
+
+             # Use Bazel's "remote" JDK 11.
+             build --javabase=@bazel_tools//tools/jdk:remote_jdk11
+             build --host_javabase=@bazel_tools//tools/jdk:remote_jdk11
+             build --host_java_toolchain=@bazel_tools//tools/jdk:toolchain_vanilla
+             build --java_toolchain=@bazel_tools//tools/jdk:toolchain_vanilla
+
 Create the hello_exchange package
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 For the hello exchange example, first create a new Bazel package.
@@ -80,7 +142,7 @@ The relations are declared through *rules* in the ``BUILD.bazel`` file: they sta
 of input and a set of output files.
 
 In the project root directory create a new directory called "hello_exchange".
-In this directory create a BUILD.bazel file with the following content.
+In this directory create a ``BUILD.bazel`` file with the following content.
 
 .. content-tabs::
 
