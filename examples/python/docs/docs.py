@@ -42,11 +42,11 @@ from public_ticker_service_stream_tickers import public_ticker_service_stream_ti
 from public_trade_service_get_trades import public_trade_service_get_trades
 from public_trade_service_stream_trades import public_trade_service_stream_trades
 try:
-    from tecl.python.tulipsolutions.api.auth import jwt_interceptor
+    from python.tulipsolutions.api.auth import jwt_interceptor
 except ImportError:
     from tulipsolutions.api.auth import jwt_interceptor
 try:
-    from tecl.python.tulipsolutions.api.auth import message_authentication_interceptor
+    from python.tulipsolutions.api.auth import message_authentication_interceptor
 except ImportError:
     from tulipsolutions.api.auth import message_authentication_interceptor
 

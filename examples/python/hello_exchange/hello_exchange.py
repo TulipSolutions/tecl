@@ -20,11 +20,11 @@ from concurrent.futures import ThreadPoolExecutor
 
 import grpc
 try:
-    from tecl.python.tulipsolutions.api.auth import jwt_interceptor
+    from python.tulipsolutions.api.auth import jwt_interceptor
 except ImportError:
     from tulipsolutions.api.auth import jwt_interceptor
 try:
-    from tecl.python.tulipsolutions.api.auth import message_authentication_interceptor
+    from python.tulipsolutions.api.auth import message_authentication_interceptor
 except ImportError:
     from tulipsolutions.api.auth import message_authentication_interceptor
 
