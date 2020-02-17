@@ -42,9 +42,14 @@ enum MarketStatus {
     // [#example-value-ok:]
     OPEN = 0;
     // [#example-value-ok:]
-    CLOSED = 1;
+    // Market in maintenance mode, no user actions are accepted.
+    MaintenanceMode = 1;
     // [#example-value-ok:]
-    REMOVED = 2;
+    // Market in alternative maintenance mode. Users can't place orders, but existing orders can be canceled.
+    MaintenanceModeCancelOnly = 2;
+    // [#example-value-ok:]
+    // Market is closed and no longer available
+    CLOSED = 3;
 }
 
 message MarketDetail {
