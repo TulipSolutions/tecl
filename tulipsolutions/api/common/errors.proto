@@ -53,6 +53,12 @@ message QuoteOrderAmountTooLarge {
     double max_quote_amount = 2;
 }
 
+message PriceTooSmall {
+    option (error_message_fmt_str) = "Price too small; given: %s, minimum price: %s.";
+    double price = 1;
+    double min_price = 2;
+}
+
 message InsufficientBalance {
     option (error_message_fmt_str) = "Insufficient funds; size: %s, available: %s, currency: %s.";
     double order_size = 1;
