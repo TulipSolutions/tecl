@@ -1,7 +1,7 @@
-From f0344b8cbbc25d99d04115df03dffee3c1acc056 Mon Sep 17 00:00:00 2001
+From 03060d3a5ee277c9bdf562ee1c629c4b28842d91 Mon Sep 17 00:00:00 2001
 From: Joel Williamson <joel.s.williamson@gmail.com>
 Date: Wed, 4 Dec 2019 00:00:28 -0500
-Subject: [PATCH 2/2] Update paths to grpc plugins
+Subject: [PATCH] Update paths to grpc plugins
 
 gRPC changed the paths of the plugins from //:*_plugin to
 //src/compiler:*_plugin.
@@ -103,6 +103,8 @@ index c8b488c..3fd88f6 100644
 +    tool = "@com_github_grpc_grpc//src/compiler:grpc_ruby_plugin",
      visibility = ["//visibility:public"],
  )
+
+base-commit: b2913e6340bcbffb46793045ecac928dcf1b34a5
 -- 
-2.25.0
+2.26.2
 

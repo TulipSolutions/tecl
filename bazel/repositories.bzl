@@ -169,15 +169,14 @@ sh_binary(
         )
 
     if not omit_build_stack_rules_proto:
-        build_stack_rules_proto_version = "734b8d41d39a903c70132828616f26cb2c7f908c"
+        build_stack_rules_proto_version = "b2913e6340bcbffb46793045ecac928dcf1b34a5"
 
         http_archive(
             name = "build_stack_rules_proto",
             patches = [
-                "@nl_tulipsolutions_tecl//third_party/patches/com_github_stackb_rules_proto:0001-Strip-virtual-imports-directory-from-proto-path.patch",
-                "@nl_tulipsolutions_tecl//third_party/patches/com_github_stackb_rules_proto:0002-Update-paths-to-grpc-plugins.patch",
+                "@nl_tulipsolutions_tecl//third_party/patches/com_github_stackb_rules_proto:0001-Update-paths-to-grpc-plugins.patch",
             ],
-            sha256 = "06c6b06dfa79b1fafdc887a1e1135b26aa239bba57aa71d55744da70767de444",
+            sha256 = "618a1c0eb4e75bee3d4f4d759d1dab144dd82150fe2fa195acd8e6b8f530de2a",
             strip_prefix = "rules_proto-%s" % build_stack_rules_proto_version,
             url = "https://github.com/stackb/rules_proto/archive/%s.zip" % build_stack_rules_proto_version,
         )
