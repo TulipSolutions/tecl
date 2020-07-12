@@ -1,6 +1,4 @@
 # Idea and implementation taken from Gerrit Code Review: https://gerrit-review.googlesource.com/c/gerrit/+/235594.
-# Please keep in sync with 'common/bazel-buildtools' project. It is copied here to protocol to have it available in TECL as
-# well.
 
 _template = """
 load("@bazel_skylib//lib:versions.bzl", "versions")
