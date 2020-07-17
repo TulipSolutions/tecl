@@ -46,7 +46,7 @@ To run Go (Golang) or Node (Javascript) examples, all other dependencies are man
 
 ### Running the examples
 
-Run an example with `bazelisk run examples/<lang>/<example>`, e.g.:
+Run an example with `bazelisk run //examples/<lang>/<example>`, e.g.:
 
     bazelisk run //examples/go/hello_exchange
 

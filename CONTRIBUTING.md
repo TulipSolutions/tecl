@@ -12,17 +12,17 @@ Run a full project build with the command:
 
 The examples can be run with the command:
 
-    $ bazelisk run examples/<lang>/<example>
+    $ bazelisk run //examples/<lang>/<example>
 
 e.g.
 
-    $ bazelisk run examples/node/hello_exchange
+    $ bazelisk run //examples/node/hello_exchange
 
 ## Generate build files
 
 In case proto definitions change, are added or removed run Gazelle to regenerate the BUILD files.
 
-    $ bazelisk run gazelle
+    $ bazelisk run //:gazelle
 
 ## Linters
 
