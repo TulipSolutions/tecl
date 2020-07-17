@@ -2,7 +2,9 @@ load("@io_bazel_rules_kotlin//kotlin:kotlin.bzl", "define_kt_toolchain")
 load("@com_github_bazelbuild_buildtools//buildifier:def.bzl", "buildifier")
 load("//bazel/rules_clang_format:def.bzl", "clang_formatter")
 load("@bazel_gazelle//:def.bzl", "gazelle")
-load("//bazel/rules_addlicense:def.bzl", "addlicense")
+load("@nl_tulipsolutions_bazel_tools//rules_ktlint:def.bzl", "ktlint")
+load("@nl_tulipsolutions_bazel_tools//rules_intellij_formatter:def.bzl", "intellij_formatter")
+load("@nl_tulipsolutions_bazel_tools//rules_addlicense:def.bzl", "addlicense")
 load("//bazel/rules_gofmt:def.bzl", "gofmt")
 load("//bazel/rules_flake8:def.bzl", "flake8")
 load("@flake8_deps//:requirements.bzl", "requirement")
@@ -95,4 +97,24 @@ gofmt(
 flake8(
     name = "flake8_check",
     exclude_patterns = exclude_patterns,
+)
+
+ktlint(
+    name = "ktlint_check",
+)
+
+ktlint(
+    name = "ktlint_format",
+    format = True,
+)
+
+intellij_formatter(
+    name = "intellij_format",
+    exclude_patterns = exclude_patterns,
+)
+
+intellij_formatter(
+    name = "intellij_check",
+    exclude_patterns = exclude_patterns,
+    mode = "check",
 )

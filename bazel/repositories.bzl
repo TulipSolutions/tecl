@@ -6,6 +6,7 @@ load(
 )
 
 def repositories(
+        omit_nl_tulipsolutions_bazel_tools = False,
         omit_com_salesforce_servicelibs_reactive_grpc = False,
         omit_com_github_spullara_mustache_java_compiler = False,
         omit_bazel_skylib = False,
@@ -27,6 +28,16 @@ def repositories(
         omit_com_envoyproxy_protoc_gen_validate = False,
         omit_io_bazel_rules_kotlin = False,
         omit_org_apache_commons_validator = False):
+    if not omit_nl_tulipsolutions_bazel_tools and not native.existing_rule("nl_tulipsolutions_bazel_tools"):
+        nl_tulipsolutions_bazel_tools_version = "fc9eb0a60d349b20e1852ad4903fc237a4c3db44"
+
+        http_archive(
+            name = "nl_tulipsolutions_bazel_tools",
+            sha256 = "3dadf7c4c355c56093e33876c3cb7819842539fc757dcd35218efa9847d07ba8",
+            strip_prefix = "tulip-bazel-tools-%s" % nl_tulipsolutions_bazel_tools_version,
+            urls = ["https://github.com/TulipSolutions/tulip-bazel-tools/archive/%s.zip" % nl_tulipsolutions_bazel_tools_version],
+        )
+
     if not omit_com_salesforce_servicelibs_reactive_grpc:
         # Latest on master on 2020-01-28
         version = "eb450821f3eae49e755cc9ed8ee46327ba864854"

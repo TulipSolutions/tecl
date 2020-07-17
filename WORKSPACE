@@ -12,6 +12,14 @@ load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 
 protobuf_deps()
 
+load("@nl_tulipsolutions_bazel_tools//rules_ktlint:deps.bzl", "ktlint_dependencies")
+
+ktlint_dependencies()
+
+load("@nl_tulipsolutions_bazel_tools//rules_intellij_formatter:deps.bzl", "intellij_formatter_dependencies")
+
+intellij_formatter_dependencies()
+
 # Check Bazel version when invoked by Bazel directly instead of Bazelisk; verify it's at minimum the version Bazelisk
 # would choose to use via .bazelversion file.
 load("//bazel/rules_bazel_version:deps.bzl", "bazel_version_dependencies")
@@ -105,17 +113,9 @@ load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
 
 gazelle_dependencies()
 
-load("@bazel_gazelle//:deps.bzl", "go_repository")
+load("@nl_tulipsolutions_bazel_tools//rules_addlicense:deps.bzl", "addlicense_dependencies")
 
-add_license_version = "22550fa7c1b07a27e810565721ac49469615e05b"
-
-go_repository(
-    name = "com_github_google_addlicense",
-    importpath = "github.com/google/addlicense",
-    sha256 = "beeea8a9e2950a23b0bb1e22d94cd58bea9cfaf1d321ef9f2ac2707d92ce7ab3",
-    strip_prefix = "addlicense-%s" % add_license_version,
-    urls = ["https://github.com/google/addlicense/archive/%s.zip" % add_license_version],
-)
+addlicense_dependencies()
 
 load("@com_salesforce_servicelibs_reactive_grpc//bazel:repositories.bzl", reactive_grpc_repositories = "repositories")
 
@@ -123,6 +123,8 @@ reactive_grpc_repositories(
     omit_com_github_spullara_mustache_java_compiler = True,
     omit_io_grpc_grpc_java = True,
 )
+
+load("@bazel_gazelle//:deps.bzl", "go_repository")
 
 go_repository(
     name = "co_honnef_go_tools",

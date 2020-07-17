@@ -1,0 +1,4 @@
+# Work-around for IntelliJ IDEA formatter archive containing spaces in runfiles.
+# Causing error link or target filename contains space on line 2016: '[...] /plugins/textmate/lib/bundles/javascript/syntaxes/Regular Expressions (JavaScript).tmLanguage'
+# See also https://github.com/bazelbuild/bazel/issues/4327
+build --experimental_inprocess_symlink_creation
