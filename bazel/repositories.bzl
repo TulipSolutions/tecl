@@ -29,11 +29,11 @@ def repositories(
         omit_io_bazel_rules_kotlin = False,
         omit_org_apache_commons_validator = False):
     if not omit_nl_tulipsolutions_bazel_tools and not native.existing_rule("nl_tulipsolutions_bazel_tools"):
-        nl_tulipsolutions_bazel_tools_version = "fc9eb0a60d349b20e1852ad4903fc237a4c3db44"
+        nl_tulipsolutions_bazel_tools_version = "bb63703f5cc8d696882eda9cfb8c7f1b95ebf621"
 
         http_archive(
             name = "nl_tulipsolutions_bazel_tools",
-            sha256 = "3dadf7c4c355c56093e33876c3cb7819842539fc757dcd35218efa9847d07ba8",
+            sha256 = "6d90cb42257777f9b023c4230b2bcd7816f9e3b602b348e2e0e0c7beafb88342",
             strip_prefix = "tulip-bazel-tools-%s" % nl_tulipsolutions_bazel_tools_version,
             urls = ["https://github.com/TulipSolutions/tulip-bazel-tools/archive/%s.zip" % nl_tulipsolutions_bazel_tools_version],
         )

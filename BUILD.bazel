@@ -73,12 +73,14 @@ gazelle(
 
 addlicense(
     name = "addlicense_format",
+    copyright_holder = "Tulip Solutions B.V.",
     exclude_patterns = exclude_patterns,
     mode = "format",
 )
 
 addlicense(
     name = "addlicense_check",
+    copyright_holder = "Tulip Solutions B.V.",
     exclude_patterns = exclude_patterns,
     mode = "check",
 )
