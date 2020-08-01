@@ -34,9 +34,19 @@ load("@tulip_bazel_version//:check.bzl", "check_bazel_version")
 
 check_bazel_version()
 
+kotlin_compiler_version = "1.3.72"
+
+KOTLIN_COMPILER_RELEASE = {
+    "urls": [
+        "https://github.com/JetBrains/kotlin/releases/download/v%s/kotlin-compiler-%s.zip" %
+        (kotlin_compiler_version, kotlin_compiler_version),
+    ],
+    "sha256": "ccd0db87981f1c0e3f209a1a4acb6778f14e63fe3e561a98948b5317e526cc6c",
+}
+
 load("@io_bazel_rules_kotlin//kotlin:kotlin.bzl", "kotlin_repositories")
 
-kotlin_repositories()
+kotlin_repositories(compiler_release = KOTLIN_COMPILER_RELEASE)
 
 register_toolchains("//:kotlin_toolchain")
 
