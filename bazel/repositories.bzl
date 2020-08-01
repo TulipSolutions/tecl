@@ -264,13 +264,13 @@ sh_binary(
         )
 
     if not omit_io_bazel_rules_kotlin:
-        rules_kotlin_version = "4512a83053489326a3643ef9d84e3e15420eb58e"
+        # This 'legacy' in the release version is misleading; it's in active development.
+        rules_kotlin_version = "legacy-1.4.0-rc3"
 
         http_archive(
             name = "io_bazel_rules_kotlin",
-            sha256 = "5108e1fa0ac9012a92e7a5825562284fa756f469b80020d0cd7fa03c44f6bb20",
-            strip_prefix = "rules_kotlin-%s" % rules_kotlin_version,
-            url = "https://github.com/bazelbuild/rules_kotlin/archive/%s.zip" % rules_kotlin_version,
+            sha256 = "da0e6e1543fcc79e93d4d93c3333378f3bd5d29e82c1bc2518de0dbe048e6598",
+            url = "https://github.com/bazelbuild/rules_kotlin/releases/download/%s/rules_kotlin_release.tgz" % rules_kotlin_version,
         )
 
     if not omit_org_apache_commons_validator:
