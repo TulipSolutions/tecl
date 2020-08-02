@@ -167,15 +167,15 @@ sh_binary(
         )
 
     if not omit_bazel_gazelle:
-        bazel_gazelle_version = "v0.20.0"
+        # Not a release version because of an incompatibility with bazelbuild/buildtools for which the fix is unreleased
+        # yet (https://github.com/bazelbuild/bazel-gazelle/pull/818).
+        bazel_gazelle_version = "30aa1d7c9406aaf0838781e907eefc4bc2d1eddc"  # master branch as of 2020-08-02
 
         http_archive(
             name = "bazel_gazelle",
-            urls = [
-                "https://storage.googleapis.com/bazel-mirror/github.com/bazelbuild/bazel-gazelle/releases/download/{v}/bazel-gazelle-{v}.tar.gz".format(v = bazel_gazelle_version),
-                "https://github.com/bazelbuild/bazel-gazelle/releases/download/{v}/bazel-gazelle-{v}.tar.gz".format(v = bazel_gazelle_version),
-            ],
-            sha256 = "d8c45ee70ec39a57e7a05e5027c32b1576cc7f16d9dd37135b0eddde45cf1b10",
+            sha256 = "5135ec3b4d9e83cf4251530b1e2fd566a372c4b1a3e743a15c9d644ccbcddd11",
+            strip_prefix = "bazel-gazelle-%s" % bazel_gazelle_version,
+            url = "https://github.com/bazelbuild/bazel-gazelle/archive/%s.zip" % bazel_gazelle_version,
         )
 
     if not omit_build_stack_rules_proto:
@@ -204,11 +204,11 @@ sh_binary(
         )
 
     if not omit_com_github_bazelbuild_buildtools:
-        build_tools_version = "0.29.0"
+        build_tools_version = "3.4.0"
 
         http_archive(
             name = "com_github_bazelbuild_buildtools",
-            sha256 = "05eb52437fb250c7591dd6cbcfd1f9b5b61d85d6b20f04b041e0830dd1ab39b3",
+            sha256 = "a5fca3f810588b441a647cf601a42ca98a75aa0681c2e9ade3ce9187d47b506e",
             strip_prefix = "buildtools-%s" % build_tools_version,
             url = "https://github.com/bazelbuild/buildtools/archive/%s.zip" % build_tools_version,
         )
