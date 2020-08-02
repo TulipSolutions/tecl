@@ -1,0 +1,58 @@
+From 40e708e7697fb91ec606214d1912d662c26bdd91 Mon Sep 17 00:00:00 2001
+From: Gert van Dijk <gert.vandijk@tulipsolutions.nl>
+Date: Sun, 2 Aug 2020 17:18:46 +0200
+Subject: [PATCH] Remove Java 7 compatibility, silence Bazel warning
+
+Warning shown for every Bazel-protobuf build:
+
+  warning: -parameters is not supported for target value 1.7.
+  Use 1.8 or later.
+
+By removing the specific java options, it falls back to the default of the
+java compiler.
+
+This patch used to be part of rules_closure, but was removed upstream with
+commit https://github.com/bazelbuild/rules_closure/commit/3bdfdbf9dcad4f6b0335072219ac04fa6e059636
+(reason unknown).
+---
+ java/core/BUILD | 5 +----
+ java/util/BUILD | 5 +----
+ 2 files changed, 2 insertions(+), 8 deletions(-)
+
+diff --git java/core/BUILD java/core/BUILD
+index 5f4a7ab17..6695a0965 100644
+--- java/core/BUILD
++++ java/core/BUILD
+@@ -93,10 +93,7 @@ LITE_SRCS = [
+ 
+ javacopts = select({
+     "//java:jdk9": ["--add-modules=jdk.unsupported"],
+-    "//conditions:default": [
+-        "-source 7",
+-        "-target 7",
+-    ],
++    "//conditions:default": [],
+ })
+ 
+ # Should be used as `//java/lite`.
+diff --git java/util/BUILD java/util/BUILD
+index cfdb28e2e..43b527607 100644
+--- java/util/BUILD
++++ java/util/BUILD
+@@ -5,10 +5,7 @@ java_library(
+     srcs = glob([
+         "src/main/java/com/google/protobuf/util/*.java",
+     ]),
+-    javacopts = [
+-        "-source 7",
+-        "-target 7",
+-    ],
++    javacopts = [],
+     visibility = ["//visibility:public"],
+     deps = [
+         "//external:error_prone_annotations",
+
+base-commit: c9d2bd2fc781fe67ebf306807b9b6edb4a0d2764
+-- 
+2.28.0
+

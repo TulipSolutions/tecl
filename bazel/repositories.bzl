@@ -72,27 +72,26 @@ def repositories(
         )
 
     if not omit_io_bazel_rules_closure:
-        io_bazel_rules_closure_version = "614e1ebc38249c6793eab2e078bceb0fb12a1a42"  # master HEAD on 2020-01-28
+        io_bazel_rules_closure_version = "62746bdd1087c1198a81143e7d8ef3d144a43c0f"  # master HEAD on 2020-08-02
 
         http_archive(
             name = "io_bazel_rules_closure",
-            sha256 = "d214736912d20293395682d7142411a117f0a17fb4d7e205ccbd438bd4a3738d",
+            sha256 = "43f0c6e9b16a8293dd9368054a8ef45adf943d698cf90d05e8779829500a7c06",
             strip_prefix = "rules_closure-%s" % io_bazel_rules_closure_version,
             urls = ["https://github.com/bazelbuild/rules_closure/archive/%s.zip" % io_bazel_rules_closure_version],
         )
 
     if not omit_com_google_protobuf:
-        protobuf_version = "v3.11.3"
+        protobuf_version = "v3.12.4"
 
         http_archive(
             name = "com_google_protobuf",
             patches = [
                 # Get rid of the annoying build warnings by opting out for Java 7 compatibility:
                 # warning: -parameters is not supported for target value 1.7. Use 1.8 or later.
-                "@io_bazel_rules_closure//closure:protobuf_drop_java_7_compatibility.patch",
+                "@nl_tulipsolutions_tecl//third_party/patches/com_google_protobuf:0001-Remove-Java-7-compatibility-silence-Bazel-warning.patch",
             ],
-            patch_args = ["-p1"],
-            sha256 = "832c476bb442ca98a59c2291b8a504648d1c139b74acc15ef667a0e8f5e984e7",
+            sha256 = "c5dc4cacbb303d5d0aa20c5cbb5cb88ef82ac61641c951cdf6b8e054184c5e22",
             strip_prefix = "protobuf-%s" % protobuf_version[1:],
             urls = ["https://github.com/google/protobuf/archive/%s.zip" % protobuf_version],
         )
