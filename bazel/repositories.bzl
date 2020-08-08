@@ -192,7 +192,7 @@ sh_binary(
         )
 
     if not omit_io_bazel_rules_go_version:
-        io_bazel_rules_go_version = "v0.23.6"
+        io_bazel_rules_go_version = "v0.23.7"
 
         http_archive(
             name = "io_bazel_rules_go",
@@ -200,7 +200,7 @@ sh_binary(
                 "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/{v}/rules_go-{v}.tar.gz".format(v = io_bazel_rules_go_version),
                 "https://github.com/bazelbuild/rules_go/releases/download/{v}/rules_go-{v}.tar.gz".format(v = io_bazel_rules_go_version),
             ],
-            sha256 = "8663604808d2738dc615a2c3eb70eba54a9a982089dd09f6ffe5d0e75771bc4f",
+            sha256 = "0310e837aed522875791750de44408ec91046c630374990edd51827cb169f616",
         )
 
     if not omit_com_github_bazelbuild_buildtools:
